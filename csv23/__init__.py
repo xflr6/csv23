@@ -1,0 +1,103 @@
+# csv23 - python 2 uniocde csv compat adapted from stdlib recipe
+
+"""Python 2/3 unicode CSV compatibility layer and convenience functions."""
+
+from __future__ import unicode_literals
+
+from ._common import ENCODING, DIALECT, ROWTYPE
+from .readers import open_reader, reader, DictReader
+from .writers import open_writer, writer, DictWriter
+
+__all__ = [
+    'open_csv',
+    'open_reader', 'open_writer',
+    'iterrows',
+    'reader', 'writer',
+    'DictReader', 'DictWriter',
+]
+
+__title__ = 'csv23'
+__version__ = '0.1'
+__author__ = 'Sebastian Bank <sebastian.bank@uni-leipzig.de>'
+__license__ = 'MIT, see LICENSE.txt'
+__copyright__ = 'Copyright (c) 2018 Sebastian Bank'
+
+_OPEN_FUNCS = {'r': open_reader, 'w': open_writer}
+
+
+def open_csv(filename, mode='r', encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, **fmtparams):
+    r"""Context manager returning a CSV reader/writer (closing the file on exit).
+
+    Args:
+        filename: File (name) argument for the :func:`py:io.open` call.
+        mode (str): ``'r'`` for a :func:`py:csv.reader`, ``'w'`` for a :func:`py:csv.writer`.
+        encoding (str): Name of the encoding used to de/encode the file content.
+        dialect: Dialect argument for the :func:`py:csv.reader` or :func:`py:csv.writer`.
+        rowtype (str): ``'list'`` for a :func:`py:csv.reader` or :func:`py:csv.writer`,
+            ``'dict'`` for a :class:`py:csv.DictReader` or :class:`py:csv.DictWriter`.
+        \**fmtparams: Keyword arguments (formatting parameters) for the
+            ``reader`` or ``writer`` call (must include ``fieldnames`` if
+            ``mode='w'`` and ``rowtype='dict'``).
+
+    Returns:
+        A context manager returning a Python 3 :func:`py3:csv.reader` or :func:`py3:csv.writer` stand-in when entering.
+
+    >>> row = [u'Wonderful Spam', u'Lovely Spam']
+    >>> with open_csv('spam.csv', 'w') as writer:  # doctest: +SKIP
+    ...     writer.writerow(row)
+    >>> with open_csv('spam.csv') as reader:  # doctest: +SKIP
+    ...     assert list(reader) == [row]
+
+    Raises:
+        TypeError: With ``mode='w'`` and ``rowtype='dict'`` but missing ``fieldnames`` keyword argument.
+
+    Notes:
+        - The ``reader`` or ``writer`` yields/expects string values as ``unicode`` strings (PY3: ``str``).
+        - The underlying opened file object is closed on leaving the ``with``-block.
+        - If ``encoding=None`` is given, :func:`py:locale.getpreferredencoding` is used.
+        - Under Python 2, an optimized implementation is used for 8-bit encodings
+          that are ASCII-compatible (e.g. the default ``'utf-8'``).
+    """
+    try:
+        open_func = _OPEN_FUNCS[mode]
+    except (KeyError, TypeError):
+        raise ValueError('invalid mode: %r' % mode)
+    return open_func(filename, encoding, dialect, rowtype, **fmtparams)
+
+
+def iterrows(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, **fmtparams):
+    r"""Iterator reading rows from a CSV file (closed on exaustion or error).
+
+    Args:
+        filename: File (name) argument for the :func:`py:io.open` call.
+        encoding (str): Name of the encoding used to decode the file content.
+        dialect: Dialect argument for :func:`py:csv.reader`.
+        rowtype (str): ``'list'`` for ``list`` rows, ``'dict'`` for :class:`py:dict` rows.
+        \**fmtparams: Keyword arguments (formatting parameters) for the
+            :func:`py:csv.reader`.
+
+    Yields:
+        ``list`` or ``dict``: The next row from the CSV file.
+
+    >>> for row in iterrows('spam.csv', encoding='utf-8'):  # doctest: +SKIP
+    ...     print(row)
+    ...     break
+    [u'Wonderful Spam', u'Lovely Spam']
+
+    >>> rows = iterrows('spam.csv', encoding='utf-8')  # doctest: +SKIP
+    >>> next(rows)  # doctest: +SKIP
+    [u'Wonderful Spam', u'Lovely Spam']
+    >>> rows.close()  # doctest: +SKIP
+
+    Notes:
+        - The rows are ``list`` or ``dict`` of ``unicode`` strings (PY3: ``str``).
+        - The underlying opened file object is closed automatically, i.e.
+          on exhaustion, in case of an exception, or by garbage collection.
+          To do it manually, call the ``.close()``.method  of the returned generator object.
+        - If ``encoding=None`` is given, :func:`py:locale.getpreferredencoding` is used.
+        - Under Python 2, an optimized implementation is used for 8-bit encodings
+          that are ASCII-compatible (e.g. the default ``'utf-8'``).
+    """
+    with open_reader(filename, encoding, dialect, rowtype, **fmtparams) as reader:
+        for row in reader:
+            yield row
