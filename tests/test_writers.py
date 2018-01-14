@@ -37,7 +37,6 @@ ROW_FORMAT_LINE = [
 
 
 @pytest.mark.parametrize('row, fmtparams, expected', ROW_FORMAT_LINE)
-@pytest.mark.parametrize('encoding', ['utf-8', 'utf-16', 'latin9', 'utf-8-sig'])
 def test_open_writer(py2, filepath, encoding, row, fmtparams, expected, n=12):
     try:
         expected.encode(encoding)
@@ -58,8 +57,8 @@ def test_open_writer(py2, filepath, encoding, row, fmtparams, expected, n=12):
 
 
 @pytest.mark.parametrize('row, fmtparams, expected', ROW_FORMAT_LINE)
-@pytest.mark.parametrize('encoding', [False, 'utf-8', 'latin9'])
-def test_writer(mocker, py2, filepath, encoding, row, fmtparams, expected, n=12):
+def test_writer(mocker, py2, filepath, inner_encoding, row, fmtparams, expected, n=12):
+    encoding = inner_encoding
     if encoding is False:
         if py2:
             expected_type = UnicodeTextWriter

@@ -10,6 +10,9 @@ import pytest
 
 PY2 = sys.version_info.major == 2
 
+ENCODING = ['utf-8', 'utf-16', 'utf-8-sig', 'latin9']
+CLEAN = {'utf-8', 'latin9'}
+
 
 def pytest_configure(config):
     py2only = pytest.mark.skipif(not PY2, reason='Python 2 only')
@@ -21,6 +24,16 @@ def py2():
     return PY2
 
 
+@pytest.fixture(params=ENCODING)
+def encoding(request):
+    return request.param
+
+
+@pytest.fixture(params=[False] + [e for e in ENCODING if e in CLEAN])
+def inner_encoding(request):
+    return request.param
+
+
 @pytest.fixture(scope='session')
 def none_encoding():
     return locale.getpreferredencoding()
@@ -28,7 +41,7 @@ def none_encoding():
 
 @pytest.fixture(scope='session')
 def nonclean_encoding():
-    return 'u16'
+    return next(e for e in ENCODING if e not in CLEAN)
 
 
 @pytest.fixture

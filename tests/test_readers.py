@@ -27,7 +27,6 @@ LINE_FORMAT_ROW = [
 
 
 @pytest.mark.parametrize('line, fmtparams, expected', LINE_FORMAT_ROW)
-@pytest.mark.parametrize('encoding', ['utf-8', 'utf-16', 'latin9', 'utf-8-sig'])
 def test_open_reader(py2, filepath, encoding, line, fmtparams, expected, n=12):
     try:
         data = (line * n).encode(encoding)
@@ -47,8 +46,8 @@ def test_open_reader(py2, filepath, encoding, line, fmtparams, expected, n=12):
 
 
 @pytest.mark.parametrize('line, fmtparams, expected', LINE_FORMAT_ROW)
-@pytest.mark.parametrize('encoding', [False, 'utf-8', 'latin9'])
-def test_reader(py2, encoding, line, fmtparams, expected, n=12):
+def test_reader(py2, inner_encoding, line, fmtparams, expected, n=12):
+    encoding = inner_encoding
     if encoding is False:
         expected_type = UnicodeTextReader if py2 else type(csv.reader([]))
     else:

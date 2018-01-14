@@ -6,7 +6,17 @@ import pytest
 
 import itertools
 
-from csv23._common import _open_csv
+from csv23._common import is_8bit_clean, _open_csv
+
+
+def test_is_8bit_clean():
+    assert is_8bit_clean('u8')
+    assert not is_8bit_clean('u16')
+    assert is_8bit_clean('windows-1252')
+    assert not is_8bit_clean('utf-16')
+    assert is_8bit_clean('IBM437')
+    assert not is_8bit_clean('cp500')
+    assert not is_8bit_clean('UTF-16BE')
 
 
 @pytest.mark.parametrize('event', ['close', 'gc', RuntimeError])
