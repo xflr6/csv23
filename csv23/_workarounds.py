@@ -1,7 +1,5 @@
 # _workarounds.py
 
-from __future__ import unicode_literals
-
 import io
 import csv
 import warnings
@@ -9,18 +7,18 @@ import warnings
 from ._common import PY2
 
 
-def issue12178(escapechar=b'\\' if PY2 else u'\\'):
+def issue12178(escapechar='\\'):
     with (io.BytesIO() if PY2 else io.StringIO(newline='')) as stream:
         csv.writer(stream, escapechar=escapechar).writerow([escapechar])
         line = stream.getvalue()
     return (escapechar * 2) not in line
 
 
-def issue31590():
-    if not PY2:
-        return False
-    reader = csv.reader([b'spam\\\neggs'], quoting=csv.QUOTE_NONE, escapechar=b'\\')
-    return len(next(reader)) == 1
+def issue31590(line='spam\\\neggs,spam\r\n', escapechar='\\'):
+    with (io.BytesIO(line) if PY2 else io.StringIO(line, newline='')) as stream:
+        reader = csv.reader(stream, quoting=csv.QUOTE_NONE, escapechar=escapechar)
+        row = next(reader)
+    return len(row) != 2
 
 
 def has_issue12178(dialect, affected=issue12178()):
