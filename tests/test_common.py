@@ -34,11 +34,11 @@ def test_open_csv(mocker, mock_open, event):
     assert next(r) == 0
     mock_open.assert_called_once_with(filename)
     csv_func.assert_called_once_with(stream, dialect=dialect)
-    assert not stream.close.called
+    stream.close.assert_not_called()
 
     assert next(r) == 1
     mock_open.assert_called_once()
-    assert not stream.close.called
+    stream.close.assert_not_called()
 
     if event == 'close':
         r.close()
