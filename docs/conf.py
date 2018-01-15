@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# csv23 documentation build configuration file, created by
-# sphinx-quickstart on Sun Jan 14 14:55:44 2018.
-#
 # This file is execfile()d with the current directory set to its
 # containing dir.
 #
@@ -34,8 +31,8 @@ import csv23
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'sphinx.ext.napoleon',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.napoleon',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

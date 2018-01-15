@@ -48,4 +48,4 @@ def test_open_csv(mocker, mock_open, event):
         with pytest.raises(event):
             raise event
     mock_open.assert_called_once()
-    assert stream.close.called_once_with()
+    stream.close.called_once_with()
