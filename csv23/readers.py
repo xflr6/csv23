@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 from ._common import PY2, ENCODING, DIALECT, ROWTYPE
-from ._common import none_encoding, is_8bit_clean, _open_csv
+from ._common import none_encoding, is_8bit_clean, csv_args, _open_csv
 from ._dispatch import register_reader, get_reader
 from ._workarounds import warn_if_issue31590
 
@@ -113,6 +113,7 @@ class Reader(object):
     """Proxy for csv.reader."""
 
     def __init__(self, stream, dialect=DIALECT, **kwargs):
+        kwargs = csv_args(kwargs)
         self._reader = csv.reader(stream, dialect, **kwargs)
         warn_if_issue31590(self._reader)
 

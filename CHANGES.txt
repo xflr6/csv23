@@ -5,7 +5,7 @@ Changelog
 Version 0.1.2 (in development)
 ------------------------------
 
-
+Convert unicode values for format parameters like ``delimiter`` to bytes on PY2.
 
 
 Version 0.1.1

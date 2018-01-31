@@ -10,10 +10,7 @@ from csv23.readers import open_reader, reader, UnicodeTextReader, UnicodeBytesRe
 
 EXCEL = {}
 
-SLASH = {
-    'quoting': csv.QUOTE_NONE,
-    'escapechar': b'\\' if pytest.csv23.PY2 else u'\\',
-}
+SLASH = {'quoting': csv.QUOTE_NONE, 'escapechar': u'\\'}
 
 LINE_FORMAT_ROW = [
     ('spam,"eggs",spam spam,"eggs eggs"\r\n', EXCEL, ['spam', 'eggs', 'spam spam', 'eggs eggs']),

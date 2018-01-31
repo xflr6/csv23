@@ -10,7 +10,7 @@ import mock
 import functools
 
 from ._common import PY2, ENCODING, DIALECT, ROWTYPE
-from ._common import none_encoding, is_8bit_clean, _open_csv
+from ._common import none_encoding, is_8bit_clean, csv_args, _open_csv
 from ._dispatch import register_writer, get_writer
 from ._workarounds import has_issue12178
 
@@ -116,6 +116,7 @@ class Writer(object):
     """Proxy for csv.writer."""
 
     def __init__(self, stream, dialect=DIALECT, **kwargs):
+        kwargs = csv_args(kwargs)
         self._writer = csv.writer(stream, dialect, **kwargs)
         if has_issue12178(self._writer.dialect):
             self.writerow = wrapped_writerow(self.writerow, self._writer.dialect.escapechar)

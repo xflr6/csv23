@@ -15,15 +15,9 @@ if not pytest.csv23.PY2:
 
 EXCEL = {}
 
-QSLASH = {
-    'quoting': csv.QUOTE_MINIMAL,
-    'escapechar': b'\\' if pytest.csv23.PY2 else u'\\',
-}
+QSLASH = {'quoting': csv.QUOTE_MINIMAL, 'escapechar': u'\\'}
 
-SLASH = {
-    'quoting': csv.QUOTE_NONE,
-    'escapechar': b'\\' if pytest.csv23.PY2 else u'\\',
-}
+SLASH = {'quoting': csv.QUOTE_NONE, 'escapechar': u'\\'}
 
 ROW_FORMAT_LINE = [
     (['spam', 'spam spam', 'eggs, eggs'], EXCEL, 'spam,spam spam,"eggs, eggs"\r\n'),

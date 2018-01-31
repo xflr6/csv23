@@ -31,6 +31,8 @@ EIGHT_BIT_CLEAN = {
     'utf-8',
 }
 
+PY2_BYTEARGS = {'delimiter', 'lineterminator', 'quotechar', 'escapechar'}
+
 
 def none_encoding():
     return locale.getpreferredencoding()
@@ -38,6 +40,19 @@ def none_encoding():
 
 def is_8bit_clean(encoding):
     return codecs.lookup(encoding).name in EIGHT_BIT_CLEAN
+
+
+if PY2:
+    def csv_args(kwargs, _bytekeys=PY2_BYTEARGS):
+        """Cast csv.reader/writer kwargs values from unicode to str."""
+        for k in (kwargs.viewkeys() & _bytekeys):
+            v = kwargs[k]
+            if isinstance(v, unicode):
+                kwargs[k] = str(v)
+        return kwargs
+else:
+    def csv_args(kwargs):
+        return kwargs
 
 
 @contextlib.contextmanager

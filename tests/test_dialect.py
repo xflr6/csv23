@@ -18,14 +18,14 @@ ATTRS = (
 )
 
 EXCEL = {
-    'delimiter': b',' if pytest.csv23.PY2 else u',',
+    'delimiter': u',',
     'quoting': csv.QUOTE_MINIMAL,
-    'quotechar': b'"' if pytest.csv23.PY2 else u'"',
+    'quotechar': u'"',
     'doublequote': True,
     'escapechar': None,
 }
 
-EXCEL_TAB = dict(EXCEL, delimiter=b'\t' if pytest.csv23.PY2 else u'\t')
+EXCEL_TAB = dict(EXCEL, delimiter=u'\t')
 
 ARGS_FORMAT_DIALECT = [
     ([], {}, csv.excel),
