@@ -9,14 +9,18 @@ import itertools
 from csv23._common import is_8bit_clean, _open_csv
 
 
-def test_is_8bit_clean():
-    assert is_8bit_clean('u8')
-    assert not is_8bit_clean('u16')
-    assert is_8bit_clean('windows-1252')
-    assert not is_8bit_clean('utf-16')
-    assert is_8bit_clean('IBM437')
-    assert not is_8bit_clean('cp500')
-    assert not is_8bit_clean('UTF-16BE')
+@pytest.mark.parametrize('encoding, expected', [
+    ('u8', True),
+    ('u16', False),
+    ('windows-1252', True),
+    ('utf-16', False),
+    ('IBM437', True),
+    ('cp500', False),
+    ('UTF-16BE', False),
+    ('utf_8_sig', False),
+])
+def test_is_8bit_clean(encoding, expected):
+    assert is_8bit_clean(encoding) == expected
 
 
 @pytest.mark.parametrize('event', ['close', 'gc', RuntimeError])
