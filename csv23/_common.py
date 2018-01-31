@@ -48,6 +48,7 @@ if PY2:
             if isinstance(v, unicode):
                 kwargs[k] = str(v)
         return kwargs
+
 else:
     def csv_args(kwargs):
-        return kwargs
+        raise NotImplementedError

@@ -69,7 +69,6 @@ class Writer(object):
     """Proxy for csv.writer."""
 
     def __init__(self, stream, dialect=DIALECT, **kwargs):
-        kwargs = csv_args(kwargs)
         self._writer = csv.writer(stream, dialect, **kwargs)
         if has_issue12178(self._writer.dialect):
             self.writerow = wrapped_writerow(self.writerow, self._writer.dialect.escapechar)
@@ -89,6 +88,11 @@ def wrapped_writerow(method, escapechar, type_=unicode if PY2 else str):
 
 class UnicodeWriter(Writer):
     """CSV writer for rows where string values are ``unicode`` strings (PY3: ``str``)."""
+
+    if PY2:
+        def __init__(self, stream, dialect=DIALECT, **kwargs):
+            kwargs = csv_args(kwargs)
+            super(UnicodeWriter, self).__init__(stream, dialect, **kwargs)
 
     def writerows(self, rows):
         for r in rows:

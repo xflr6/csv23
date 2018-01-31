@@ -69,7 +69,6 @@ class Reader(object):
     """Proxy for csv.reader."""
 
     def __init__(self, stream, dialect=DIALECT, **kwargs):
-        kwargs = csv_args(kwargs)
         self._reader = csv.reader(stream, dialect, **kwargs)
         warn_if_issue31590(self._reader)
 
@@ -89,8 +88,13 @@ class UnicodeReader(Reader):
     """CSV reader yielding lists of ``unicode`` strings (PY3: ``str``)."""
 
     if PY2:
+        def __init__(self, stream, dialect=DIALECT, **kwargs):
+            kwargs = csv_args(kwargs)
+            super(UnicodeReader, self).__init__(stream, dialect, **kwargs)
+
         def next(self):
             return map(self._decode, self._reader.next())
+
     else:
         def __next__(self):
             return next(self._reader)

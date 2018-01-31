@@ -16,7 +16,8 @@ CLEAN = {'utf-8', 'latin9'}
 
 def pytest_configure(config):
     py2only = pytest.mark.skipif(not PY2, reason='Python 2 only')
-    pytest.csv23 = argparse.Namespace(PY2=PY2, py2only=py2only)
+    py3only = pytest.mark.skipif(PY2, reason='Python 3 only')
+    pytest.csv23 = argparse.Namespace(PY2=PY2, py2only=py2only, py3only=py3only)
 
 
 @pytest.fixture(scope='session')

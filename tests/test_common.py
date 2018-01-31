@@ -21,18 +21,21 @@ def test_is_8bit_clean(encoding, expected):
     assert is_8bit_clean(encoding) == expected
 
 
-@pytest.mark.parametrize('kwargs, expected_py2', [
+@pytest.csv23.py2only
+@pytest.mark.parametrize('kwargs, expected', [
     ({'delimiter': u','}, {'delimiter': b','}),
     ({'lineterminator': u'\r\n'}, {'lineterminator': b'\r\n'}),
     ({'quotechar': u'"'}, {'quotechar': b'"'}),
     ({'delimiter': u',', 'quotechar': None, 'doublequote': True},
      {'delimiter': b',', 'quotechar': None, 'doublequote': True}),
 ])
-def test_csv_args(py2, kwargs, expected_py2):
+def test_csv_args_py2(kwargs, expected):
     result = csv_args(kwargs)
-    if py2:
-        assert result == expected_py2
-        assert all(not isinstance(v, unicode) for v in result.itervalues())
-    else:
-        assert result == kwargs
-        assert all(not isinstance(v, bytes) for v in result.values())
+    assert result == expected
+    assert all(not isinstance(v, unicode) for v in result.itervalues())
+
+
+@pytest.csv23.py3only
+def test_csv_args_py3():
+    with pytest.raises(NotImplementedError):
+        csv_args(None)
