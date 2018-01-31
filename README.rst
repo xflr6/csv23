@@ -54,6 +54,7 @@ See also
 - https://docs.python.org/2/library/csv.html#examples (UnicodeReader, UnicodeWriter)
 - https://agate.readthedocs.io/en/latest/api/csv.html
 - https://pypi.python.org/pypi/backports.csv
+- https://pypi.python.org/pypi/csv342
 
 
 License

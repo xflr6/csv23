@@ -2,11 +2,18 @@
 
 """Python 2/3 unicode CSV compatibility layer and convenience functions."""
 
+# TODO: csv.Sniffer
+
 from __future__ import unicode_literals
+
+from csv import (QUOTE_MINIMAL, QUOTE_ALL, QUOTE_NONNUMERIC, QUOTE_NONE,
+    Error, Dialect, excel, excel_tab, field_size_limit,
+    register_dialect, get_dialect, list_dialects, unregister_dialect)
 
 from ._common import ENCODING, DIALECT, ROWTYPE
 from .readers import open_reader, reader, DictReader
 from .writers import open_writer, writer, DictWriter
+from .dialects import unix_dialect
 
 __all__ = [
     'open_csv',
@@ -14,6 +21,13 @@ __all__ = [
     'iterrows',
     'reader', 'writer',
     'DictReader', 'DictWriter',
+    'unix_dialect',
+]
+
+__all__ += [
+    'QUOTE_MINIMAL', 'QUOTE_ALL', 'QUOTE_NONNUMERIC', 'QUOTE_NONE',
+    'Error', 'Dialect', 'excel', 'excel_tab', 'field_size_limit',
+    'register_dialect', 'get_dialect', 'list_dialects', 'unregister_dialect',
 ]
 
 __title__ = 'csv23'

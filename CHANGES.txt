@@ -7,6 +7,10 @@ Version 0.1.2 (in development)
 
 Convert unicode values for format parameters like ``delimiter`` to bytes on PY2.
 
+Add PY2 backport of unix_dialect.
+
+Add QUOTE_* constants, Error, dialects, and associated functions from csv to csv23 namespace.
+
 
 Version 0.1.1
 -------------
