@@ -15,7 +15,7 @@ if PY2:
             csv.register_dialect(name, cls)
             return cls
         return decorate
-        
+
 
     @register(b'unix')
     class unix_dialect(csv.Dialect):

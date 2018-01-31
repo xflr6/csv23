@@ -1,4 +1,4 @@
-# writers.py - re/encoding csv.writer wrappers, convenience context manager
+# writers.py - re/encoding csv.writer wrappers
 
 # TODO: consider Writer.writerow(<iterable>) (Python 3.5 compat)
 
@@ -7,63 +7,16 @@ from __future__ import unicode_literals
 import io
 import csv
 import mock
-import functools
 
-from ._common import PY2, ENCODING, DIALECT, ROWTYPE
-from ._common import none_encoding, is_8bit_clean, csv_args, _open_csv
-from ._dispatch import register_writer, get_writer
+from ._common import PY2, ENCODING, DIALECT
+from ._common import none_encoding, is_8bit_clean, csv_args
+from ._dispatch import register_writer
 from ._workarounds import has_issue12178
 
 __all__ = [
-    'open_writer',
     'writer', 'DictWriter',
     'UnicodeTextWriter', 'UnicodeBytesWriter'
 ]
-
-
-def open_writer(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, **fmtparams):
-    r"""Context manager returning a CSV writer (closing the file on exit).
-
-    Args:
-        filename: File (name) argument for the :func:`py:io.open` call.
-        encoding (str): Name of the encoding used to encode the output lines.
-        dialect: Dialect argument for the :func:`py:csv.writer`.
-        rowtype (str): ``'list'`` for a :func:`py:csv.writer`,
-            ``'dict'`` for a :class:`py:csv.DictWriter`.
-        \**fmtparams: Keyword arguments (formatting parameters) for the
-            :func:`py:csv.writer` (must include ``fieldnames`` with
-            ``rowtype='dict'``).
-
-    Returns:
-        A context manager returning a Python 3 :func:`py:csv.writer` stand-in when entering.
-
-    >>> with open_writer('spam.csv', encoding='utf-8') as writer:  # doctest: +SKIP
-    ...     writer.writerow([u'Spam!', u'Spam!', u'Spam!'])
-    ...     writer.writerow([u'Spam!', u'Lovely Spam!', u'Lovely Spam!'])
-
-    Raises:
-        TypeError: With ``rowtype='dict'`` but missing ``fieldnames`` keyword argument.
-
-    Notes
-        - The writer expects string values as ``unicode`` strings (PY3: ``str``).
-        - The underlying opened file object is closed on leaving the ``with``-block.
-        - If ``encoding=None`` is given, :func:`py:locale.getpreferredencoding` is used.
-        - Under Python 2, an optimized implementation is used for 8-bit encodings
-          that are ASCII-compatible (e.g. the default ``'utf-8'``).
-    """
-    if encoding is None:
-        encoding = none_encoding()
-    if PY2 and is_8bit_clean(encoding):  # avoid recoding
-        open_kwargs = {'mode': 'wb'}
-        writer_func = get_writer(rowtype, 'bytes')
-        writer_func = functools.partial(writer_func, encoding=encoding)
-    else:
-        open_kwargs = {'mode': 'w', 'encoding': encoding, 'newline': ''}
-        writer_func = get_writer(rowtype, 'text')
-    if rowtype == 'dict' and 'fieldnames' not in fmtparams:
-        raise TypeError("open_writer(rowtype='dict') requires a 'fieldnames' "
-                        "keyword argument to be passed to csv.DictWriter")
-    return _open_csv(filename, open_kwargs, writer_func, dialect, fmtparams)
 
 
 def writer(stream, dialect=DIALECT, encoding=False, **fmtparams):

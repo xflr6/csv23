@@ -6,7 +6,8 @@ import csv
 
 import pytest
 
-from csv23.readers import open_reader, reader, UnicodeTextReader, UnicodeBytesReader
+from csv23.openers import open_reader
+from csv23.readers import reader, UnicodeTextReader, UnicodeBytesReader
 
 EXCEL = {}
 

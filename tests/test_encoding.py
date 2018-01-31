@@ -4,8 +4,9 @@ from __future__ import unicode_literals
 
 import pytest
 
-from csv23.readers import open_reader, reader
-from csv23.writers import open_writer, writer
+from csv23.openers import open_reader, open_writer
+from csv23.readers import reader
+from csv23.writers import writer
 
 
 @pytest.fixture

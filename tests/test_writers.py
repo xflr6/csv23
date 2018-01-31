@@ -7,7 +7,8 @@ import csv
 
 import pytest
 
-from csv23.writers import open_writer, writer, UnicodeTextWriter, UnicodeBytesWriter
+from csv23.openers import open_writer
+from csv23.writers import writer, UnicodeTextWriter, UnicodeBytesWriter
 from csv23._common import is_8bit_clean
 
 if not pytest.csv23.PY2:

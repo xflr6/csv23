@@ -2,11 +2,9 @@
 
 from __future__ import unicode_literals
 
-import io
 import sys
 import codecs
 import locale
-import contextlib
 
 PY2 = sys.version_info.major == 2
 
@@ -53,13 +51,3 @@ if PY2:
 else:
     def csv_args(kwargs):
         return kwargs
-
-
-@contextlib.contextmanager
-def _open_csv(filename, open_kwargs, csv_func, dialect, reader_kwargs):
-    """io.open() context manager returning csv_func(<file>, dialect=dialect)."""
-    f = io.open(filename, **open_kwargs)
-    try:
-        yield csv_func(f, dialect=dialect, **reader_kwargs)
-    finally:
-        f.close()

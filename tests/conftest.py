@@ -52,7 +52,7 @@ def nonclean_none_encoding(mocker, nonclean_encoding):
 
 @pytest.fixture
 def mock_open(mocker):
-    yield mocker.patch('csv23._common.io.open', mocker.mock_open())
+    yield mocker.patch('csv23.openers.io.open', mocker.mock_open())
 
 
 @pytest.fixture

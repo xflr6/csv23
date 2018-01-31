@@ -11,8 +11,9 @@ from csv import (QUOTE_MINIMAL, QUOTE_ALL, QUOTE_NONNUMERIC, QUOTE_NONE,
     register_dialect, get_dialect, list_dialects, unregister_dialect)
 
 from ._common import ENCODING, DIALECT, ROWTYPE
-from .readers import open_reader, reader, DictReader
-from .writers import open_writer, writer, DictWriter
+from .openers import open_reader, open_writer
+from .readers import reader, DictReader
+from .writers import writer, DictWriter
 from .dialects import unix_dialect
 
 __all__ = [

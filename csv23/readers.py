@@ -5,60 +5,16 @@
 from __future__ import unicode_literals
 
 import csv
-import functools
 
 __all__ = [
-    'open_reader',
     'reader', 'DictReader',
     'UnicodeTextReader', 'UnicodeBytesReader',
 ]
 
-from ._common import PY2, ENCODING, DIALECT, ROWTYPE
-from ._common import none_encoding, is_8bit_clean, csv_args, _open_csv
-from ._dispatch import register_reader, get_reader
+from ._common import PY2, ENCODING, DIALECT
+from ._common import none_encoding, is_8bit_clean, csv_args
+from ._dispatch import register_reader
 from ._workarounds import warn_if_issue31590
-
-
-def open_reader(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, **fmtparams):
-    r"""Context manager returning a CSV reader (closing the file on exit).
-
-    Args:
-        filename: File (name) argument for the :func:`py:io.open` call.
-        encoding (str): Name of the encoding used to decode the file content.
-        dialect: Dialect argument for the :func:`py:csv.reader`.
-        rowtype (str): ``'list'`` for a :func:`py:csv.reader`,
-           ``'dict'`` for a :class:`py:csv.DictReader`.
-        \**fmtparams: Keyword arguments (formatting parameters) for the
-            :func:`py:csv.reader`.
-
-    Returns:
-        A context manager returning a Python 3 :func:`py3:csv.reader` stand-in when entering.
-
-    >>> with open_reader('spam.csv', encoding='utf-8') as reader:  # doctest: +SKIP
-    ...     for row in reader:
-    ...         print(row)
-    [u'Spam!', u'Spam!', u'Spam!']
-    [u'Spam!', u'Lovely Spam!', u'Lovely Spam!']
-    >>> reader.line_num  # doctest: +SKIP
-    2
-
-    Notes:
-        - The reader yields a ``list`` or ``dict`` of ``unicode`` strings (PY3: ``str``).
-        - The underlying opened file object is closed on leaving the ``with``-block.
-        - If ``encoding=None`` is given, :func:`py:locale.getpreferredencoding` is used.
-        - Under Python 2, an optimized implementation is used for 8-bit encodings
-          that are ASCII-compatible (e.g. the default ``'utf-8'``).
-    """
-    if encoding is None:
-        encoding = none_encoding()
-    if PY2 and is_8bit_clean(encoding):  # avoid recoding
-        open_kwargs = {'mode': 'rb'}
-        reader_func = get_reader(rowtype, 'bytes')
-        reader_func = functools.partial(reader_func, encoding=encoding)
-    else:
-        open_kwargs = {'mode': 'r', 'encoding': encoding, 'newline': ''}
-        reader_func = get_reader(rowtype, 'text')
-    return _open_csv(filename, open_kwargs, reader_func, dialect, fmtparams)
 
 
 def reader(stream, dialect=DIALECT, encoding=False, **fmtparams):

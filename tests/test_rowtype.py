@@ -6,8 +6,7 @@ import csv
 
 import pytest
 
-from csv23.readers import open_reader
-from csv23.writers import open_writer
+from csv23.openers import open_reader, open_writer
 
 PYTHONS = [
     'Graham Chapman', 'John Cleese', 'Terry Gilliam',
@@ -39,7 +38,7 @@ def stream(mocker):
 @pytest.mark.parametrize('rowtype', ['nonrowtype', None, object(), []])
 @pytest.mark.parametrize('func', [open_reader, open_writer])
 def test_func_rowtype_invalid(stream, func, rowtype):
-    with pytest.raises(ValueError, match=r'invalid rowtype'):
+    with pytest.raises(ValueError, match=r'invalid/unsupported rowtype'):
         func(stream, rowtype=rowtype)
 
 
