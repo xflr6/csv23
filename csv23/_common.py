@@ -52,3 +52,36 @@ if PY2:
 else:
     def csv_args(kwargs):
         raise NotImplementedError
+
+
+class lazyproperty(object):
+    """Non-data descriptor caching the computed result as instance attribute.
+
+    >>> import itertools
+    >>> class Spam(object):
+    ...     @lazyproperty
+    ...     def eggs(self, _ints=itertools.count()):
+    ...         return next(_ints)
+
+    >>> spam = Spam(); (spam.eggs, spam.eggs)
+    (0, 0)
+    >>> spam.eggs = 'eggs'; str(spam.eggs)
+    'eggs'
+    >>> del spam.eggs; (spam.eggs, spam.eggs)
+    (1, 1)
+    >>> Spam().eggs
+    2
+    >>> Spam.eggs  # doctest: +ELLIPSIS
+    <...lazyproperty object at 0x...>
+    """
+
+    def __init__(self, fget):
+        self.fget = fget
+        for attr in ('__module__', '__name__', '__doc__'):
+            setattr(self, attr, getattr(fget, attr))
+
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        result = instance.__dict__[self.__name__] = self.fget(instance)
+        return result

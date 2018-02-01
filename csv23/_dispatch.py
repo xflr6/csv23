@@ -8,7 +8,7 @@ import itertools
 REGISTRY = {}
 
 KIND = ('reader', 'writer')
-ROWTYPE = ('list', 'dict')
+ROWTYPE = ('list', 'dict', 'namedtuple')
 LINETYPE = ('text', 'bytes')
 
 KEYS = set(itertools.product(KIND, ROWTYPE, LINETYPE))

@@ -15,6 +15,7 @@ from .openers import open_reader, open_writer
 from .readers import reader, DictReader
 from .writers import writer, DictWriter
 from .dialects import unix_dialect
+from .extras import NamedTupleReader
 
 __all__ = [
     'open_csv',
@@ -23,6 +24,7 @@ __all__ = [
     'reader', 'writer',
     'DictReader', 'DictWriter',
     'unix_dialect',
+    'NamedTupleReader',
 ]
 
 __all__ += [
