@@ -32,7 +32,7 @@ def test_open_func_encoding_none(mocker, mock_open, stream, func, cls_key, mode,
     (writer, 'csv23.writers.UnicodeBytesWriter'),
 ])
 def test_func_encoding_none(mocker, stream, func, cls_path, none_encoding):
-    mock_cls = mocker.patch(cls_path)
+    mock_cls = mocker.patch(cls_path, new_callable=mocker.Mock)
     assert func(stream, encoding=None) is mock_cls.return_value
     mock_cls.assert_called_once_with(stream, 'excel', none_encoding)
 

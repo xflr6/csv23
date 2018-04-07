@@ -10,9 +10,9 @@ __pycache__/
 /.eggs/
 
 /.venv/
+/.pytest_cache/
 /.coverage
 /htmlcov/
-/.pytest_cache/
 /.tox/
 
 Thumbs.db
