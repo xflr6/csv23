@@ -31,11 +31,11 @@ Links
 -----
 
 - GitHub: https://github.com/xflr6/csv23
-- PyPI: https://pypi.python.org/pypi/csv23
+- PyPI: https://pypi.org/project/csv23/
 - Documentation: https://csv23.readthedocs.io
 - Changelog: https://csv23.readthedocs.io/en/latest/changelog.html
 - Issue Tracker: https://github.com/xflr6/csv23/issues
-- Download: https://pypi.python.org/pypi/csv23#downloads
+- Download: https://pypi.org/project/csv23/#files
 
 
 Installation
@@ -53,8 +53,8 @@ See also
 
 - https://docs.python.org/2/library/csv.html#examples (UnicodeReader, UnicodeWriter)
 - https://agate.readthedocs.io/en/latest/api/csv.html
-- https://pypi.python.org/pypi/backports.csv
-- https://pypi.python.org/pypi/csv342
+- https://pypi.org/project/backports.csv/
+- https://pypi.org/project/csv342/
 
 
 License
@@ -72,20 +72,17 @@ This package is distributed under the `MIT license`_.
 
 
 .. |PyPI version| image:: https://img.shields.io/pypi/v/csv23.svg
-    :target: https://pypi.python.org/pypi/csv23
+    :target: https://pypi.org/project/csv23/
     :alt: Latest PyPI Version
 .. |License| image:: https://img.shields.io/pypi/l/csv23.svg
-    :target: https://pypi.python.org/pypi/csv23
+    :target: https://pypi.org/project/csv23/
     :alt: License
 .. |Supported Python| image:: https://img.shields.io/pypi/pyversions/csv23.svg
-    :target: https://pypi.python.org/pypi/csv23
+    :target: https://pypi.org/project/csv23/
     :alt: Supported Python Versions
 .. |Format| image:: https://img.shields.io/pypi/format/csv23.svg
-    :target: https://pypi.python.org/pypi/csv23
+    :target: https://pypi.org/project/csv23/
     :alt: Format
-.. |Downloads| image:: https://img.shields.io/pypi/dm/csv23.svg
-    :target: https://pypi.python.org/pypi/csv23
-    :alt: Downloads
 .. |Docs| image:: https://readthedocs.org/projects/csv23/badge/?version=stable
     :target: https://csv23.readthedocs.io/en/stable/
     :alt: Readthedocs
