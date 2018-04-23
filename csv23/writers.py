@@ -6,12 +6,16 @@ from __future__ import unicode_literals
 
 import io
 import csv
-import mock
 
 from ._common import PY2, ENCODING, DIALECT
 from ._common import none_encoding, is_8bit_clean, csv_args
 from ._dispatch import register_writer
 from ._workarounds import has_issue12178
+
+if PY2:
+    import mock
+else:
+    from unittest import mock
 
 __all__ = [
     'writer', 'DictWriter',
