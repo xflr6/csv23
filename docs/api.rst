@@ -25,6 +25,7 @@ CSV readers and writers
     csv23.writer
     csv23.DictReader
     csv23.DictWriter
+    csv23.NamedTupleReader
 
 
 open_csv
