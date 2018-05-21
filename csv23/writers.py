@@ -84,9 +84,11 @@ class Writer(object):
 
 def wrapped_writerow(method, escapechar, type_=unicode if PY2 else str):
     old, new = escapechar, escapechar * 2
+
     def writerow_func(row):
         row = [s.replace(old, new) if isinstance(s, type_) else s for s in row]
         return method(row)
+
     return writerow_func
 
 

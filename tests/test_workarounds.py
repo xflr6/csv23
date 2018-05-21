@@ -12,7 +12,6 @@ def test_issue1278():
     assert not issue1278()
 
 
-
 @pytest.mark.xfail(pytest.csv23.PY2, reason='https://bugs.python.org/issue31590')
 def test_issue31590():
     assert not issue31590()
