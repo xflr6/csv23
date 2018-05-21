@@ -23,7 +23,8 @@ def open_reader(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, *
         encoding (str): Name of the encoding used to decode the file content.
         dialect: Dialect argument for the :func:`py:csv.reader`.
         rowtype (str): ``'list'`` for a :func:`py:csv.reader`,
-           ``'dict'`` for a :class:`py:csv.DictReader`.
+           ``'dict'`` for a :class:`py:csv.DictReader`,
+           ``'namedtuple'`` for a :class:`csv23.NamedTupleReader`.
         \**fmtparams: Keyword arguments (formatting parameters) for the
             :func:`py:csv.reader`.
 

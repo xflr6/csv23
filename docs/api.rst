@@ -58,3 +58,8 @@ DictReader/DictWriter
 
 .. autoclass:: csv23.DictReader
 .. autoclass:: csv23.DictWriter
+
+
+NamedTupleReader
+----------------
+.. autoclass:: csv23.NamedTupleReader
