@@ -1,7 +1,5 @@
 # readers.py - re/decoding csv.reader wrappers, convenience context manager
 
-# TODO: consider open_reader(rowtype='OrderedDict') (Python 3.6 compat)
-
 from __future__ import unicode_literals
 
 import csv
