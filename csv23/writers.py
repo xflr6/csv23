@@ -58,8 +58,7 @@ def writer(stream, dialect=DIALECT, encoding=False, **fmtparams):
     return UnicodeBytesWriter(stream, dialect, encoding, **fmtparams)
 
 
-@register_writer('dict', 'text')
-@register_writer('dict', 'bytes')
+@register_writer('dict', 'bytes', 'text')
 class DictWriter(csv.DictWriter):
     """:func:`csv.writer` for dicts where string values are ``unicode`` strings (PY3: ``str``)."""
 

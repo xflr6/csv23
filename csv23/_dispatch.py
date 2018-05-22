@@ -5,23 +5,27 @@ from __future__ import unicode_literals
 import functools
 import itertools
 
+__all__ = ['register_reader', 'register_writer', 'get_reader', 'get_writer']
+
 REGISTRY = {}
 
 KIND = ('reader', 'writer')
 ROWTYPE = ('list', 'dict', 'namedtuple')
-LINETYPE = ('text', 'bytes')
+LINETYPE = ('bytes', 'text')
 
 KEYS = set(itertools.product(KIND, ROWTYPE, LINETYPE))
 
 
-def register(kind, rowtype, linetype):
-    key = kind, rowtype, linetype
-
-    assert key in KEYS
-    assert key not in REGISTRY
+def register(kind, rowtype, linetype, second_linetype=None):
+    keys = [(kind, rowtype, linetype)]
+    if second_linetype is not None:
+        keys.append((kind, rowtype, second_linetype))
 
     def decorate(cls):
-        REGISTRY[key] = cls
+        for k in keys:
+            assert k in KEYS
+            assert k not in REGISTRY
+            REGISTRY[k] = cls
         return cls
 
     return decorate

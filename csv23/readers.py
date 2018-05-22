@@ -52,8 +52,7 @@ def reader(stream, dialect=DIALECT, encoding=False, **fmtparams):
     return UnicodeBytesReader(stream, dialect, encoding, **fmtparams)
 
 
-@register_reader('dict', 'text')
-@register_reader('dict', 'bytes')
+@register_reader('dict', 'bytes', 'text')
 class DictReader(csv.DictReader):
     """:func:`csv23.reader` yielding dicts of ``unicode`` strings (PY3: ``str``)."""
 

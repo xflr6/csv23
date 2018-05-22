@@ -13,8 +13,7 @@ from . import readers, writers
 __all__ = ['NamedTupleReader']
 
 
-@register_reader('namedtuple', 'text')
-@register_reader('namedtuple', 'bytes')
+@register_reader('namedtuple', 'bytes', 'text')
 class NamedTupleReader(object):
     """:func:`csv23.reader` yielding namedtuples of ``unicode`` strings (PY3: ``str``)."""
 
