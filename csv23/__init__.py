@@ -47,14 +47,15 @@ def open_csv(filename, mode='r', encoding=ENCODING, dialect=DIALECT, rowtype=ROW
 
     Args:
         filename: File (name) argument for the :func:`py:io.open` call.
-        mode (str): ``'r'`` for a :func:`py:csv.reader`, ``'w'`` for a :func:`py:csv.writer`.
+        mode (str): ``'r'`` for a :func:`csv23.reader`, ``'w'`` for a :func:`csv23.writer`.
         encoding (str): Name of the encoding used to de/encode the file content.
-        dialect: Dialect argument for the :func:`py:csv.reader` or :func:`py:csv.writer`.
-        rowtype (str): ``'list'`` for a :func:`py:csv.reader` or :func:`py:csv.writer`,
-            ``'dict'`` for a :class:`py:csv.DictReader` or :class:`py:csv.DictWriter`.
+        dialect: Dialect argument for the :func:`csv23.reader` or :func:`csv23.writer`.
+        rowtype (str):
+            ``'list'`` for a :func:`csv23.reader` or :func:`csv23.writer`,
+            ``'dict'`` for a :class:`csv23.DictReader` or :class:`csv23.DictWriter`.
         \**fmtparams: Keyword arguments (formatting parameters) for the
-            ``reader`` or ``writer`` call (must include ``fieldnames`` if
-            ``mode='w'`` and ``rowtype='dict'``).
+            :func:`csv23.reader` or :func:`csv23.writer` (must include
+            ``fieldnames`` if ``mode='w'`` and ``rowtype='dict'``).
 
     Returns:
         A context manager returning a Python 3 :func:`py3:csv.reader` or :func:`py3:csv.writer` stand-in when entering.
@@ -88,13 +89,13 @@ def iterrows(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, **fm
     Args:
         filename: File (name) argument for the :func:`py:io.open` call.
         encoding (str): Name of the encoding used to decode the file content.
-        dialect: Dialect argument for :func:`py:csv.reader`.
+        dialect: Dialect argument for :func:`csv23.reader`.
         rowtype (str):
             ``'list'`` for ``list`` rows,
             ``'dict'`` for :class:`py:dict` rows,
             ``'namedtuple'`` for :func:`py:collections.namedtuple` rows.
         \**fmtparams: Keyword arguments (formatting parameters) for the
-            :func:`py:csv.reader`.
+            :func:`csv23.reader`.
 
     Yields:
         ``list``, :class:`py:dict`, or :func:`py:collections.namedtuple`:

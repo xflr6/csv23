@@ -28,11 +28,11 @@ def writer(stream, dialect=DIALECT, encoding=False, **fmtparams):
 
     Args:
         stream: File-like object (in binary mode if ``encoding`` is given).
-        dialect: Dialect argument for the :func:`py:csv.writer`.
+        dialect: Dialect argument for the underlying :func:`py:csv.writer`.
         encoding: If not ``False`` (default): name of the encoding used to
             encode the output lines.
         \**fmtparams: Keyword arguments (formatting parameters) for the
-            :func:`py:csv.writer`.
+            underlying :func:`py:csv.writer`.
 
     Returns:
         A Python 3 csv.reader stand-in taking  a list of ``unicode`` strings
@@ -60,7 +60,7 @@ def writer(stream, dialect=DIALECT, encoding=False, **fmtparams):
 
 @register_writer('dict', 'bytes', 'text')
 class DictWriter(csv.DictWriter):
-    """:func:`csv.writer` for dicts where string values are ``unicode`` strings (PY3: ``str``)."""
+    """:func:`csv23.writer` for dicts where string values are ``unicode`` strings (PY3: ``str``)."""
 
     def __init__(self, f, fieldnames, restval='', extrasaction='raise', dialect=DIALECT, encoding=False, **kwds):
         # NOTE: csv.DictWrier is an old-style class on PY2

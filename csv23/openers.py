@@ -21,12 +21,12 @@ def open_reader(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, *
     Args:
         filename: File (name) argument for the :func:`py:io.open` call.
         encoding (str): Name of the encoding used to decode the file content.
-        dialect: Dialect argument for the :func:`py:csv.reader`.
-        rowtype (str): ``'list'`` for a :func:`py:csv.reader`,
-           ``'dict'`` for a :class:`py:csv.DictReader`,
+        dialect: Dialect argument for the :func:`csv23.reader`.
+        rowtype (str): ``'list'`` for a :func:`csv23.reader`,
+           ``'dict'`` for a :class:`csv23.DictReader`,
            ``'namedtuple'`` for a :class:`csv23.NamedTupleReader`.
         \**fmtparams: Keyword arguments (formatting parameters) for the
-            :func:`py:csv.reader`.
+            :func:`csv23.reader`.
 
     Returns:
         A context manager returning a Python 3 :func:`py3:csv.reader` stand-in when entering.
@@ -64,15 +64,16 @@ def open_writer(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, *
     Args:
         filename: File (name) argument for the :func:`py:io.open` call.
         encoding (str): Name of the encoding used to encode the output lines.
-        dialect: Dialect argument for the :func:`py:csv.writer`.
-        rowtype (str): ``'list'`` for a :func:`py:csv.writer`,
-            ``'dict'`` for a :class:`py:csv.DictWriter`.
+        dialect: Dialect argument for the :func:`csv23.writer`.
+        rowtype (str): ``'list'`` for a :func:`csv23.writer`,
+            ``'dict'`` for a :class:`csv23.DictWriter`,
+            ``'namedtuple'`` for a :class:`csv23.NamedTupleWriter`.
         \**fmtparams: Keyword arguments (formatting parameters) for the
-            :func:`py:csv.writer` (must include ``fieldnames`` with
+            :func:`csv23.writer` (must include ``fieldnames`` with
             ``rowtype='dict'``).
 
     Returns:
-        A context manager returning a Python 3 :func:`py:csv.writer` stand-in when entering.
+        A context manager returning a Python 3 :func:`py3:csv.writer` stand-in when entering.
 
     >>> with open_writer('spam.csv', encoding='utf-8') as writer:  # doctest: +SKIP
     ...     writer.writerow([u'Spam!', u'Spam!', u'Spam!'])

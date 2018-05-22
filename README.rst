@@ -20,7 +20,7 @@ bpo-31590_
   broken round-trip with ``escapechar`` and embedded newlines under Python 2
   (fixed in Python 3.4 but not backported): produce a warning
 
-The package also provides simple convenience functionality such as the
+The package also provides some convenience functionality such as the
 ``open_csv()`` context manager for opening a CSV file in the right mode and
 returning a ``csv.reader`` or ``csv.writer``:
 

@@ -22,11 +22,11 @@ def reader(stream, dialect=DIALECT, encoding=False, **fmtparams):
         stream: Iterable of text (``unicode``, PY3: ``str``) lines. If an
             ``encoding`` is given, iterable of encoded (``str``, PY3: ``bytes``)
             lines in the given (8-bit clean) ``encoding``.
-        dialect: Dialect argument for the :func:`py:csv.reader`.
+        dialect: Dialect argument for the underlying :func:`py:csv.reader`.
         encoding: If not ``False`` (default): name of the encoding needed to
             decode the encoded (``str``, PY3: ``bytes``) lines from ``stream``.
         \**fmtparams: Keyword arguments (formatting parameters) for the
-            :func:`py:csv.reader`.
+            underlying :func:`py:csv.reader`.
 
     Returns:
         A Python 3 :func:`py3:csv.reader` stand-in yielding a list of ``unicode`` strings
