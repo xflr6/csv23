@@ -15,7 +15,7 @@ from .openers import open_reader, open_writer
 from .readers import reader, DictReader
 from .writers import writer, DictWriter
 from .dialects import unix_dialect
-from .extras import NamedTupleReader
+from .extras import NamedTupleReader, NamedTupleWriter
 
 __all__ = [
     'open_csv',
@@ -24,7 +24,7 @@ __all__ = [
     'reader', 'writer',
     'DictReader', 'DictWriter',
     'unix_dialect',
-    'NamedTupleReader',
+    'NamedTupleReader', 'NamedTupleWriter',
 ]
 
 __all__ += [
@@ -52,7 +52,8 @@ def open_csv(filename, mode='r', encoding=ENCODING, dialect=DIALECT, rowtype=ROW
         dialect: Dialect argument for the :func:`csv23.reader` or :func:`csv23.writer`.
         rowtype (str):
             ``'list'`` for a :func:`csv23.reader` or :func:`csv23.writer`,
-            ``'dict'`` for a :class:`csv23.DictReader` or :class:`csv23.DictWriter`.
+            ``'dict'`` for a :class:`csv23.DictReader` or :class:`csv23.DictWriter`,
+            ``'namedtuple'`` for a :class:`csv23.NamedTupleReader`. or :class:`csv23.NamedTupleWriter`.
         \**fmtparams: Keyword arguments (formatting parameters) for the
             :func:`csv23.reader` or :func:`csv23.writer` (must include
             ``fieldnames`` if ``mode='w'`` and ``rowtype='dict'``).

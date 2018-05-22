@@ -26,6 +26,7 @@ CSV readers and writers
     csv23.DictReader
     csv23.DictWriter
     csv23.NamedTupleReader
+    csv23.NamedTupleWriter
 
 
 open_csv
@@ -61,6 +62,7 @@ DictReader/DictWriter
 .. autoclass:: csv23.DictWriter
 
 
-NamedTupleReader
-----------------
+NamedTupleReader/NamedTupleWriter
+---------------------------------
 .. autoclass:: csv23.NamedTupleReader
+.. autoclass:: csv23.NamedTupleWriter

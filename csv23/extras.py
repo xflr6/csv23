@@ -10,7 +10,7 @@ from ._common import PY2, DIALECT, lazyproperty
 from ._dispatch import register_reader, register_writer
 from . import readers, writers
 
-__all__ = ['NamedTupleReader']
+__all__ = ['NamedTupleReader', 'NamedTupleWriter']
 
 
 @register_reader('namedtuple', 'bytes', 'text')
@@ -59,3 +59,24 @@ class NamedTupleReader(object):
     @property
     def row_cls(self):
         return self._row_cls
+
+
+@register_writer('namedtuple', 'bytes', 'text')
+class NamedTupleWriter(object):
+    """:func:`csv23.writer` for namedtuples where string values are ``unicode`` strings (PY3: ``str``)."""
+
+    def __init__(self, stream, dialect=DIALECT, encoding=False, **kwargs):
+        self._writer = writers.writer(stream, dialect, encoding, **kwargs)
+
+    def writerows(self, rows):
+        for r in rows:
+            self.writerow(r)
+
+    def writerow(self, row):
+        self._writer.writerow(row._fields)
+        self._writer.writerow(row)
+        self.writerow = self._writer.writerow
+        
+    @property
+    def dialect(self):
+        return self._writer.dialect
