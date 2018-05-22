@@ -68,5 +68,6 @@ def test_NamedTupleWriter(mocker, rows, lines):
     mock_open = mocker.mock_open()
     with mock_open('spam.csv', 'w') as f:
         writer = NamedTupleWriter(f)
+        assert writer.dialect.delimiter == ','
         writer.writerows(rows)
     assert f.method_calls == [mocker.call.write(l) for l in lines]
