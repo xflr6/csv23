@@ -89,12 +89,16 @@ def iterrows(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, **fm
         filename: File (name) argument for the :func:`py:io.open` call.
         encoding (str): Name of the encoding used to decode the file content.
         dialect: Dialect argument for :func:`py:csv.reader`.
-        rowtype (str): ``'list'`` for ``list`` rows, ``'dict'`` for :class:`py:dict` rows.
+        rowtype (str):
+            ``'list'`` for ``list`` rows,
+            ``'dict'`` for :class:`py:dict` rows,
+            ``'namedtuple'`` for :func:`py:collections.namedtuple` rows.
         \**fmtparams: Keyword arguments (formatting parameters) for the
             :func:`py:csv.reader`.
 
     Yields:
-        ``list`` or ``dict``: The next row from the CSV file.
+        ``list``, :class:`py:dict`, or :func:`py:collections.namedtuple`:
+        The next row from the CSV file.
 
     >>> for row in iterrows('spam.csv', encoding='utf-8'):  # doctest: +SKIP
     ...     print(row)
