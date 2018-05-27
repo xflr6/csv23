@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-Version 0.1.4 (in development)
-------------------------------
+Version 0.1.4
+-------------
 
 Document workarounds for https://bugs.python.org/issue12178 and
 https://bugs.python.org/issue31590 bugs.
