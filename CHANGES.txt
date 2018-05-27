@@ -6,7 +6,9 @@ Version 0.1.4 (in development)
 ------------------------------
 
 Document workarounds for https://bugs.python.org/issue12178 and
-https://bugs.python.org/issue31590
+https://bugs.python.org/issue31590 bugs.
+
+Add ``rowtype='namedtuple'`` for ``collections.namedtuple`` reader and writer.
 
 
 Version 0.1.3
