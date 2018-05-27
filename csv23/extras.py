@@ -1,6 +1,6 @@
 # extras.py - namedtuple reader/writer
 
-# TODO: document rename, implement NamedTupleWriter
+# TODO: document rename argument
 
 from __future__ import unicode_literals
 

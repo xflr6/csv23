@@ -2,7 +2,7 @@
 
 """Python 2/3 unicode CSV compatibility layer and convenience functions."""
 
-# TODO: csv.Sniffer
+# TODO: add csv.Sniffer
 
 from __future__ import unicode_literals
 
