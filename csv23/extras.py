@@ -68,15 +68,15 @@ class NamedTupleWriter(object):
     def __init__(self, stream, dialect=DIALECT, encoding=False, **kwargs):
         self._writer = writers.writer(stream, dialect, encoding, **kwargs)
 
-    def writerows(self, rows):
-        for r in rows:
-            self.writerow(r)
-
     def writerow(self, row):
         self._writer.writerow(row._fields)
         self._writer.writerow(row)
         self.writerow = self._writer.writerow
-        
+
+    def writerows(self, rows):
+        for r in rows:
+            self.writerow(r)
+
     @property
     def dialect(self):
         return self._writer.dialect
