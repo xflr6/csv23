@@ -35,8 +35,8 @@ open_csv
 .. autofunction:: csv23.open_csv
 
 
-open_reader/open_writer
------------------------
+open_reader/writer
+------------------
 
 .. autofunction:: csv23.open_reader
 .. autofunction:: csv23.open_writer
@@ -55,14 +55,15 @@ reader/writer
 .. autofunction:: csv23.writer
 
 
-DictReader/DictWriter
----------------------
+DictReader/Writer
+-----------------
 
 .. autoclass:: csv23.DictReader
 .. autoclass:: csv23.DictWriter
 
 
-NamedTupleReader/NamedTupleWriter
----------------------------------
+NamedTupleReader/Writer
+-----------------------
+
 .. autoclass:: csv23.NamedTupleReader
 .. autoclass:: csv23.NamedTupleWriter
