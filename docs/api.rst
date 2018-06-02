@@ -66,4 +66,11 @@ NamedTupleReader/Writer
 -----------------------
 
 .. autoclass:: csv23.NamedTupleReader
+    :members:
+        __next__,
+        dialect, line_num
+
 .. autoclass:: csv23.NamedTupleWriter
+    :members:
+        writerow, writerows,
+        dialect

@@ -26,12 +26,15 @@ class NamedTupleReader(object):
         return self
 
     def __next__(self):
+        """Return the next row of the reader's iterable object as a namedtuple,
+        parsed according to the current dialect.
+        Usually you should call this as next(reader)."""
         make_row = self._make_row
         return make_row(next(self._reader))
 
     if PY2:
         next = __next__
-        del __next__
+        #del __next__
 
     @lazyproperty
     def _make_row(self):
@@ -50,10 +53,14 @@ class NamedTupleReader(object):
 
     @property
     def dialect(self):
+        """A read-only description of the dialect in use by the parser."""
         return self._reader.dialect
 
     @property
     def line_num(self):
+        """The number of lines read from the source iterator.
+        This is not the same as the number of records returned,
+        as records can span multiple lines."""
         return self._reader.line_num
 
     @property
@@ -69,14 +76,19 @@ class NamedTupleWriter(object):
         self._writer = writers.writer(stream, dialect, encoding, **kwargs)
 
     def writerow(self, row):
+        """Write the row namedtuple to the writer's file object,
+        formatted according to the current dialect."""
         self._writer.writerow(row._fields)
         self._writer.writerow(row)
         self.writerow = self._writer.writerow
 
     def writerows(self, rows):
+        """Write all the rows namedtuples to the writer's file object,
+        formatted according to the current dialect."""
         for r in rows:
             self.writerow(r)
 
     @property
     def dialect(self):
+        """A read-only description of the dialect in use by the writer."""
         return self._writer.dialect
