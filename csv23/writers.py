@@ -35,7 +35,7 @@ def writer(stream, dialect=DIALECT, encoding=False, **fmtparams):
             underlying :func:`py:csv.writer`.
 
     Returns:
-        A Python 3 csv.reader stand-in taking  a list of ``unicode`` strings
+        A Python 3 csv.writer stand-in taking  a list of ``unicode`` strings
         (PY3: ``str``) for each row.
 
     >>> import io
