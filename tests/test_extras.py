@@ -69,6 +69,17 @@ def test_NamedTupleReader_rename_callable():
     assert reader.row_cls._fields == ('spam_eggs', 'spam')
 
 
+def test_NamedTupleReader_row_name(row_name='Spam'):
+    lines = ['spam,eggs\r\n', '1,2\r\n']
+    reader = NamedTupleReader(lines, row_name=row_name)
+    row, = list(reader)
+
+    assert row == ('1', '2')
+    assert row == type(row)(spam='1', eggs='2')
+    assert type(row) is reader.row_cls
+    assert reader.row_cls.__name__ == row_name
+
+
 Row = collections.namedtuple('Row', ['column_1', 'column_2'])
 
 

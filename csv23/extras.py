@@ -17,9 +17,11 @@ __all__ = ['NamedTupleReader', 'NamedTupleWriter']
 class NamedTupleReader(object):
     """:func:`csv23.reader` yielding namedtuples of ``unicode`` strings (PY3: ``str``)."""
 
-    def __init__(self, stream, dialect=DIALECT, rename=False, encoding=False, **kwargs):
+    def __init__(self, stream, dialect=DIALECT, rename=False, row_name='Row',
+                 encoding=False, **kwargs):
         self._reader = readers.reader(stream, dialect, encoding, **kwargs)
         self._rename = rename
+        self._row_name = row_name
         self._row_cls = None
 
     def __iter__(self):
@@ -48,7 +50,7 @@ class NamedTupleReader(object):
             rename = False
         else:
             rename = self._rename
-        self._row_cls = collections.namedtuple('Row', header, rename=rename)
+        self._row_cls = collections.namedtuple(self._row_name, header, rename=rename)
         return self._row_cls._make
 
     @property
