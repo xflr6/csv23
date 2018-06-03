@@ -1,16 +1,17 @@
 # extras.py - namedtuple reader/writer
 
-# TODO: document rename argument
-
 from __future__ import unicode_literals
 
 import collections
 
 from ._common import PY2, DIALECT, lazyproperty
 from ._dispatch import register_reader, register_writer
-from . import readers, writers
+from . import readers
+from . import writers
 
 __all__ = ['NamedTupleReader', 'NamedTupleWriter']
+
+ROW_NAME = 'Row'
 
 
 @register_reader('namedtuple', 'bytes', 'text')
@@ -49,7 +50,7 @@ class NamedTupleReader(object):
     11 22
     """
 
-    def __init__(self, stream, dialect=DIALECT, rename=False, row_name='Row',
+    def __init__(self, stream, dialect=DIALECT, rename=False, row_name=ROW_NAME,
                  encoding=False, **kwargs):
         self._reader = readers.reader(stream, dialect, encoding, **kwargs)
         self._rename = rename
