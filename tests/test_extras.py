@@ -17,11 +17,14 @@ def test_NamedTupleReader():
 
     row = next(reader)
     assert row == ('1', '2')
+    assert row == type(row)(spam='1', eggs='2')
     assert type(row) is reader.row_cls
     assert issubclass(reader.row_cls, tuple)
     assert reader.row_cls.__name__ == 'Row'
     assert reader.row_cls._fields == ('spam', 'eggs')
-    assert not list(reader)
+    for _ in range(2):
+        assert reader.line_num == 2
+        assert not list(reader)
 
 
 def test_NamedTupleReader_empty():
@@ -31,8 +34,12 @@ def test_NamedTupleReader_empty():
 
 
 @pytest.mark.parametrize('header, match', [
-    ('def,class\r\n', r'keyword'),
-    ('spam.eggs,1-2\r\n', r'alphanumeric|identifiers'),
+    ('1spam,eggs\r\n', r'start with a number|valid identifiers'),
+    ('spam spam,eggs\r\n', r'alphanumeric|valid identifiers'),
+    ('spam.spam,eggs\r\n', r'alphanumeric|valid identifiers'),
+    ('spam-spam,eggs\r\n', r'alphanumeric|valid identifiers'),
+    ('class,eggs,\r\n', r'keyword'),
+    ('_spam,eggs\r\n', r'underscore'),
 ])
 def test_NamedTupleReader_invalid_fieldname(header, match):
     reader = NamedTupleReader([header, '1,2\r\n'])
@@ -41,18 +48,23 @@ def test_NamedTupleReader_invalid_fieldname(header, match):
 
 
 def test_NamedTupleReader_rename():
-    reader = NamedTupleReader(['def,spam.eggs,spam\r\n', '1,2,3\r\n'], rename=True)
-    row = next(reader)
+    lines = ['def,spam.eggs,spam\r\n', '1,2,3\r\n']
+    reader = NamedTupleReader(lines, rename=True)
+    row, = list(reader)
+
     assert row == ('1', '2', '3')
+    assert row == type(row)(_0='1', _1='2', spam='3')
     assert type(row) is reader.row_cls
     assert reader.row_cls._fields == ('_0', '_1', 'spam')
 
 
-def test_NamedTupleReader_rename_func():
-    rename = lambda x: x.replace('.', '_')
-    reader = NamedTupleReader(['spam.eggs,spam\r\n', '1,2\r\n'], rename=rename)
-    row = next(reader)
+def test_NamedTupleReader_rename_callable():
+    lines = ['spam.eggs,spam\r\n', '1,2\r\n']
+    reader = NamedTupleReader(lines, rename=lambda x: x.replace('.', '_'))
+    row, = list(reader)
+
     assert row == ('1', '2')
+    assert row == type(row)(spam_eggs='1', spam='2')
     assert type(row) is reader.row_cls
     assert reader.row_cls._fields == ('spam_eggs', 'spam')
 
