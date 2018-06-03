@@ -15,7 +15,39 @@ __all__ = ['NamedTupleReader', 'NamedTupleWriter']
 
 @register_reader('namedtuple', 'bytes', 'text')
 class NamedTupleReader(object):
-    """:func:`csv23.reader` yielding namedtuples of ``unicode`` strings (PY3: ``str``)."""
+    r""":func:`csv23.reader` yielding namedtuples of ``unicode`` strings (PY3: ``str``).
+
+    Args:
+        stream: Iterable of text (``unicode``, PY3: ``str``) lines. If an
+            ``encoding`` is given, iterable of encoded (``str``, PY3: ``bytes``)
+            lines in the given (8-bit clean) ``encoding``.
+        dialect: Dialect argument for the :func:`csv23.reader`.
+        rename: rename argument for :func:`py:collections.namedtuple`, or a
+            function that is mapped to the first row to turn it into the
+            ``field_names`` of the namedtuple.
+        row_name: The ``typename`` for the row :func:`py:collections.namedtuple`.
+        encoding: If not ``False`` (default): name of the encoding needed to
+            decode the encoded (``str``, PY3: ``bytes``) lines from ``stream``.
+        \**kwargs: Keyword arguments for the :func:`csv23.reader`.     
+
+    Raises:
+        NotImplementedError: If ``encoding`` is not 8-bit clean.
+
+    Notes:
+        - Creates a :func:`py:collections.namedtuple` when reading the first row (header).
+        - Uses the first row as ``field_names``. They must be valid Python identifiers
+          (e.g. no hyphen or dot, they cannot be Python keywords like `class`).
+          They cannot start with an underscore.
+        - ``rename=True`` replaces invalid ``field_names`` with positional names (``_0``, ``_1``, etc.).
+        - If ``rename`` is callable, it is applied to turn the first row strings into ``field_names``.
+
+    >>> import io
+    >>> text = u'coordinate.x,coordinate.y\r\n11,22\r\n'
+    >>> with io.StringIO(text, newline='') as f:
+    ...     for row in NamedTupleReader(f, rename=lambda x: x.replace('.', '_')):
+    ...         print('%s %s' % (row.coordinate_x, row.coordinate_y))
+    11 22
+    """
 
     def __init__(self, stream, dialect=DIALECT, rename=False, row_name='Row',
                  encoding=False, **kwargs):
@@ -67,6 +99,7 @@ class NamedTupleReader(object):
 
     @property
     def row_cls(self):
+        """The row tuple subclass from :func:`py:collections.namedtuple` (``None`` before the first row is read)."""
         return self._row_cls
 
 
