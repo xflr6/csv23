@@ -16,21 +16,21 @@ from ._workarounds import warn_if_issue31590
 
 
 def reader(stream, dialect=DIALECT, encoding=False, **fmtparams):
-    r"""CSV reader yielding lists of ``unicode`` strings (PY3: ``str``).
+    r"""CSV reader yielding lists of :func:`py:unicode` strings (PY3: :class:`py3:str`).
 
     Args:
-        stream: Iterable of text (``unicode``, PY3: ``str``) lines. If an
-            ``encoding`` is given, iterable of encoded (``str``, PY3: ``bytes``)
+        stream: Iterable of text (:func:`py:unicode`, PY3: :class:`py3:str`) lines.
+            If an ``encoding`` is given, iterable of encoded (:class:`py:str`, PY3: :class:`py3:bytes`)
             lines in the given (8-bit clean) ``encoding``.
         dialect: Dialect argument for the underlying :func:`py:csv.reader`.
         encoding: If not ``False`` (default): name of the encoding needed to
-            decode the encoded (``str``, PY3: ``bytes``) lines from ``stream``.
+            decode the encoded (:class:`py:str`, PY3: :class:`py3:bytes`) lines from ``stream``.
         \**fmtparams: Keyword arguments (formatting parameters) for the
             underlying :func:`py:csv.reader`.
 
     Returns:
-        A Python 3 :func:`py3:csv.reader` stand-in yielding a list of ``unicode`` strings
-        (PY3: ``str``) for each row.
+        A Python 3 :func:`py3:csv.reader` stand-in yielding a list of :func:`py:unicode` strings
+        (PY3: :class:`py3:str`) for each row.
 
     >>> import io
     >>> text = u'Spam!,Spam!,Spam!\r\nSpam!,Lovely Spam!,Lovely Spam!\r\n'
@@ -54,7 +54,7 @@ def reader(stream, dialect=DIALECT, encoding=False, **fmtparams):
 
 @register_reader('dict', 'bytes', 'text')
 class DictReader(csv.DictReader):
-    """:func:`csv23.reader` yielding dicts of ``unicode`` strings (PY3: ``str``)."""
+    """:func:`csv23.reader` yielding dicts of :func:`py:unicode` strings (PY3: :class:`py3:str`)."""
 
     def __init__(self, f, fieldnames=None, restkey=None, restval=None, dialect=DIALECT, encoding=False, **kwds):
         # NOTE: csv.DictReader is an old-style class on PY2
@@ -63,7 +63,7 @@ class DictReader(csv.DictReader):
 
 
 class Reader(object):
-    """Proxy for csv.reader."""
+    """Proxy for ``csv.reader``."""
 
     def __init__(self, stream, dialect=DIALECT, **kwargs):
         self._reader = csv.reader(stream, dialect, **kwargs)
@@ -82,7 +82,7 @@ class Reader(object):
 
 
 class UnicodeReader(Reader):
-    """CSV reader yielding lists of ``unicode`` strings (PY3: ``str``)."""
+    """CSV reader yielding lists of :func:`py:unicode` strings (PY3: :class:`py3:str`)."""
 
     if PY2:
         def __init__(self, stream, dialect=DIALECT, **kwargs):

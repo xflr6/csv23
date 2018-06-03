@@ -24,7 +24,7 @@ __all__ = [
 
 
 def writer(stream, dialect=DIALECT, encoding=False, **fmtparams):
-    r"""CSV writer for rows where string values are ``unicode`` strings (PY3: ``str``).
+    r"""CSV writer for rows where string values are :func:`py:unicode` strings (PY3: :class:`py3:str`).
 
     Args:
         stream: File-like object (in binary mode if ``encoding`` is given).
@@ -35,8 +35,8 @@ def writer(stream, dialect=DIALECT, encoding=False, **fmtparams):
             underlying :func:`py:csv.writer`.
 
     Returns:
-        A Python 3 csv.writer stand-in taking  a list of ``unicode`` strings
-        (PY3: ``str``) for each row.
+        A Python 3 :func:`py3:csv.writer` stand-in taking  a list of :func:`py:unicode` strings
+        (PY3: :class:`py3:str`) for each row.
 
     >>> import io
     >>> with io.StringIO(newline='') as f:  # doctest: +SKIP
@@ -60,7 +60,7 @@ def writer(stream, dialect=DIALECT, encoding=False, **fmtparams):
 
 @register_writer('dict', 'bytes', 'text')
 class DictWriter(csv.DictWriter):
-    """:func:`csv23.writer` for dicts where string values are ``unicode`` strings (PY3: ``str``)."""
+    """:func:`csv23.writer` for dicts where string values are :func:`py:unicode` strings (PY3: :class:`py3:str`)."""
 
     def __init__(self, f, fieldnames, restval='', extrasaction='raise', dialect=DIALECT, encoding=False, **kwds):
         # NOTE: csv.DictWrier is an old-style class on PY2
@@ -69,7 +69,7 @@ class DictWriter(csv.DictWriter):
 
 
 class Writer(object):
-    """Proxy for csv.writer."""
+    """Proxy for ``csv.writer``."""
 
     def __init__(self, stream, dialect=DIALECT, **kwargs):
         self._writer = csv.writer(stream, dialect, **kwargs)
@@ -92,7 +92,7 @@ def wrapped_writerow(method, escapechar, type_=unicode if PY2 else str):
 
 
 class UnicodeWriter(Writer):
-    """CSV writer for rows where string values are ``unicode`` strings (PY3: ``str``)."""
+    """CSV writer for rows where string values are :func:`py:unicode` strings (PY3: :class:`py3:str`)."""
 
     if PY2:
         def __init__(self, stream, dialect=DIALECT, **kwargs):
@@ -107,7 +107,7 @@ class UnicodeWriter(Writer):
 if PY2:
     @register_writer('list', 'text')
     class UnicodeTextWriter(UnicodeWriter):
-        """Unicode CSV writer for writing ``unicode`` lines."""
+        """Unicode CSV writer for writing text (``unicode``) lines."""
 
         def __init__(self, stream, dialect=DIALECT, **kwargs):
             self._buffer = io.BytesIO()

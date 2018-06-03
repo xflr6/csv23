@@ -49,17 +49,17 @@ def open_csv(filename, mode='r', encoding=ENCODING, dialect=DIALECT, rowtype=ROW
         filename: File (name) argument for the :func:`py:io.open` call.
         mode (str): ``'r'`` for a :func:`csv23.reader`, ``'w'`` for a :func:`csv23.writer`.
         encoding (str): Name of the encoding used to de/encode the file content.
-        dialect: Dialect argument for the :func:`csv23.reader` or :func:`csv23.writer`.
+        dialect: Dialect argument for the :func:`csv23.reader`/:func:`csv23.writer`.
         rowtype (str):
-            ``'list'`` for a :func:`csv23.reader` or :func:`csv23.writer`,
-            ``'dict'`` for a :class:`csv23.DictReader` or :class:`csv23.DictWriter`,
-            ``'namedtuple'`` for a :class:`csv23.NamedTupleReader`. or :class:`csv23.NamedTupleWriter`.
+            ``'list'`` for a :func:`csv23.reader`/:func:`csv23.writer`,
+            ``'dict'`` for a :class:`csv23.DictReader`/:class:`csv23.DictWriter`,
+            ``'namedtuple'`` for a :class:`csv23.NamedTupleReader`/:class:`csv23.NamedTupleWriter`.
         \**fmtparams: Keyword arguments (formatting parameters) for the
-            :func:`csv23.reader` or :func:`csv23.writer` (must include
+            :func:`csv23.reader`/:func:`csv23.writer` (must include
             ``fieldnames`` if ``mode='w'`` and ``rowtype='dict'``).
 
     Returns:
-        A context manager returning a Python 3 :func:`py3:csv.reader` or :func:`py3:csv.writer` stand-in when entering.
+        A context manager returning a Python 3 :func:`py3:csv.reader`/:func:`py3:csv.writer` stand-in when entering.
 
     >>> row = [u'Wonderful Spam', u'Lovely Spam']
     >>> with open_csv('spam.csv', 'w') as writer:  # doctest: +SKIP
@@ -71,7 +71,7 @@ def open_csv(filename, mode='r', encoding=ENCODING, dialect=DIALECT, rowtype=ROW
         TypeError: With ``mode='w'`` and ``rowtype='dict'`` but missing ``fieldnames`` keyword argument.
 
     Notes:
-        - The ``reader`` or ``writer`` yields/expects string values as ``unicode`` strings (PY3: ``str``).
+        - The ``reader``/``writer`` yields/expects string values as :func:`py:unicode` strings (PY3: :class:`py3:str`).
         - The underlying opened file object is closed on leaving the ``with``-block.
         - If ``encoding=None`` is given, :func:`py:locale.getpreferredencoding` is used.
         - Under Python 2, an optimized implementation is used for 8-bit encodings
@@ -113,7 +113,7 @@ def iterrows(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, **fm
     >>> rows.close()  # doctest: +SKIP
 
     Notes:
-        - The rows are ``list`` or ``dict`` of ``unicode`` strings (PY3: ``str``).
+        - The rows are ``list`` or :class:`py:dict` of :func:`py:unicode` strings (PY3: :class:`py3:str`).
         - The underlying opened file object is closed automatically, i.e.
           on exhaustion, in case of an exception, or by garbage collection.
           To do it manually, call the ``.close()``.method  of the returned generator object.

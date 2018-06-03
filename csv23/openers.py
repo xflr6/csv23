@@ -40,7 +40,7 @@ def open_reader(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, *
     2
 
     Notes:
-        - The reader yields a ``list`` or ``dict`` of ``unicode`` strings (PY3: ``str``).
+        - The reader yields a ``list`` or :class:`py:dict` of :func:`py:unicode` strings (PY3: :class:`py3:str`).
         - The underlying opened file object is closed on leaving the ``with``-block.
         - If ``encoding=None`` is given, :func:`py:locale.getpreferredencoding` is used.
         - Under Python 2, an optimized implementation is used for 8-bit encodings
@@ -83,7 +83,7 @@ def open_writer(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, *
         TypeError: With ``rowtype='dict'`` but missing ``fieldnames`` keyword argument.
 
     Notes
-        - The writer expects string values as ``unicode`` strings (PY3: ``str``).
+        - The writer expects string values as :func:`py:unicode` strings (PY3: :class:`py3:str`).
         - The underlying opened file object is closed on leaving the ``with``-block.
         - If ``encoding=None`` is given, :func:`py:locale.getpreferredencoding` is used.
         - Under Python 2, an optimized implementation is used for 8-bit encodings

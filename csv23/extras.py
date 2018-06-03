@@ -15,11 +15,11 @@ __all__ = ['NamedTupleReader', 'NamedTupleWriter']
 
 @register_reader('namedtuple', 'bytes', 'text')
 class NamedTupleReader(object):
-    r""":func:`csv23.reader` yielding namedtuples of ``unicode`` strings (PY3: ``str``).
+    r""":func:`csv23.reader` yielding namedtuples of :func:`py:unicode` strings (PY3: :class:`py3:str`).
 
     Args:
-        stream: Iterable of text (``unicode``, PY3: ``str``) lines. If an
-            ``encoding`` is given, iterable of encoded (``str``, PY3: ``bytes``)
+        stream: Iterable of text (:func:`py:unicode`, PY3: :class:`py3:str`) lines.
+            If an ``encoding`` is given, iterable of encoded (:class:`py:str`, PY3: :class:`py3:bytes`)
             lines in the given (8-bit clean) ``encoding``.
         dialect: Dialect argument for the :func:`csv23.reader`.
         rename: rename argument for :func:`py:collections.namedtuple`, or a
@@ -27,7 +27,7 @@ class NamedTupleReader(object):
             ``field_names`` of the namedtuple.
         row_name: The ``typename`` for the row :func:`py:collections.namedtuple`.
         encoding: If not ``False`` (default): name of the encoding needed to
-            decode the encoded (``str``, PY3: ``bytes``) lines from ``stream``.
+            decode the encoded (:class:`py:str`, PY3: :class:`py3:bytes`) lines from ``stream``.
         \**kwargs: Keyword arguments for the :func:`csv23.reader`.     
 
     Raises:
@@ -105,7 +105,7 @@ class NamedTupleReader(object):
 
 @register_writer('namedtuple', 'bytes', 'text')
 class NamedTupleWriter(object):
-    """:func:`csv23.writer` for namedtuples where string values are ``unicode`` strings (PY3: ``str``)."""
+    """:func:`csv23.writer` for namedtuples where string values are :func:`py:unicode` strings (PY3: :class:`py3:str`)."""
 
     def __init__(self, stream, dialect=DIALECT, encoding=False, **kwargs):
         self._writer = writers.writer(stream, dialect, encoding, **kwargs)
