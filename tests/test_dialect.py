@@ -1,4 +1,4 @@
-# test_dialect.py
+# test_dialect.py - test dialect argument for readers and writers
 
 from __future__ import unicode_literals
 

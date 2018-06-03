@@ -2,9 +2,9 @@
 
 from __future__ import unicode_literals
 
-import pytest
-
 import itertools
+
+import pytest
 
 from csv23.openers import _open_csv
 

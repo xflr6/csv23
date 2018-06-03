@@ -1,4 +1,4 @@
-# test_encoding.py
+# test_encoding.py - test endoding argument for openers, readers, and writers
 
 from __future__ import unicode_literals
 

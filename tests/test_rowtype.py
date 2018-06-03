@@ -1,4 +1,4 @@
-# test_rowtype.py
+# test_rowtype.py - test rowtype argument for openers
 
 from __future__ import unicode_literals
 
@@ -30,18 +30,13 @@ def test_rowtype_dict(filepath, fieldnames=FIELDNAMES, rowdicts=ROWDICTS):
         assert list(reader) == rowdicts
 
 
-@pytest.fixture
-def stream(mocker):
-    return mocker.sentinel.stream
-
-
 @pytest.mark.parametrize('rowtype', ['nonrowtype', None, object(), []])
 @pytest.mark.parametrize('func', [open_reader, open_writer])
-def test_func_rowtype_invalid(stream, func, rowtype):
+def test_func_rowtype_invalid(mocker, func, rowtype):
     with pytest.raises(ValueError, match=r'invalid/unsupported rowtype'):
-        func(stream, rowtype=rowtype)
+        func(mocker.sentinel.stream, rowtype=rowtype)
 
 
-def test_open_writer_missing_fieldnames(stream):
+def test_open_writer_missing_fieldnames(mocker):
     with pytest.raises(TypeError, match='fieldnames'):
-        open_writer(stream, rowtype='dict')
+        open_writer(mocker.sentinel.stream, rowtype='dict')

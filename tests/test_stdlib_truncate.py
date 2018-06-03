@@ -1,10 +1,12 @@
-# test_truncate.py - verify stdlib binary io behaviour of truncate(0)
+# test_stdlib_truncate.py - verify stdlib binary io behaviour of truncate(0)
 
-# https://bugs.python.org/issue8840
-# https://bugs.python.org/issue32228
-# https://bugs.python.org/issue30250
-# https://bugs.python.org/issue27261
-# https://bugs.python.org/issue26158
+"""
+https://bugs.python.org/issue8840
+https://bugs.python.org/issue32228
+https://bugs.python.org/issue30250
+https://bugs.python.org/issue27261
+https://bugs.python.org/issue26158
+"""
 
 from __future__ import unicode_literals
 
