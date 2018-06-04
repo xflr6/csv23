@@ -106,7 +106,18 @@ class NamedTupleReader(object):
 
 @register_writer('namedtuple', 'bytes', 'text')
 class NamedTupleWriter(object):
-    """:func:`csv23.writer` for namedtuples where string values are :func:`py:unicode` strings (PY3: :class:`py3:str`)."""
+    r""":func:`csv23.writer` for namedtuples where string values are :func:`py:unicode` strings (PY3: :class:`py3:str`).
+
+    Args:
+        stream: File-like object (in binary mode if ``encoding`` is given).
+        dialect: Dialect argument for the func:`csv23.writer`.
+        encoding: If not ``False`` (default): name of the encoding used to
+            encode the output lines.
+        \**kwargs: Keyword arguments for the :func:`csv23.writer`.
+
+    Raises:
+        NotImplementedError: If ``encoding`` is not 8-bit clean.
+    """
 
     def __init__(self, stream, dialect=DIALECT, encoding=False, **kwargs):
         self._writer = writers.writer(stream, dialect, encoding, **kwargs)
