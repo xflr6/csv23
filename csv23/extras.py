@@ -29,7 +29,7 @@ class NamedTupleReader(object):
         row_name: The ``typename`` for the row :func:`py:collections.namedtuple`.
         encoding: If not ``False`` (default): name of the encoding needed to
             decode the encoded (:class:`py:str`, PY3: :class:`py3:bytes`) lines from ``stream``.
-        \**kwargs: Keyword arguments for the :func:`csv23.reader`.     
+        \**kwargs: Keyword arguments for the :func:`csv23.reader`.
 
     Raises:
         NotImplementedError: If ``encoding`` is not 8-bit clean.
