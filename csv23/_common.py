@@ -6,7 +6,7 @@ import sys
 import codecs
 import locale
 
-PY2 = sys.version_info.major == 2
+PY2 = (sys.version_info.major == 2)
 
 ENCODING = 'utf-8'
 
