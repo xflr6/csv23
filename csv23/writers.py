@@ -139,7 +139,7 @@ if PY2:
 
 else:
     @register_writer('list', 'text')
-    def UnicodeTextWriter(stream, dialect=DIALECT, **kwargs):
+    def UnicodeTextWriter(stream, dialect=DIALECT, **kwargs):  # noqa: N802
         """Unicode CSV writer for writing text (``str``) lines."""
         writer = csv.writer(stream, dialect, **kwargs)
         if has_issue12178(writer.dialect):

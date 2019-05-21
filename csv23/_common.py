@@ -54,7 +54,7 @@ else:
         raise NotImplementedError
 
 
-class lazyproperty(object):
+class lazyproperty(object):  # noqa: N801
     """Non-data descriptor caching the computed result as instance attribute.
 
     >>> import itertools

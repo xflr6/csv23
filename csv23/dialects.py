@@ -18,7 +18,7 @@ if PY2:
 
 
     @register(b'unix')
-    class unix_dialect(csv.Dialect):
+    class unix_dialect(csv.Dialect):  # noqa: N801
         """Describe the usual properties of Unix-generated CSV files."""
 
         delimiter = b','

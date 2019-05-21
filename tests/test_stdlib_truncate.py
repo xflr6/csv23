@@ -26,9 +26,9 @@ def test_truncate_zero(module, cls):
     legacy = cls.__name__ == 'StringIO'
 
     if legacy:
-        BytesIO = lambda: contextlib.closing(cls())
+        BytesIO = lambda: contextlib.closing(cls())  # noqa: E731, N806
     else:
-        BytesIO = cls
+        BytesIO = cls  # noqa: N806
 
     with BytesIO() as f:
         f.write(b'spam')
