@@ -69,7 +69,7 @@ class NamedTupleReader(object):
 
     if PY2:
         next = __next__
-        #del __next__
+        del __next__
 
     @lazyproperty
     def _make_row(self):
