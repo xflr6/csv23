@@ -52,12 +52,14 @@ def test_open_writer(py2, filepath, encoding, row, fmtparams, expected, n=12):
 
 
 @pytest.mark.parametrize('row, fmtparams, expected', ROW_FORMAT_LINE)
-def test_writer(mocker, py2, filepath, inner_encoding, row, fmtparams, expected, n=12):
+def test_writer(mocker, py2, filepath, inner_encoding,
+                row, fmtparams, expected, n=12):
     encoding = inner_encoding
     if encoding is False:
         if py2:
             expected_type = UnicodeTextWriter
-        elif fmtparams.get('escapechar') and fmtparams.get('quoting', csv.QUOTE_MINIMAL) != csv.QUOTE_NONE:
+        elif (fmtparams.get('escapechar')
+              and fmtparams.get('quoting', csv.QUOTE_MINIMAL) != csv.QUOTE_NONE):
             expected_type = _UnicodeTextWriter
         else:
             expected_type = type(csv.writer(mocker.mock_open()()))

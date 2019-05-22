@@ -42,7 +42,8 @@ __copyright__ = 'Copyright (c) 2018 Sebastian Bank'
 _OPEN_FUNCS = {'r': open_reader, 'w': open_writer}
 
 
-def open_csv(filename, mode='r', encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, **fmtparams):
+def open_csv(filename, mode='r', encoding=ENCODING, dialect=DIALECT,
+             rowtype=ROWTYPE, **fmtparams):
     r"""Context manager returning a CSV reader/writer (closing the file on exit).
 
     Args:
@@ -84,7 +85,8 @@ def open_csv(filename, mode='r', encoding=ENCODING, dialect=DIALECT, rowtype=ROW
     return open_func(filename, encoding, dialect, rowtype, **fmtparams)
 
 
-def iterrows(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, **fmtparams):
+def iterrows(filename, encoding=ENCODING, dialect=DIALECT,
+             rowtype=ROWTYPE, **fmtparams):
     r"""Iterator reading rows from a CSV file (closed on exaustion or error).
 
     Args:

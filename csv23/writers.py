@@ -62,9 +62,11 @@ def writer(stream, dialect=DIALECT, encoding=False, **fmtparams):
 class DictWriter(csv.DictWriter):
     """:func:`csv23.writer` for dicts where string values are :func:`py:unicode` strings (PY3: :class:`py3:str`)."""
 
-    def __init__(self, f, fieldnames, restval='', extrasaction='raise', dialect=DIALECT, encoding=False, **kwds):
+    def __init__(self, f, fieldnames, restval='', extrasaction='raise',
+                 dialect=DIALECT, encoding=False, **kwds):
         # NOTE: csv.DictWrier is an old-style class on PY2
-        csv.DictWriter.__init__(self, mock.mock_open()(), fieldnames, restval, extrasaction)
+        csv.DictWriter.__init__(self, mock.mock_open()(), fieldnames, restval,
+                                extrasaction)
         self.writer = writer(f, dialect, encoding, **kwds)
 
 
@@ -74,7 +76,8 @@ class Writer(object):
     def __init__(self, stream, dialect=DIALECT, **kwargs):
         self._writer = csv.writer(stream, dialect, **kwargs)
         if has_issue12178(self._writer.dialect):
-            self.writerow = wrapped_writerow(self.writerow, self._writer.dialect.escapechar)
+            self.writerow = wrapped_writerow(self.writerow,
+                                             self._writer.dialect.escapechar)
 
     @property
     def dialect(self):
@@ -115,7 +118,8 @@ if PY2:
             self._stream = stream
 
         def writerow(self, row):
-            row = [v.encode('utf-8') if isinstance(v, unicode) else v for v in row]
+            row = [v.encode('utf-8') if isinstance(v, unicode) else v
+                   for v in row]
             self._writer.writerow(row)
             line = unicode(self._buffer.getvalue(), 'utf-8')
             # NOTE: self._buffer.truncate(0) would prepend zero-bytes

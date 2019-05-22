@@ -56,7 +56,8 @@ def reader(stream, dialect=DIALECT, encoding=False, **fmtparams):
 class DictReader(csv.DictReader):
     """:func:`csv23.reader` yielding dicts of :func:`py:unicode` strings (PY3: :class:`py3:str`)."""
 
-    def __init__(self, f, fieldnames=None, restkey=None, restval=None, dialect=DIALECT, encoding=False, **kwds):
+    def __init__(self, f, fieldnames=None, restkey=None, restval=None,
+                 dialect=DIALECT, encoding=False, **kwds):
         # NOTE: csv.DictReader is an old-style class on PY2
         csv.DictReader.__init__(self, [], fieldnames, restkey, restval)
         self.reader = reader(f, dialect, encoding, **kwds)

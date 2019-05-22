@@ -18,13 +18,15 @@ def stream(mocker):
     (open_reader, ('reader', 'list', 'text'), 'r'),
     (open_writer, ('writer', 'list', 'text'), 'w'),
 ])
-def test_open_func_encoding_none(mocker, mock_open, stream, func, cls_key, mode, nonclean_none_encoding):
+def test_open_func_encoding_none(mocker, mock_open, stream,
+                                 func, cls_key, mode, nonclean_none_encoding):
     mock_cls = mocker.Mock()
     mocker.patch.dict('csv23._dispatch.REGISTRY', {cls_key: mock_cls})
     with func(stream, encoding=None) as f:
         assert f is mock_cls.return_value
         mock_cls.assert_called_once_with(mock_open.return_value, dialect='excel')
-    mock_open.assert_called_once_with(stream, encoding=nonclean_none_encoding, mode=mode, newline='')
+    mock_open.assert_called_once_with(stream, encoding=nonclean_none_encoding,
+                                      mode=mode, newline='')
 
 
 @pytest.mark.parametrize('func, cls_path', [

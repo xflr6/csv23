@@ -31,7 +31,8 @@ def register(kind, rowtype, linetype, second_linetype=None):
     return decorate
 
 
-register_reader, register_writer = (functools.partial(register, k) for k in KIND)
+register_reader, register_writer = (functools.partial(register, k)
+                                    for k in KIND)
 
 
 def get(kind, rowtype, linetype):

@@ -38,10 +38,8 @@ VALUES = [
 @pytest.mark.parametrize(', '.join(FORMATS[0]), FORMATS[1:])
 @pytest.mark.parametrize('value', VALUES)
 def test_csv_roundtrip(py2, quoting, quotechar, escapechar, doublequote, value):
-    csv_kwargs = {
-        'quoting': quoting, 'quotechar': quotechar,
-        'escapechar': escapechar, 'doublequote': doublequote,
-    }
+    csv_kwargs = {'quoting': quoting, 'quotechar': quotechar,
+                  'escapechar': escapechar, 'doublequote': doublequote}
     row = expected = [value]
 
     with io.BytesIO() if py2 else io.StringIO(newline='') as f:

@@ -47,8 +47,8 @@ def nonclean_encoding():
 
 @pytest.fixture
 def nonclean_none_encoding(mocker, nonclean_encoding):
-    mocker.patch('csv23._common.locale.getpreferredencoding', new_callable=mocker.Mock,
-                 return_value=nonclean_encoding)
+    mocker.patch('csv23._common.locale.getpreferredencoding',
+                 new_callable=mocker.Mock, return_value=nonclean_encoding)
     yield nonclean_encoding
 
 
