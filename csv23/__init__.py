@@ -7,8 +7,9 @@
 from __future__ import unicode_literals
 
 from csv import (QUOTE_MINIMAL, QUOTE_ALL, QUOTE_NONNUMERIC, QUOTE_NONE,
-    Error, Dialect, excel, excel_tab, field_size_limit,
-    register_dialect, get_dialect, list_dialects, unregister_dialect)
+                 Error, Dialect, excel, excel_tab, field_size_limit,
+                 register_dialect, get_dialect, list_dialects,
+                 unregister_dialect)
 
 from ._common import ENCODING, DIALECT, ROWTYPE
 from .openers import open_reader, open_writer
