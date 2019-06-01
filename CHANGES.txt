@@ -2,10 +2,14 @@ Changelog
 =========
 
 
-Version 0.1.5 (in development)
-------------------------------
+Version 0.1.5
+-------------
+
+Add ``row_name`` argument to ``NamedTupleReader``.
 
 Drop Python 3.4 support, tag Python 3.7 support.
+
+Extend documentation and improve formatting.
 
 
 Version 0.1.4

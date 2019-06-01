@@ -21,11 +21,11 @@ import csv23
 # -- Project information -----------------------------------------------------
 
 project = 'csv23'
-copyright = '2018, Sebastian Bank'
+copyright = '2018-2019, Sebastian Bank'
 author = 'Sebastian Bank'
 
 # The short X.Y version
-version = '0.1.5.dev0'
+version = '0.1.5'
 # The full version, including alpha/beta/rc tags
 release = version
 
