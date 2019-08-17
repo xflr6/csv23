@@ -11,6 +11,7 @@ import pytest
 PY2 = (sys.version_info.major == 2)
 
 ENCODING = ['utf-8', 'utf-16', 'utf-8-sig', 'latin9']
+
 CLEAN = {'utf-8', 'latin9'}
 
 
@@ -47,14 +48,14 @@ def nonclean_encoding():
 
 @pytest.fixture
 def nonclean_none_encoding(mocker, nonclean_encoding):
-    mocker.patch('csv23._common.locale.getpreferredencoding',
+    mocker.patch('locale.getpreferredencoding',
                  new_callable=mocker.Mock, return_value=nonclean_encoding)
     yield nonclean_encoding
 
 
 @pytest.fixture
 def mock_open(mocker):
-    yield mocker.patch('csv23.openers.io.open', mocker.mock_open())
+    yield mocker.patch('io.open', mocker.mock_open())
 
 
 @pytest.fixture
