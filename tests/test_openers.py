@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+import csv
 import itertools
 
 import pytest
@@ -12,8 +13,9 @@ from csv23.openers import _open_csv
 @pytest.mark.parametrize('event', ['close', 'gc', RuntimeError])
 def test_open_csv(mocker, mock_open, event):
     stream = mock_open.return_value
-    csv_func = mocker.Mock(return_value=itertools.count())
-    filename, dialect = mocker.sentinel.filename, mocker.sentinel.dialect
+    csv_func = mocker.create_autospec(csv.reader, return_value=itertools.count())
+    filename = mocker.sentinel.filename
+    dialect = mocker.sentinel.dialect
 
     def iterrows():
         with _open_csv(filename, {}, csv_func, dialect, {}) as reader:
