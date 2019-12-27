@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-Version 0.1.6 (in  development)
--------------------------------
+Version 0.1.6
+-------------
 
 Tag Python 3.8 support.
 
