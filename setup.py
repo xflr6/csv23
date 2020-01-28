@@ -12,6 +12,11 @@ setup(
     keywords='unicode csv reader writer',
     license='MIT',
     url='https://github.com/xflr6/csv23',
+    project_urls={
+        'Documentation': 'https://csv23.readthedocs.io',
+        'Changelog': 'https://csv23.readthedocs.io/en/latest/changelog.html',
+        'Issue Tracker': 'https://github.com/xflr6/csv23/issues',
+    },
     packages=find_packages(),
     platforms='any',
     python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*',
