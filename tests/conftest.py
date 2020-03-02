@@ -59,5 +59,5 @@ def mock_open(mocker):
 
 
 @pytest.fixture
-def filepath(tmpdir):
-    return tmpdir / 'spam.csv'
+def filepath(tmp_path):
+    return tmp_path / 'spam.csv'

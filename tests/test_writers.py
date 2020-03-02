@@ -40,11 +40,13 @@ def test_open_writer(py2, filepath, encoding, row, fmtparams, expected, n=12):
 
     write_n = len(expected.encode(encoding) if py2 and is_8bit_clean(encoding) else expected)
 
-    with open_writer(str(filepath), encoding=encoding, **fmtparams) as w:
+    filename = str(filepath)
+
+    with open_writer(filename, encoding=encoding, **fmtparams) as w:
         written = w.writerow(row)
         w.writerows([row] * (n - 1))
 
-    with io.open(str(filepath), encoding=encoding, newline='') as f:
+    with io.open(filename, encoding=encoding, newline='') as f:
         line = f.read()
 
     assert line == expected * n
@@ -75,13 +77,15 @@ def test_writer(mocker, py2, filepath, inner_encoding,
         file_encoding = encoding
         open_kwargs = {'mode': 'wb'}
 
-    with io.open(str(filepath), **open_kwargs) as f:
+    filename = str(filepath)
+
+    with io.open(filename, **open_kwargs) as f:
         w = writer(f, encoding=encoding, **fmtparams)
         assert isinstance(w, expected_type)
         written = w.writerow(row)
         w.writerows([row] * (n - 1))
 
-    with io.open(str(filepath), encoding=file_encoding, newline='') as f:
+    with io.open(filename, encoding=file_encoding, newline='') as f:
         line = f.read()
 
     assert line == expected * n

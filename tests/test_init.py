@@ -30,7 +30,8 @@ def test_open_csv_mode_invalid(mode, filename='nonfile'):
 
 def test_iterrows(filepath, encoding, line=LINE, expected=ROW):
     text = ''.join('%d,%s' % (i, line) for i in range(1, 4))
-    filepath.write_binary(text.encode(encoding))
+    # pathlib.Path.write_text() lacks newline='' support
+    filepath.write_bytes(text.encode(encoding))
     rows = iterrows(str(filepath), encoding=encoding)
 
     assert next(rows) == ['1'] + expected

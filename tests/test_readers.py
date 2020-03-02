@@ -31,7 +31,7 @@ def test_open_reader(py2, filepath, encoding, line, fmtparams, expected, n=12):
     except UnicodeEncodeError:
         pytest.skip('impossible combination of line and encoding')
 
-    filepath.write_binary(data)
+    filepath.write_bytes(data)
 
     with pytest.warns(None) as record:
         with open_reader(str(filepath), encoding=encoding, **fmtparams) as r:
