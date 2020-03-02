@@ -12,14 +12,14 @@ LINE, ROW = 'Wonderful Spam,Lovely Spam\r\n', ['Wonderful Spam', 'Lovely Spam']
 def test_open_csv(filepath, row=ROW):
     filename = str(filepath)
 
-    with open_csv(filename, 'w') as writer:
-        writer.writerow(row)
+    with open_csv(filename, 'w') as w:
+        w.writerow(row)
 
-    with open_csv(filename, 'r') as reader:
-        assert list(reader) == [row]
+    with open_csv(filename, 'r') as r:
+        assert list(r) == [row]
 
-    with open_csv(filename) as reader:
-        assert list(reader) == [row]
+    with open_csv(filename) as r:
+        assert list(r) == [row]
 
 
 @pytest.mark.parametrize('mode', ['nonmode', None, object(), []])

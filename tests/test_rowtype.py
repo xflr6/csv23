@@ -21,15 +21,15 @@ ROWDICTS = [dict(zip(FIELDNAMES, p.split())) for p in PYTHONS]
 def test_rowtype_dict(filepath, fieldnames=FIELDNAMES, rowdicts=ROWDICTS):
     filename = str(filepath)
 
-    with open_writer(filename, rowtype='dict', fieldnames=fieldnames) as writer:
-        assert isinstance(writer, csv.DictWriter)
-        writer.writeheader()
+    with open_writer(filename, rowtype='dict', fieldnames=fieldnames) as w:
+        assert isinstance(w, csv.DictWriter)
+        w.writeheader()
         for r in rowdicts:
-            writer.writerow(r)
+            w.writerow(r)
 
-    with open_reader(filename, rowtype='dict') as reader:
-        assert isinstance(reader, csv.DictReader)
-        assert list(reader) == rowdicts
+    with open_reader(filename, rowtype='dict') as r:
+        assert isinstance(r, csv.DictReader)
+        assert list(r) == rowdicts
 
 
 @pytest.mark.parametrize('rowtype', ['nonrowtype', None, object(), []])
