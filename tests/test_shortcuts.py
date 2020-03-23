@@ -73,7 +73,7 @@ def test_write_csv_zipfile(tmp_path, rows, encoding, expected):
 @contextlib.contextmanager
 def chdir(path):
     old = os.getcwd()
-    os.chdir(path)
+    os.chdir(str(path))
     try:
         yield None
     finally:
