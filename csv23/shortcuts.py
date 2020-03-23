@@ -5,7 +5,6 @@ import csv
 import functools
 import io
 import itertools
-import pathlib
 
 from ._common import PY2
 
@@ -28,7 +27,9 @@ if PY2:
                   encoding=ENCODING):
         raise NotImplementedError('Python 3 only')
     
-else:    
+else:
+    import pathlib
+
     def write_csv(filename, rows, header=None, dialect=DIALECT,
                   encoding=ENCODING):
         open_kwargs = {'encoding': encoding, 'newline': ''}
