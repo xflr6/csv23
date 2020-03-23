@@ -95,7 +95,7 @@ def test_write_csv_filename(tmp_path, filename, rows, encoding, expected):
     target = tmp_path / str(filename)
 
     with chdir(tmp_path):
-        result = write_csv(filename, rows, encoding=encoding)
+        result = write_csv(str(filename), rows, encoding=encoding)
         assert result.exists()
         assert target.exists()
         assert result.samefile(target)
