@@ -5,6 +5,7 @@ import functools
 import hashlib
 import io
 import os
+import sys
 import zipfile
 
 import pytest
@@ -50,6 +51,7 @@ def test_write_csv_write(rows, encoding, expected):
 
 
 @pytest.csv23.py3only
+@pytest.mark.skipif(sys.version_info <  (3, 6), reason='unavailable in 3.5')
 @pytest.mark.parametrize('rows, encoding, expected', [
     (ROWS, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
 ])
