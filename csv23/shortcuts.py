@@ -65,7 +65,7 @@ else:
         else:
             result = pathlib.Path(filename)
             assert encoding is not None
-            f = open(filename, 'wt', **open_kwargs)
+            f = open(str(filename), 'wt', **open_kwargs)
 
         with f as f:
             writer = csv.writer(f, dialect=dialect)
