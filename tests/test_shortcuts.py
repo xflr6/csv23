@@ -5,19 +5,27 @@ import functools
 import hashlib
 import io
 import os
-import pathlib
 import zipfile
 
-from csv23.shortcuts import read_csv, write_csv
-
 import pytest
+
+if pytest.csv23.PY2:
+    import argparse
+    pathlib = argparse.Namespace(Path=lambda x: x)
+
+else:
+    import pathlib
+
+    from csv23.shortcuts import read_csv, write_csv
 
 ROWS = [(u'sp\xe4m', 'eggs')]
 
 
+@pytest.csv23.py3only
 def test_read_csv(filename='spam.csv', encoding='utf-8'):
     with pytest.raises(NotImplementedError):
         read_csv(filename, encoding=encoding)
+
 
 @pytest.csv23.py3only
 @pytest.mark.parametrize('rows, filename, encoding, expected', [
