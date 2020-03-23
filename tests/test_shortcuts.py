@@ -92,7 +92,7 @@ def test_write_csv_filename(tmp_path, filename, rows, encoding, expected):
             write_csv(filename, rows, encoding=encoding)
         return
 
-    target = tmp_path / filename
+    target = tmp_path / str(filename)
 
     with chdir(tmp_path):
         result = write_csv(filename, rows, encoding=encoding)
