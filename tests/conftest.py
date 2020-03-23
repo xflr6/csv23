@@ -15,10 +15,6 @@ ENCODING = ['utf-8', 'utf-16', 'utf-8-sig', 'latin9']
 CLEAN = {'utf-8', 'latin9'}
 
 
-if PY2:
-    collect_ignore = ['csv23/shortcuts.py']
-
-
 def pytest_configure(config):
     py2only = pytest.mark.skipif(not PY2, reason='Python 2 only')
     py3only = pytest.mark.skipif(PY2, reason='Python 3 only')

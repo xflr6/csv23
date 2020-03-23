@@ -1,12 +1,11 @@
 # shortcuts.py - overloaded functions
 
-import contextlib
+
 import csv
 import functools
 import io
 import itertools
-
-from ._common import PY2
+import sys
 
 from . import DIALECT, ENCODING
 
@@ -22,13 +21,24 @@ def read_csv(filename, dialect=DIALECT, encoding=ENCODING):
     raise NotImplementedError
 
 
-if PY2:
+if sys.version_info.major == 2:
     def write_csv(filename, rows, header=None, dialect=DIALECT,
                   encoding=ENCODING):
         raise NotImplementedError('Python 3 only')
     
 else:
     import pathlib
+
+    if sys.version_info < (3, 7):
+        import contextlib
+
+        @contextlib.contextmanager
+        def nullcontext(enter_result=None):
+            yield enter_result
+
+    else:
+        from contextlib import nullcontext
+        
 
     def write_csv(filename, rows, header=None, dialect=DIALECT,
                   encoding=ENCODING):
@@ -46,7 +56,7 @@ else:
                 f = filename
             else:
                 f = io.TextIOWrapper(filename, **textio_kwargs)
-            f = contextlib.nullcontext(f)
+            f = nullcontext(f)
         elif hasattr(filename, 'hexdigest'):
             result = filename
             assert encoding is not None
