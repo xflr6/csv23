@@ -45,8 +45,8 @@ def test_read_csv_py2():
     (io.StringIO(STRING), None, ROWS),
     (io.BytesIO(H_BYTES + BYTES), ENCODING, [HEADER] + ROWS),
     (io.StringIO(H_STRING + STRING), None, [HEADER] + ROWS),
-    (io.BytesIO(BYTES), None, (AssertionError, None)),
-    (io.StringIO(STRING), ENCODING, (AssertionError, None)),
+    (io.BytesIO(BYTES), None, (TypeError, r'need encoding')),
+    (io.StringIO(STRING), ENCODING, (TypeError, r'bytes-like object expected')),
 ])
 @pytest.csv23.py3only
 def test_read_csv_iobase(buf, encoding, expected):
@@ -63,7 +63,7 @@ def test_read_csv_iobase(buf, encoding, expected):
 @pytest.mark.parametrize('raw, encoding, expected', [
     (BYTES, ENCODING, ROWS),
     (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
-    (BYTES, None, (AssertionError, None)),
+    (BYTES, None, (TypeError, r'need encoding')),
 ])
 @pytest.csv23.py3only
 def test_read_csv_filename(tmp_path, raw, encoding, expected):
@@ -162,7 +162,7 @@ def chdir(path):
     ('spam.csv', ROWS, None, ENCODING, BYTES),
     ('spam.csv', ROWS, HEADER, ENCODING, H_BYTES + BYTES),
     (pathlib.Path('spam.csv'), ROWS, None, ENCODING, BYTES),
-    ('nonfilename', ROWS, None, None, AssertionError),
+    ('nonfilename', ROWS, None, None, (TypeError, r'need encoding')),
 ])
 def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected):
     if sys.version_info < (3, 6):
@@ -170,8 +170,9 @@ def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected
 
     kwargs = {'header': header, 'encoding': encoding}
 
-    if encoding is None:
-        with pytest.raises(expected):
+    if isinstance(expected, tuple):
+        assert encoding is None
+        with pytest.raises(expected[0], match=expected[1]):
             write_csv(filename, rows, **kwargs)
         return
 
@@ -196,14 +197,15 @@ def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected
                                        '7474df6d9b017216b89129ecc394608'),
     (ROWS, None, ENCODING, 'md5', '67bac4eb7cd16ea8eaf454eafa559d34'),
     (ROWS, None, 'utf-16', 'sha1', 'b0e0578b8149619569a4f56a3e6d05fed7de788f'),
-    (ROWS, None, None, 'sha256', AssertionError),
+    (ROWS, None, None, 'sha256', (TypeError, r'need encoding')),
 ])
 def test_write_csv_hash(rows, header, encoding, hash_name, expected):
     kwargs = {'header': header, 'encoding': encoding}
     hash_ = hashlib.new(hash_name)
 
-    if encoding is None:
-        with pytest.raises(expected):
+    if isinstance(expected, tuple):
+        assert encoding is None
+        with pytest.raises(expected[0], match=expected[1]):
             write_csv(hash_, rows, **kwargs)
         return
 

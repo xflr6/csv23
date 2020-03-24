@@ -53,14 +53,17 @@ else:
 
         if hasattr(filename, 'read'):
             if isinstance(filename, io.TextIOBase):
-                assert encoding is None
+                if encoding is not None:
+                    raise TypeError('bytes-like object expected')
                 f = filename
             else:
-                assert encoding is not None
+                if encoding is None:
+                     raise TypeError('need encoding for wrapping byte-stream')
                 f = io.TextIOWrapper(filename, **textio_kwargs)
             f = nullcontext(f)
         else:
-            assert encoding is not None
+            if encoding is None:
+                raise TypeError('need encoding for opening file by path')
             f = open(str(filename), 'rt', **open_kwargs)
 
         rows = iterrows(f, dialect=dialect)
@@ -88,12 +91,14 @@ else:
             f = nullcontext(f)
         elif hasattr(filename, 'hexdigest'):
             result = filename
-            assert encoding is not None
+            if encoding is None:
+                raise TypeError('need encoding for wrapping byte-stream')
             f = io.TextIOWrapper(io.BytesIO(), **textio_kwargs)
             hash_ = filename
         else:
             result = pathlib.Path(filename)
-            assert encoding is not None
+            if encoding is None:
+                raise TypeError('need encoding for opening file by path')
             f = open(str(filename), 'wt', **open_kwargs)
 
         with f as f:
