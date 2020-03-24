@@ -21,6 +21,18 @@ from csv23.shortcuts import read_csv, write_csv
 
 ROWS = [(u'sp\xe4m', 'eggs')]
 
+STRING =  u'sp\xe4m,eggs\r\n'
+
+ENCODING = 'utf-8'
+
+BYTES =  b'sp\xc3\xa4m,eggs\r\n'
+
+HEADER = ['key', 'value']
+
+H_STRING = u'key,value\r\n'
+
+H_BYTES = b'key,value\r\n'
+
 
 def test_read_csv():
     with pytest.raises(NotImplementedError):
@@ -34,20 +46,23 @@ def test_write_csv_py2():
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('filename, rows, header, encoding, expected', [
-    (None, ROWS, None, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
-    (None, ROWS, None, None, u'sp\xe4m,eggs\r\n'),
-    (None, ROWS, ['key', 'value'], None, u'key,value\r\nsp\xe4m,eggs\r\n'),
+@pytest.mark.parametrize('rows, header, encoding, expected', [
+    (ROWS, None, ENCODING, BYTES),
+    (ROWS, None, None, STRING),
+    (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
+    (ROWS, HEADER, None, H_STRING + STRING),
 ])
-def test_write_csv_none(filename, rows, header, encoding, expected):
-    result = write_csv(filename, rows, header=header, encoding=encoding)
+def test_write_csv_none(rows, header, encoding, expected):
+    result = write_csv(None, rows, header=header, encoding=encoding)
     assert result == expected
 
 
 @pytest.csv23.py3only
 @pytest.mark.parametrize('rows, header, encoding, expected', [
-    (ROWS, None, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
-    (ROWS, None, None, u'sp\xe4m,eggs\r\n'),
+    (ROWS, None, ENCODING, BYTES),
+    (ROWS, None, None, STRING),
+    (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
+    (ROWS, HEADER, None, H_STRING + STRING),
 ])
 def test_write_csv_write(rows, header, encoding, expected):
     buf = io.StringIO() if encoding is None else io.BytesIO()
@@ -59,7 +74,8 @@ def test_write_csv_write(rows, header, encoding, expected):
 @pytest.csv23.py3only
 @pytest.mark.skipif(sys.version_info <  (3, 6), reason='unavailable in 3.5')
 @pytest.mark.parametrize('rows, header, encoding, expected', [
-    (ROWS, None, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
+    (ROWS, None, ENCODING, BYTES),
+    (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
 ])
 def test_write_csv_zipfile(tmp_path, rows, header, encoding, expected):
     if sys.version_info < (3, 6):
@@ -91,8 +107,9 @@ def chdir(path):
 
 @pytest.csv23.py3only
 @pytest.mark.parametrize('filename, rows, header, encoding, expected', [
-    ('spam.csv', ROWS, None, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
-    (pathlib.Path('spam.csv'), ROWS, None, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
+    ('spam.csv', ROWS, None, ENCODING, BYTES),
+    ('spam.csv', ROWS, HEADER, ENCODING, H_BYTES + BYTES),
+    (pathlib.Path('spam.csv'), ROWS, None, ENCODING, BYTES),
     ('nonfilename', ROWS, None, None, None),
 ])
 def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected):
@@ -121,9 +138,11 @@ def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected
 
 @pytest.csv23.py3only
 @pytest.mark.parametrize('rows, header, encoding, hash_name, expected', [
-    (ROWS, None, 'utf-8', 'sha256', 'c793b37cb2008e5591d127db8232085e'
-                                    '64944cae5315ca886f57988343f5b111'),
-    (ROWS, None, 'utf-8', 'md5', '67bac4eb7cd16ea8eaf454eafa559d34'),
+    (ROWS, None, ENCODING, 'sha256', 'c793b37cb2008e5591d127db8232085e'
+                                     '64944cae5315ca886f57988343f5b111'),
+    (ROWS, HEADER, ENCODING, 'sha256', 'ddbbcd4f1b15f3834f5a9ee59a6ee7837'
+                                       '7474df6d9b017216b89129ecc394608'),
+    (ROWS, None, ENCODING, 'md5', '67bac4eb7cd16ea8eaf454eafa559d34'),
     (ROWS, None, 'utf-16', 'sha1', 'b0e0578b8149619569a4f56a3e6d05fed7de788f'),
 ])
 def test_write_csv_hash(rows, header, encoding, hash_name, expected):
@@ -135,8 +154,8 @@ def test_write_csv_hash(rows, header, encoding, hash_name, expected):
 
 @pytest.csv23.py3only
 @pytest.mark.parametrize('rows, header, encoding, hash_name', [
-    (ROWS, None, 'utf-8', 'sha256'),
-    (ROWS, None, 'utf-16', 'sha1'),
+    (ROWS, HEADER, ENCODING, 'sha256'),
+    (ROWS, HEADER, 'utf-16', 'sha1'),
 ])
 def test_write_csv_equivalence(tmp_path, rows, header, encoding, hash_name):
     if sys.version_info < (3, 6):
