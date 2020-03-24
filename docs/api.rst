@@ -13,6 +13,8 @@ High level interface
     csv23.open_reader
     csv23.open_writer
     csv23.iterrows
+    csv23.read_csv
+    csv23.write_csv
 
 
 CSV readers and writers

@@ -23,10 +23,9 @@ def iterslices(iterable, size):
 
 if PY2:
     def read_csv(filename, dialect=DIALECT, encoding=ENCODING, as_list=False):
-        raise NotImplementedError
+        raise NotImplementedError('Python 3 only')
 
-    def write_csv(filename, rows, header=None, dialect=DIALECT,
-                  encoding=ENCODING):
+    def write_csv(filename, rows, header=None, dialect=DIALECT, encoding=ENCODING):
         raise NotImplementedError('Python 3 only')
     
 else:
