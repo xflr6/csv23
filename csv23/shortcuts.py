@@ -1,13 +1,13 @@
 # shortcuts.py - overloaded functions
 
-
-import csv
 import functools
 import io
 import itertools
 import sys
 
-from . import DIALECT, ENCODING
+from . import (DIALECT,
+               ENCODING,
+               writer as csv23_writer)
 
 __all__ = ['read_csv', 'write_csv']
 
@@ -68,7 +68,7 @@ else:
             f = open(str(filename), 'wt', **open_kwargs)
 
         with f as f:
-            writer = csv.writer(f, dialect=dialect)
+            writer = csv23_writer(f, dialect=dialect, encoding=False)
 
             if header is not None:
                 writer.writerows([header])
