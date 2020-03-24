@@ -42,10 +42,10 @@ def test_read_csv_py2():
 
 @pytest.mark.parametrize('src, encoding, expected', [
     (BYTES, ENCODING, ROWS),
-    (STRING, None, ROWS),
     (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
-    (H_STRING + STRING, None, [HEADER] + ROWS),
     (BYTES, None, (TypeError, r'need encoding')),
+    (STRING, None, ROWS),
+    (H_STRING + STRING, None, [HEADER] + ROWS),
     (STRING, ENCODING, (TypeError, r'bytes-like object expected')),
 ])
 @pytest.csv23.py3only
@@ -147,8 +147,8 @@ def test_write_csv_py2():
 @pytest.csv23.py3only
 @pytest.mark.parametrize('rows, header, encoding, expected', [
     (ROWS, None, ENCODING, BYTES),
-    (ROWS, None, None, STRING),
     (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
+    (ROWS, None, None, STRING),
     (ROWS, HEADER, None, H_STRING + STRING),
 ])
 def test_write_csv_none(rows, header, encoding, expected):
@@ -159,8 +159,8 @@ def test_write_csv_none(rows, header, encoding, expected):
 @pytest.csv23.py3only
 @pytest.mark.parametrize('rows, header, encoding, expected', [
     (ROWS, None, ENCODING, BYTES),
-    (ROWS, None, None, STRING),
     (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
+    (ROWS, None, None, STRING),
     (ROWS, HEADER, None, H_STRING + STRING),
 ])
 def test_write_csv_write(rows, header, encoding, expected):
