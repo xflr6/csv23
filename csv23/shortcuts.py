@@ -1,4 +1,4 @@
-# shortcuts.py - overloaded functions
+# shortcuts.py - overloaded functions (Python 3 only)
 
 import functools
 import io
@@ -7,9 +7,11 @@ import sys
 
 from . import (DIALECT,
                ENCODING,
+               reader as csv23_reader,
                writer as csv23_writer)
 
 __all__ = ['read_csv', 'write_csv']
+
 
 def iterslices(iterable, size):
     iterable = iter(iterable)
@@ -38,7 +40,34 @@ else:
 
     else:
         from contextlib import nullcontext
-        
+
+    def iterrows(f, dialect=DIALECT):
+        with f as _f:
+            reader = csv23_reader(_f, dialect=dialect, encoding=False)
+            for row in reader:
+                yield row
+
+    def read_csv(filename, dialect=DIALECT, encoding=ENCODING, as_list=False):
+        open_kwargs = {'encoding': encoding, 'newline': ''}
+        textio_kwargs = dict(write_through=True, **open_kwargs)
+
+        if hasattr(filename, 'read'):
+            if isinstance(filename, io.TextIOBase):
+                assert encoding is None
+                f = filename
+            else:
+                assert encoding is not None
+                f = io.TextIOWrapper(filename, **textio_kwargs)
+            f = nullcontext(f)
+        else:
+            assert encoding is not None
+            f = open(str(filename), 'rt', **open_kwargs)
+
+        rows = iterrows(f, dialect=dialect)
+        if as_list:
+            rows = list(rows)
+        return rows
+
 
     def write_csv(filename, rows, header=None, dialect=DIALECT,
                   encoding=ENCODING):

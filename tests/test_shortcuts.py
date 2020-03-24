@@ -19,7 +19,7 @@ else:
 
 from csv23.shortcuts import read_csv, write_csv
 
-ROWS = [(u'sp\xe4m', 'eggs')]
+ROWS = [[u'sp\xe4m', 'eggs']]
 
 STRING = u'sp\xe4m,eggs\r\n'
 
@@ -34,9 +34,53 @@ H_STRING = u'key,value\r\n'
 H_BYTES = b'key,value\r\n'
 
 
-def test_read_csv():
+@pytest.csv23.py2only
+def test_read_csv_py2():
     with pytest.raises(NotImplementedError):
-        read_csv('spam.csv', encoding='utf-8')
+        read_csv('spam.csv')
+
+
+@pytest.mark.parametrize('buf, encoding, expected', [
+    (io.BytesIO(BYTES), ENCODING, ROWS),
+    (io.StringIO(STRING), None, ROWS),
+    (io.BytesIO(H_BYTES + BYTES), ENCODING, [HEADER] + ROWS),
+    (io.StringIO(H_STRING + STRING), None, [HEADER] + ROWS),
+    (io.BytesIO(BYTES), None, (AssertionError, None)),
+    (io.StringIO(STRING), ENCODING, (AssertionError, None)),
+])
+@pytest.csv23.py3only
+def test_read_csv_iobase(buf, encoding, expected):
+    kwargs = {'encoding': encoding, 'as_list': True}
+
+    if isinstance(expected, tuple):
+        with pytest.raises(expected[0], match=expected[1]):
+            read_csv(buf, **kwargs)
+        return
+
+    assert read_csv(buf, **kwargs) == expected
+
+
+@pytest.mark.parametrize('raw, encoding, expected', [
+    (BYTES, ENCODING, ROWS),
+    (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
+    (BYTES, None, (AssertionError, None)),
+])
+@pytest.csv23.py3only
+def test_read_csv_filename(tmp_path, raw, encoding, expected):
+    if sys.version_info < (3, 6):
+        tmp_path = pathlib.Path(str(tmp_path))
+
+    target = tmp_path / 'spam.csv'
+    target.write_bytes(raw)
+    
+    kwargs = {'encoding': encoding, 'as_list': True}
+
+    if isinstance(expected, tuple):
+        with pytest.raises(expected[0], match=expected[1]):
+            read_csv(target, **kwargs)
+        return
+
+    assert read_csv(target, **kwargs) == expected
 
 
 @pytest.csv23.py2only
