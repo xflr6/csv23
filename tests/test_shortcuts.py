@@ -40,16 +40,21 @@ def test_read_csv_py2():
         read_csv('spam.csv')
 
 
-@pytest.mark.parametrize('buf, encoding, expected', [
-    (io.BytesIO(BYTES), ENCODING, ROWS),
-    (io.StringIO(STRING), None, ROWS),
-    (io.BytesIO(H_BYTES + BYTES), ENCODING, [HEADER] + ROWS),
-    (io.StringIO(H_STRING + STRING), None, [HEADER] + ROWS),
-    (io.BytesIO(BYTES), None, (TypeError, r'need encoding')),
-    (io.StringIO(STRING), ENCODING, (TypeError, r'bytes-like object expected')),
+@pytest.mark.parametrize('src, encoding, expected', [
+    (BYTES, ENCODING, ROWS),
+    (STRING, None, ROWS),
+    (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
+    (H_STRING + STRING, None, [HEADER] + ROWS),
+    (BYTES, None, (TypeError, r'need encoding')),
+    (STRING, ENCODING, (TypeError, r'bytes-like object expected')),
 ])
 @pytest.csv23.py3only
-def test_read_csv_iobase(buf, encoding, expected):
+def test_read_csv_iobase(tmp_path, src, encoding, expected):
+    if sys.version_info < (3, 6):
+        tmp_path = pathlib.Path(str(tmp_path))
+
+    buf = (io.BytesIO if isinstance(src, bytes) else io.StringIO)(src)
+
     kwargs = {'encoding': encoding, 'as_list': True}
 
     if isinstance(expected, tuple):
@@ -58,6 +63,21 @@ def test_read_csv_iobase(buf, encoding, expected):
         return
 
     assert read_csv(buf, **kwargs) == expected
+
+    source = tmp_path / 'spam.csv'
+    if isinstance(buf, io.TextIOBase):
+        assert encoding is None
+        with source.open('wt', encoding='utf-8', newline='') as f:
+            f.write(src)
+        open_kwargs = {'mode': 'rt', 'encoding': 'utf-8', 'newline': ''}
+        kwargs['encoding'] = None
+    else:
+        assert encoding is not None
+        source.write_bytes(src)
+        open_kwargs = {'mode': 'rb'}
+
+    with source.open(**open_kwargs) as f:
+        assert read_csv(f, **kwargs) == expected
 
 
 @pytest.mark.parametrize('raw, encoding, expected', [

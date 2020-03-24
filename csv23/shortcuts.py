@@ -49,7 +49,6 @@ else:
 
     def read_csv(filename, dialect=DIALECT, encoding=ENCODING, as_list=False):
         open_kwargs = {'encoding': encoding, 'newline': ''}
-        textio_kwargs = dict(write_through=True, **open_kwargs)
 
         if hasattr(filename, 'read'):
             if isinstance(filename, io.TextIOBase):
@@ -59,7 +58,7 @@ else:
             else:
                 if encoding is None:
                      raise TypeError('need encoding for wrapping byte-stream')
-                f = io.TextIOWrapper(filename, **textio_kwargs)
+                f = io.TextIOWrapper(filename, **open_kwargs)
             f = nullcontext(f)
         else:
             if encoding is None:
