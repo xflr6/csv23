@@ -17,15 +17,20 @@ if pytest.csv23.PY2:
 else:
     import pathlib
 
-    from csv23.shortcuts import read_csv, write_csv
+from csv23.shortcuts import read_csv, write_csv    
 
 ROWS = [(u'sp\xe4m', 'eggs')]
 
 
-@pytest.csv23.py3only
-def test_read_csv(filename='spam.csv', encoding='utf-8'):
+def test_read_csv():
     with pytest.raises(NotImplementedError):
-        read_csv(filename, encoding=encoding)
+        read_csv('spam.csv', encoding='utf-8')
+
+
+@pytest.csv23.py2only
+def test_write_csv_py2():
+    with pytest.raises(NotImplementedError):
+        write_csv('spam.csv', ROWS, header=None, encoding='utf-8')
 
 
 @pytest.csv23.py3only
