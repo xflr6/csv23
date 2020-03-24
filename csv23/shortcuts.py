@@ -19,11 +19,10 @@ def iterslices(iterable, size):
     return iter(lambda: list(next_slice()), [])
 
 
-def read_csv(filename, dialect=DIALECT, encoding=ENCODING):
-    raise NotImplementedError
-
-
 if sys.version_info.major == 2:
+    def read_csv(filename, dialect=DIALECT, encoding=ENCODING, as_list=False):
+        raise NotImplementedError
+
     def write_csv(filename, rows, header=None, dialect=DIALECT,
                   encoding=ENCODING):
         raise NotImplementedError('Python 3 only')
