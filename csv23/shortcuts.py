@@ -5,6 +5,8 @@ import io
 import itertools
 import sys
 
+from ._common import PY2
+
 from . import (DIALECT,
                ENCODING,
                reader as csv23_reader,
@@ -19,7 +21,7 @@ def iterslices(iterable, size):
     return iter(lambda: list(next_slice()), [])
 
 
-if sys.version_info.major == 2:
+if PY2:
     def read_csv(filename, dialect=DIALECT, encoding=ENCODING, as_list=False):
         raise NotImplementedError
 
