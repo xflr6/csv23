@@ -83,6 +83,41 @@ def test_read_csv_filename(tmp_path, raw, encoding, expected):
     assert read_csv(target, **kwargs) == expected
 
 
+@pytest.csv23.py3only
+@pytest.mark.skipif(sys.version_info < (3, 6), reason='unavailable in 3.5')
+@pytest.mark.parametrize('raw, encoding, expected', [
+    (BYTES, ENCODING, ROWS),
+    (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
+    (BYTES, None, (TypeError, r'need encoding')),
+])
+def test_read_csv_zipfile(tmp_path, raw, encoding, expected):
+    if sys.version_info < (3, 6):
+        tmp_path = pathlib.Path(str(tmp_path))
+
+    archive = tmp_path / 'spam.zip'
+    filename = 'spam.csv'
+    with zipfile.ZipFile(archive, 'w') as z,\
+         z.open(filename, 'w') as f:
+            f.write(raw)
+
+    assert archive.exists()
+    assert archive.stat().st_size
+
+    kwargs = {'encoding': encoding, 'as_list': True}
+
+    with zipfile.ZipFile(archive) as z,\
+         z.open(filename) as f:
+        assert z.namelist() == [filename]
+        z.read(filename) == raw
+        if isinstance(expected, tuple):
+            assert encoding is None
+            with pytest.raises(expected[0], match=expected[1]):
+                read_csv(f, **kwargs)
+            return
+
+        assert read_csv(f, **kwargs) == expected
+
+
 @pytest.csv23.py2only
 def test_write_csv_py2():
     with pytest.raises(NotImplementedError):
