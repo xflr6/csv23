@@ -17,15 +17,15 @@ if pytest.csv23.PY2:
 else:
     import pathlib
 
-from csv23.shortcuts import read_csv, write_csv    
+from csv23.shortcuts import read_csv, write_csv
 
 ROWS = [(u'sp\xe4m', 'eggs')]
 
-STRING =  u'sp\xe4m,eggs\r\n'
+STRING = u'sp\xe4m,eggs\r\n'
 
 ENCODING = 'utf-8'
 
-BYTES =  b'sp\xc3\xa4m,eggs\r\n'
+BYTES = b'sp\xc3\xa4m,eggs\r\n'
 
 HEADER = ['key', 'value']
 
@@ -72,20 +72,28 @@ def test_write_csv_write(rows, header, encoding, expected):
 
 
 @pytest.csv23.py3only
-@pytest.mark.skipif(sys.version_info <  (3, 6), reason='unavailable in 3.5')
+@pytest.mark.skipif(sys.version_info < (3, 6), reason='unavailable in 3.5')
 @pytest.mark.parametrize('rows, header, encoding, expected', [
     (ROWS, None, ENCODING, BYTES),
     (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
+    (ROWS, None, None, (TypeError, r'bytes-like object is required')),
 ])
 def test_write_csv_zipfile(tmp_path, rows, header, encoding, expected):
     if sys.version_info < (3, 6):
         tmp_path = pathlib.Path(str(tmp_path))
 
+    kwargs = {'header': header, 'encoding': encoding}
+
     archive = tmp_path / 'spam.zip'
     filename = 'spam.csv'
     with zipfile.ZipFile(archive, 'w') as z,\
          z.open(filename, 'w') as f:
-        result = write_csv(f, rows, header=header, encoding=encoding)
+        if encoding is None:
+            with pytest.raises(expected[0], match=expected[1]):
+                write_csv(f, rows, **kwargs)
+            return
+
+        result = write_csv(f, rows, **kwargs)
 
     assert result is f
     assert archive.exists()
@@ -110,7 +118,7 @@ def chdir(path):
     ('spam.csv', ROWS, None, ENCODING, BYTES),
     ('spam.csv', ROWS, HEADER, ENCODING, H_BYTES + BYTES),
     (pathlib.Path('spam.csv'), ROWS, None, ENCODING, BYTES),
-    ('nonfilename', ROWS, None, None, None),
+    ('nonfilename', ROWS, None, None, AssertionError),
 ])
 def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected):
     if sys.version_info < (3, 6):
@@ -119,7 +127,7 @@ def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected
     kwargs = {'header': header, 'encoding': encoding}
 
     if encoding is None:
-        with pytest.raises(AssertionError):
+        with pytest.raises(expected):
             write_csv(filename, rows, **kwargs)
         return
 
@@ -144,10 +152,19 @@ def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected
                                        '7474df6d9b017216b89129ecc394608'),
     (ROWS, None, ENCODING, 'md5', '67bac4eb7cd16ea8eaf454eafa559d34'),
     (ROWS, None, 'utf-16', 'sha1', 'b0e0578b8149619569a4f56a3e6d05fed7de788f'),
+    (ROWS, None, None, 'sha256', AssertionError),
 ])
 def test_write_csv_hash(rows, header, encoding, hash_name, expected):
+    kwargs = {'header': header, 'encoding': encoding}
     hash_ = hashlib.new(hash_name)
-    result = write_csv(hash_, rows, header=header, encoding=encoding)
+
+    if encoding is None:
+        with pytest.raises(expected):
+            write_csv(hash_, rows, **kwargs)
+        return
+
+    result = write_csv(hash_, rows, **kwargs)
+
     assert result is hash_
     assert result.hexdigest() == expected
 
