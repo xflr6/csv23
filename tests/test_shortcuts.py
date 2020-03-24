@@ -56,6 +56,9 @@ def test_write_csv_write(rows, encoding, expected):
     (ROWS, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
 ])
 def test_write_csv_zipfile(tmp_path, rows, encoding, expected):
+    if sys.version_info < (3, 6):
+        tmp_path = pathlib.Path(str(tmp_path))
+
     archive = tmp_path / 'spam.zip'
     filename = 'spam.csv'
     with zipfile.ZipFile(archive, 'w') as z,\
@@ -87,12 +90,15 @@ def chdir(path):
     ('nonfilename', ROWS, None, None),
 ])
 def test_write_csv_filename(tmp_path, filename, rows, encoding, expected):
+    if sys.version_info < (3, 6):
+        tmp_path = pathlib.Path(str(tmp_path))
+
     if encoding is None:
         with pytest.raises(AssertionError):
             write_csv(filename, rows, encoding=encoding)
         return
 
-    target = tmp_path / str(filename)
+    target = tmp_path / filename
 
     with chdir(tmp_path):
         result = write_csv(filename, rows, encoding=encoding)
@@ -125,6 +131,9 @@ def test_write_csv_hash(rows, encoding, hash_name, expected):
     (ROWS, 'utf-16', 'sha1'),
 ])
 def test_write_csv_equivalence(tmp_path, rows, encoding, hash_name):
+    if sys.version_info < (3, 6):
+        tmp_path = pathlib.Path(str(tmp_path))
+
     new = functools.partial(hashlib.new, hash_name)
 
     r_hash = write_csv(new(), rows, encoding=encoding)
