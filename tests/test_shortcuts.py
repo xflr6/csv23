@@ -29,33 +29,34 @@ def test_read_csv(filename='spam.csv', encoding='utf-8'):
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('rows, filename, encoding, expected', [
-    (ROWS, None, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
-    (ROWS, None, None, u'sp\xe4m,eggs\r\n'),
+@pytest.mark.parametrize('filename, rows, header, encoding, expected', [
+    (None, ROWS, None, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
+    (None, ROWS, None, None, u'sp\xe4m,eggs\r\n'),
+    (None, ROWS, ['key', 'value'], None, u'key,value\r\nsp\xe4m,eggs\r\n'),
 ])
-def test_write_csv_none(rows, filename, encoding, expected):
-    result = write_csv(filename, rows, encoding=encoding)
+def test_write_csv_none(filename, rows, header, encoding, expected):
+    result = write_csv(filename, rows, header=header, encoding=encoding)
     assert result == expected
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('rows, encoding, expected', [
-    (ROWS, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
-    (ROWS, None, u'sp\xe4m,eggs\r\n'),
+@pytest.mark.parametrize('rows, header, encoding, expected', [
+    (ROWS, None, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
+    (ROWS, None, None, u'sp\xe4m,eggs\r\n'),
 ])
-def test_write_csv_write(rows, encoding, expected):
+def test_write_csv_write(rows, header, encoding, expected):
     buf = io.StringIO() if encoding is None else io.BytesIO()
-    result = write_csv(buf, rows, encoding=encoding)
+    result = write_csv(buf, rows, header=header, encoding=encoding)
     assert result is buf
     assert result.getvalue() == expected
 
 
 @pytest.csv23.py3only
 @pytest.mark.skipif(sys.version_info <  (3, 6), reason='unavailable in 3.5')
-@pytest.mark.parametrize('rows, encoding, expected', [
-    (ROWS, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
+@pytest.mark.parametrize('rows, header, encoding, expected', [
+    (ROWS, None, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
 ])
-def test_write_csv_zipfile(tmp_path, rows, encoding, expected):
+def test_write_csv_zipfile(tmp_path, rows, header, encoding, expected):
     if sys.version_info < (3, 6):
         tmp_path = pathlib.Path(str(tmp_path))
 
@@ -63,7 +64,7 @@ def test_write_csv_zipfile(tmp_path, rows, encoding, expected):
     filename = 'spam.csv'
     with zipfile.ZipFile(archive, 'w') as z,\
          z.open(filename, 'w') as f:
-        result = write_csv(f, rows, encoding=encoding)
+        result = write_csv(f, rows, header=header, encoding=encoding)
 
     assert result is f
     assert archive.exists()
@@ -84,24 +85,26 @@ def chdir(path):
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('filename, rows, encoding, expected', [
-    ('spam.csv', ROWS, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
-    (pathlib.Path('spam.csv'), ROWS, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
-    ('nonfilename', ROWS, None, None),
+@pytest.mark.parametrize('filename, rows, header, encoding, expected', [
+    ('spam.csv', ROWS, None, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
+    (pathlib.Path('spam.csv'), ROWS, None, 'utf-8', b'sp\xc3\xa4m,eggs\r\n'),
+    ('nonfilename', ROWS, None, None, None),
 ])
-def test_write_csv_filename(tmp_path, filename, rows, encoding, expected):
+def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected):
     if sys.version_info < (3, 6):
         tmp_path = pathlib.Path(str(tmp_path))
 
+    kwargs = {'header': header, 'encoding': encoding}
+
     if encoding is None:
         with pytest.raises(AssertionError):
-            write_csv(filename, rows, encoding=encoding)
+            write_csv(filename, rows, **kwargs)
         return
 
     target = tmp_path / filename
 
     with chdir(tmp_path):
-        result = write_csv(filename, rows, encoding=encoding)
+        result = write_csv(filename, rows, **kwargs)
         assert result.exists()
         assert target.exists()
         assert result.samefile(target)
@@ -112,35 +115,37 @@ def test_write_csv_filename(tmp_path, filename, rows, encoding, expected):
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('rows, encoding, hash_name, expected', [
-    (ROWS, 'utf-8', 'sha256', 'c793b37cb2008e5591d127db8232085e'
-                              '64944cae5315ca886f57988343f5b111'),
-    (ROWS, 'utf-8', 'md5', '67bac4eb7cd16ea8eaf454eafa559d34'),
-    (ROWS, 'utf-16', 'sha1', 'b0e0578b8149619569a4f56a3e6d05fed7de788f'),
+@pytest.mark.parametrize('rows, header, encoding, hash_name, expected', [
+    (ROWS, None, 'utf-8', 'sha256', 'c793b37cb2008e5591d127db8232085e'
+                                    '64944cae5315ca886f57988343f5b111'),
+    (ROWS, None, 'utf-8', 'md5', '67bac4eb7cd16ea8eaf454eafa559d34'),
+    (ROWS, None, 'utf-16', 'sha1', 'b0e0578b8149619569a4f56a3e6d05fed7de788f'),
 ])
-def test_write_csv_hash(rows, encoding, hash_name, expected):
+def test_write_csv_hash(rows, header, encoding, hash_name, expected):
     hash_ = hashlib.new(hash_name)
-    result = write_csv(hash_, rows, encoding=encoding)
+    result = write_csv(hash_, rows, header=header, encoding=encoding)
     assert result is hash_
     assert result.hexdigest() == expected
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('rows, encoding, hash_name', [
-    (ROWS, 'utf-8', 'sha256'),
-    (ROWS, 'utf-16', 'sha1'),
+@pytest.mark.parametrize('rows, header, encoding, hash_name', [
+    (ROWS, None, 'utf-8', 'sha256'),
+    (ROWS, None, 'utf-16', 'sha1'),
 ])
-def test_write_csv_equivalence(tmp_path, rows, encoding, hash_name):
+def test_write_csv_equivalence(tmp_path, rows, header, encoding, hash_name):
     if sys.version_info < (3, 6):
         tmp_path = pathlib.Path(str(tmp_path))
 
     new = functools.partial(hashlib.new, hash_name)
 
-    r_hash = write_csv(new(), rows, encoding=encoding)
+    kwargs = {'header': header, 'encoding': encoding}
 
-    r_none = write_csv(None, rows, encoding=encoding)
-    r_write = write_csv(io.BytesIO(), rows, encoding=encoding).getvalue()
-    r_filename = write_csv(tmp_path / 'spam.csv', rows, encoding=encoding).read_bytes()
+    r_hash = write_csv(new(), rows, **kwargs)
+
+    r_none = write_csv(None, rows, **kwargs)
+    r_write = write_csv(io.BytesIO(), rows, **kwargs).getvalue()
+    r_filename = write_csv(tmp_path / 'spam.csv', rows, **kwargs).read_bytes()
 
     assert (r_hash.hexdigest()
             == new(r_none).hexdigest()
