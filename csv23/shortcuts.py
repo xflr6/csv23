@@ -21,6 +21,13 @@ def iterslices(iterable, size):
     return iter(lambda: list(next_slice()), [])
 
 
+def iterrows(f, dialect=DIALECT):
+    with f as _f:
+        reader = csv23_reader(_f, dialect=dialect, encoding=False)
+        for row in reader:
+            yield row
+
+
 if PY2:
     def read_csv(filename, dialect=DIALECT, encoding=ENCODING, as_list=False):
         raise NotImplementedError('Python 3 only')
@@ -41,11 +48,6 @@ else:
     else:
         from contextlib import nullcontext
 
-    def iterrows(f, dialect=DIALECT):
-        with f as _f:
-            reader = csv23_reader(_f, dialect=dialect, encoding=False)
-            for row in reader:
-                yield row
 
     def read_csv(filename, dialect=DIALECT, encoding=ENCODING, as_list=False):
         open_kwargs = {'encoding': encoding, 'newline': ''}
@@ -76,6 +78,8 @@ else:
         open_kwargs = {'encoding': encoding, 'newline': ''}
         textio_kwargs = dict(write_through=True, **open_kwargs)
 
+        hashsum = None
+
         if filename is None:
             if encoding is None:
                 f = io.StringIO()
@@ -89,11 +93,10 @@ else:
                 f = io.TextIOWrapper(filename, **textio_kwargs)
             f = nullcontext(f)
         elif hasattr(filename, 'hexdigest'):
-            result = filename
+            result = hashsum = filename
             if encoding is None:
                 raise TypeError('need encoding for wrapping byte-stream')
             f = io.TextIOWrapper(io.BytesIO(), **textio_kwargs)
-            hash_ = filename
         else:
             result = pathlib.Path(filename)
             if encoding is None:
@@ -106,11 +109,11 @@ else:
             if header is not None:
                 writer.writerows([header])
 
-            if hasattr(filename, 'hexdigest'):
+            if hashsum is not None:
                 buf = f.buffer
                 for rows in iterslices(rows, 1000):
                     writer.writerows(rows)
-                    hash_.update(buf.getbuffer())
+                    hashsum.update(buf.getbuffer())
                     # NOTE: f.truncate(0) would prepend zero-bytes
                     f.seek(0)
                     f.truncate()

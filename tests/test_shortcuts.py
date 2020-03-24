@@ -37,7 +37,13 @@ H_BYTES = b'key,value\r\n'
 @pytest.csv23.py2only
 def test_read_csv_py2():
     with pytest.raises(NotImplementedError):
-        read_csv('spam.csv')
+        read_csv('spam.csv', encoding='utf-8')
+
+
+@pytest.csv23.py2only
+def test_write_csv_py2():
+    with pytest.raises(NotImplementedError):
+        write_csv('spam.csv', ROWS, header=None, encoding='utf-8')
 
 
 @pytest.mark.parametrize('src, encoding, expected', [
@@ -136,12 +142,6 @@ def test_read_csv_zipfile(tmp_path, raw, encoding, expected):
             return
 
         assert read_csv(f, **kwargs) == expected
-
-
-@pytest.csv23.py2only
-def test_write_csv_py2():
-    with pytest.raises(NotImplementedError):
-        write_csv('spam.csv', ROWS, header=None, encoding='utf-8')
 
 
 @pytest.csv23.py3only
