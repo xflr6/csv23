@@ -29,10 +29,10 @@ def iterrows(f, dialect=DIALECT):
 
 
 if PY2:
-    def read_csv(filename, dialect=DIALECT, encoding=ENCODING, as_list=False):
+    def read_csv(file, dialect=DIALECT, encoding=ENCODING, as_list=False):
         raise NotImplementedError('Python 3 only')
 
-    def write_csv(filename, rows, header=None, dialect=DIALECT, encoding=ENCODING):
+    def write_csv(file, rows, header=None, dialect=DIALECT, encoding=ENCODING):
         raise NotImplementedError('Python 3 only')
     
 else:
@@ -49,23 +49,23 @@ else:
         from contextlib import nullcontext
 
 
-    def read_csv(filename, dialect=DIALECT, encoding=ENCODING, as_list=False):
+    def read_csv(file, dialect=DIALECT, encoding=ENCODING, as_list=False):
         open_kwargs = {'encoding': encoding, 'newline': ''}
 
-        if hasattr(filename, 'read'):
-            if isinstance(filename, io.TextIOBase):
+        if hasattr(file, 'read'):
+            if isinstance(file, io.TextIOBase):
                 if encoding is not None:
                     raise TypeError('bytes-like object expected')
-                f = filename
+                f = file
             else:
                 if encoding is None:
                      raise TypeError('need encoding for wrapping byte-stream')
-                f = io.TextIOWrapper(filename, **open_kwargs)
+                f = io.TextIOWrapper(file, **open_kwargs)
             f = nullcontext(f)
         else:
             if encoding is None:
                 raise TypeError('need encoding for opening file by path')
-            f = open(str(filename), 'rt', **open_kwargs)
+            f = open(str(file), 'rt', **open_kwargs)
 
         rows = iterrows(f, dialect=dialect)
         if as_list:
@@ -73,35 +73,34 @@ else:
         return rows
 
 
-    def write_csv(filename, rows, header=None, dialect=DIALECT,
-                  encoding=ENCODING):
+    def write_csv(file, rows, header=None, dialect=DIALECT, encoding=ENCODING):
         open_kwargs = {'encoding': encoding, 'newline': ''}
         textio_kwargs = dict(write_through=True, **open_kwargs)
 
         hashsum = None
 
-        if filename is None:
+        if file is None:
             if encoding is None:
                 f = io.StringIO()
             else:
                 f = io.TextIOWrapper(io.BytesIO(), **textio_kwargs)
-        elif hasattr(filename, 'write'):
-            result = filename
+        elif hasattr(file, 'write'):
+            result = file
             if encoding is None:
-                f = filename
+                f = file
             else:
-                f = io.TextIOWrapper(filename, **textio_kwargs)
+                f = io.TextIOWrapper(file, **textio_kwargs)
             f = nullcontext(f)
-        elif hasattr(filename, 'hexdigest'):
-            result = hashsum = filename
+        elif hasattr(file, 'hexdigest'):
+            result = hashsum = file
             if encoding is None:
                 raise TypeError('need encoding for wrapping byte-stream')
             f = io.TextIOWrapper(io.BytesIO(), **textio_kwargs)
         else:
-            result = pathlib.Path(filename)
+            result = pathlib.Path(file)
             if encoding is None:
                 raise TypeError('need encoding for opening file by path')
-            f = open(str(filename), 'wt', **open_kwargs)
+            f = open(str(file), 'wt', **open_kwargs)
 
         with f as f:
             writer = csv23_writer(f, dialect=dialect, encoding=False)
@@ -120,12 +119,12 @@ else:
             else:
                 writer.writerows(rows)
 
-            if filename is None:
+            if file is None:
                 if encoding is not None:
                     f = f.buffer
                 result = f.getvalue()
 
-        if hasattr(filename, 'write') and encoding is not None:
+        if hasattr(file, 'write') and encoding is not None:
             f.detach()
 
         return result

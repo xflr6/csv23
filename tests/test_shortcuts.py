@@ -256,17 +256,17 @@ def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected
 ])
 def test_write_csv_hash(rows, header, encoding, hash_name, expected):
     kwargs = {'header': header, 'encoding': encoding}
-    hash_ = hashlib.new(hash_name)
+    hashsum = hashlib.new(hash_name)
 
     if isinstance(expected, tuple):
         assert encoding is None
         with pytest.raises(expected[0], match=expected[1]):
-            write_csv(hash_, rows, **kwargs)
+            write_csv(hashsum, rows, **kwargs)
         return
 
-    result = write_csv(hash_, rows, **kwargs)
+    result = write_csv(hashsum, rows, **kwargs)
 
-    assert result is hash_
+    assert result is hashsum
     assert result.hexdigest() == expected
 
 
@@ -279,17 +279,17 @@ def test_write_csv_equivalence(tmp_path, rows, header, encoding, hash_name):
     if sys.version_info < (3, 6):
         tmp_path = pathlib.Path(str(tmp_path))
 
-    new = functools.partial(hashlib.new, hash_name)
+    make_hash = functools.partial(hashlib.new, hash_name)
 
     kwargs = {'header': header, 'encoding': encoding}
 
-    r_hash = write_csv(new(), rows, **kwargs)
+    r_hash = write_csv(make_hash(), rows, **kwargs)
 
     r_none = write_csv(None, rows, **kwargs)
     r_write = write_csv(io.BytesIO(), rows, **kwargs).getvalue()
     r_filename = write_csv(tmp_path / 'spam.csv', rows, **kwargs).read_bytes()
 
     assert (r_hash.hexdigest()
-            == new(r_none).hexdigest()
-            == new(r_write).hexdigest()
-            == new(r_filename).hexdigest())
+            == make_hash(r_none).hexdigest()
+            == make_hash(r_write).hexdigest()
+            == make_hash(r_filename).hexdigest())
