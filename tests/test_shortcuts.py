@@ -98,7 +98,7 @@ def test_read_csv_filename(tmp_path, raw, encoding, expected):
 
     target = tmp_path / 'spam.csv'
     target.write_bytes(raw)
-    
+
     kwargs = {'encoding': encoding, 'as_list': True}
 
     if isinstance(expected, tuple):
@@ -124,7 +124,7 @@ def test_read_csv_zipfile(tmp_path, raw, encoding, expected):
     filename = 'spam.csv'
     with zipfile.ZipFile(archive, 'w') as z,\
          z.open(filename, 'w') as f:
-            f.write(raw)
+        f.write(raw)
 
     assert archive.exists()
     assert archive.stat().st_size

@@ -30,11 +30,15 @@ def iterrows(f, dialect=DIALECT):
 
 if PY2:
     def read_csv(file, dialect=DIALECT, encoding=ENCODING, as_list=False):
+        """Iterator yielding rows from a file-like object with CSV data."""
         raise NotImplementedError('Python 3 only')
 
+
     def write_csv(file, rows, header=None, dialect=DIALECT, encoding=ENCODING):
+        """Write rows into a file-like object using CSV format."""
         raise NotImplementedError('Python 3 only')
-    
+
+
 else:
     import pathlib
 
@@ -50,6 +54,7 @@ else:
 
 
     def read_csv(file, dialect=DIALECT, encoding=ENCODING, as_list=False):
+        """Iterator yielding rows from a file-like object with CSV data."""
         open_kwargs = {'encoding': encoding, 'newline': ''}
 
         if hasattr(file, 'read'):
@@ -59,7 +64,7 @@ else:
                 f = file
             else:
                 if encoding is None:
-                     raise TypeError('need encoding for wrapping byte-stream')
+                    raise TypeError('need encoding for wrapping byte-stream')
                 f = io.TextIOWrapper(file, **open_kwargs)
             f = nullcontext(f)
         else:
@@ -74,6 +79,7 @@ else:
 
 
     def write_csv(file, rows, header=None, dialect=DIALECT, encoding=ENCODING):
+        """Write rows into a file-like object using CSV format."""
         open_kwargs = {'encoding': encoding, 'newline': ''}
         textio_kwargs = dict(write_through=True, **open_kwargs)
 

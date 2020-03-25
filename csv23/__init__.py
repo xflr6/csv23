@@ -90,7 +90,7 @@ def open_csv(filename, mode='r', encoding=ENCODING, dialect=DIALECT,
 
 def iterrows(filename, encoding=ENCODING, dialect=DIALECT,
              rowtype=ROWTYPE, **fmtparams):
-    r"""Iterator reading rows from a CSV file (closed on exaustion or error).
+    r"""Iterator yielding rows from a CSV file (closed on exaustion or error).
 
     Args:
         filename: File (name) argument for the :func:`py:io.open` call.

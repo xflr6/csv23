@@ -50,6 +50,13 @@ iterrows
 .. autofunction:: csv23.iterrows
 
 
+read_csv/write_csv
+------------------
+
+.. autofunction:: csv23.read_csv
+.. autofunction:: csv23.write_csv
+
+
 reader/writer
 -------------
 
