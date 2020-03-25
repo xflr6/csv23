@@ -54,7 +54,29 @@ else:
 
 
     def read_csv(file, dialect=DIALECT, encoding=ENCODING, as_list=False):
-        """Iterator yielding rows from a file-like object with CSV data."""
+        r"""Iterator yielding rows from a file-like object with CSV data.
+
+        Args:
+            file: Source as readable file-like object or filename/:class:`py:os.PathLike`.
+            dialect: CSV dialect argument for the :func:`csv23.reader`.
+            encoding (str): Name of the encoding used to decode the file content.
+            as_list (bool): Return a :class:`py:list` of rows instead of an iterator.
+
+        Returns:
+            An iterator yielding a :class:`py:list` of row values for each row.
+
+        >>> read_csv(io.BytesIO(b'spam,eggs\r\n'), encoding='ascii', as_list=True)
+        [['spam', 'eggs']]
+
+        Raises:
+            TypeError: If ``file`` is a binary buffer or filename/path
+                and ``encoding`` is ``None``. Also if ``file`` is a text buffer
+                and ``encoding`` is not ``None``.
+
+        Notes:
+            - ``encoding`` is required if ``file`` is binary or a filesystem path.
+            - if ``file`` is a text stream, ``encoding`` needs to be ``None``.
+        """
         open_kwargs = {'encoding': encoding, 'newline': ''}
 
         if hasattr(file, 'read'):
@@ -79,7 +101,34 @@ else:
 
 
     def write_csv(file, rows, header=None, dialect=DIALECT, encoding=ENCODING):
-        """Write rows into a file-like object using CSV format."""
+        r"""Write rows into a file-like object using CSV format.
+
+        Args:
+            file: Target as writeable file-like object, or as filename
+                or :class:`py:os.Pathlike`, or as updateable hash,
+                or ``None`` for string output.
+            rows: CSV values to write as iterable of row value iterables.
+            header: Iterable of first row values or ``None`` for no header.
+            dialect: Dialect argument for the :func:`csv23.writer`.
+            encoding (str): Name of the encoding used to encode the file content.
+
+        Returns:
+            If ``file`` is a filename/path, return it as :class:`py:pathlib.Path`.
+            If ``file`` is a file-like object or a hash return it (without closing).
+            If ``file`` is ``None`` return the CSV data as :class:`py:str`.
+
+        >>> write_csv(io.BytesIO(), iter([('spam', 'eggs')]), encoding='ascii').getvalue()
+        b'spam,eggs\r\n'
+
+        Raises:
+            TypeError: If ``file`` is a binary buffer or filename/path
+                and ``encoding`` is ``None``. Also if ``file`` is a text buffer
+                and ``encoding`` is not ``None``.
+
+        Notes:
+            - ``encoding`` is required if ``file`` is binary or a filesystem path.
+            - if ``file`` is a text stream, ``encoding`` needs to be ``None``.
+        """
         open_kwargs = {'encoding': encoding, 'newline': ''}
         textio_kwargs = dict(write_through=True, **open_kwargs)
 

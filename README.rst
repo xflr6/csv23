@@ -56,6 +56,47 @@ returning a ``csv.reader`` or ``csv.writer``:
     Spam!, Lovely Spam!, Lovely Spam!'
 
 
+Python 3 Extras
+---------------
+
+The ``read_csv()`` and ``write_csv()`` functions (available on Python 3 only)
+are most useful if you want (or need to) open a file-like object in the calling
+code, e.g. when reading or writing directly to a binary stream such as a ZIP
+file controlled by the caller (emulated with a ``io.BytesIO`` below):
+
+.. code:: python
+
+    >>> import io
+    >>> buf = io.BytesIO()
+
+    >>> import zipfile
+    >>> with zipfile.ZipFile(buf, 'w') as z, z.open('spam.csv', 'w') as f:
+    ...     csv23.write_csv(f, [[1, None]], header=['spam', 'eggs'])
+    <zipfile...>
+
+    >>> buf.seek(0)
+    0
+
+    >>> with zipfile.ZipFile(buf) as z, z.open('spam.csv') as f:
+    ...     csv23.read_csv(f, as_list=True)
+    [['spam', 'eggs'], ['1', '']]
+
+``csv23`` internally wraps the byte stream in a ``io.TextIOWrapper`` with the
+given encoding and ``newline=''`` (see ``csv`` module docs_).
+
+The ``write_csv()``-function also supports updating objects with a
+``.update(<bytes>)``-method such as ``hashlib.new()`` instances, which allows
+to calculate a checksum over the binary CSV file output produced from the given
+rows without writing it to disk (note that the object is returned):
+
+.. code:: python
+
+    >>> import hashlib
+
+    >>> csv23.write_csv(hashlib.new('sha256'), [[1, None]], header=['spam', 'eggs']).hexdigest()
+    'aed6871f9ca7c047eb55a569e8337af03fee508521b5ddfe7ad0ad1e1139980a'
+
+
 Installation
 ------------
 
@@ -85,6 +126,8 @@ This package is distributed under the `MIT license`_.
 .. _bpo-31590: https://bugs.python.org/issue31590
 
 .. _pip: https://pip.readthedocs.io
+
+.. _docs: https://docs.python.org/3/library/csv.html#csv.reader
 
 .. _MIT license: https://opensource.org/licenses/MIT
 
