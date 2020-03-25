@@ -10,6 +10,12 @@ Python 2 and 3. Code that should run under both versions of Python can use it
 to hide the ``bytes`` vs. ``text`` difference between 2 and 3 and stick to the
 newer unicode-based interface.
 
+It uses ``utf-8`` as default encoding everywhere.
+
+
+Improvements
+------------
+
 ``csv23`` works around for the following bugs in the stdlib ``csv`` module:
 
 bpo-12178_
@@ -19,6 +25,21 @@ bpo-12178_
 bpo-31590_
   broken round-trip with ``escapechar`` and embedded newlines under Python 2
   (fixed in Python 3.4 but not backported): produce a warning
+
+
+Links
+-----
+
+- GitHub: https://github.com/xflr6/csv23
+- PyPI: https://pypi.org/project/csv23/
+- Documentation: https://csv23.readthedocs.io
+- Changelog: https://csv23.readthedocs.io/en/latest/changelog.html
+- Issue Tracker: https://github.com/xflr6/csv23/issues
+- Download: https://pypi.org/project/csv23/#files
+
+
+Extras
+------
 
 The package also provides some convenience functionality such as the
 ``open_csv()`` context manager for opening a CSV file in the right mode and
@@ -33,19 +54,6 @@ returning a ``csv.reader`` or ``csv.writer``:
     ...         print(', '.join(row))
     Spam!, Spam!, Spam!'
     Spam!, Lovely Spam!, Lovely Spam!'
-
-It uses ``utf-8`` as default encoding everywhere.
-
-
-Links
------
-
-- GitHub: https://github.com/xflr6/csv23
-- PyPI: https://pypi.org/project/csv23/
-- Documentation: https://csv23.readthedocs.io
-- Changelog: https://csv23.readthedocs.io/en/latest/changelog.html
-- Issue Tracker: https://github.com/xflr6/csv23/issues
-- Download: https://pypi.org/project/csv23/#files
 
 
 Installation
