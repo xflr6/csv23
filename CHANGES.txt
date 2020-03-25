@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-Version 0.2 (in development)
-----------------------------
+Version 0.2
+-----------
 
 Add ``read_csv()`` and write_csv()`` functions for working with open (e.g.
 binary) streams (file-like objects). Available under Python 3 only.
