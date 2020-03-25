@@ -53,7 +53,7 @@ def open_csv(filename, mode='r', encoding=ENCODING, dialect=DIALECT,
         filename: File (name) argument for the :func:`py:io.open` call.
         mode (str): ``'r'`` for a :func:`csv23.reader`, ``'w'`` for a :func:`csv23.writer`.
         encoding (str): Name of the encoding used to de/encode the file content.
-        dialect: Dialect argument for the :func:`csv23.reader`/:func:`csv23.writer`.
+        dialect: CSV dialect argument for the :func:`csv23.reader`/:func:`csv23.writer`.
         rowtype (str):
             ``'list'`` for a :func:`csv23.reader`/:func:`csv23.writer`,
             ``'dict'`` for a :class:`csv23.DictReader`/:class:`csv23.DictWriter`,
@@ -95,7 +95,7 @@ def iterrows(filename, encoding=ENCODING, dialect=DIALECT,
     Args:
         filename: File (name) argument for the :func:`py:io.open` call.
         encoding (str): Name of the encoding used to decode the file content.
-        dialect: Dialect argument for :func:`csv23.reader`.
+        dialect: CSV dialect argument for :func:`csv23.reader`.
         rowtype (str):
             ``'list'`` for ``list`` rows,
             ``'dict'`` for :class:`py:dict` rows,
