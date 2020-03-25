@@ -21,7 +21,7 @@ import csv23
 # -- Project information -----------------------------------------------------
 
 project = 'csv23'
-copyright = '2018-2019, Sebastian Bank'
+copyright = '2018-2020, Sebastian Bank'
 author = 'Sebastian Bank'
 
 # The short X.Y version

@@ -40,7 +40,7 @@ __title__ = 'csv23'
 __version__ = '0.1.7.dev0'
 __author__ = 'Sebastian Bank <sebastian.bank@uni-leipzig.de>'
 __license__ = 'MIT, see LICENSE.txt'
-__copyright__ = 'Copyright (c) 2018-2019 Sebastian Bank'
+__copyright__ = 'Copyright (c) 2018-2020 Sebastian Bank'
 
 _OPEN_FUNCS = {'r': open_reader, 'w': open_writer}
 
