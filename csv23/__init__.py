@@ -37,7 +37,7 @@ __all__ += [
 ]
 
 __title__ = 'csv23'
-__version__ = '0.3'
+__version__ = '0.3.1.dev0'
 __author__ = 'Sebastian Bank <sebastian.bank@uni-leipzig.de>'
 __license__ = 'MIT, see LICENSE.txt'
 __copyright__ = 'Copyright (c) 2018-2020 Sebastian Bank'
