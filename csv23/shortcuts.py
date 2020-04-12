@@ -99,7 +99,7 @@ else:
 
         Warns:
             UserWarning: If file is a path that ends in
-                ``'.bz2'``, ``'.gz'``, or ``'.xz'`` but autocompress=False is given.
+                ``'.bz2'``, ``'.gz'``, or ``'.xz'`` but ``autocompress=False`` is given.
 
         Notes:
             - ``encoding`` is required if ``file`` is binary or a filesystem path.
@@ -160,7 +160,7 @@ else:
 
         Warns:
             UserWarning: If file is a path that ends in
-                ``'.bz2'``, ``'.gz'``, or ``'.xz'`` but autocompress=False is given.
+                ``'.bz2'``, ``'.gz'``, or ``'.xz'`` but ``autocompress=False`` is given.
 
         Notes:
             - ``encoding`` is required if ``file`` is binary or a filesystem path.
