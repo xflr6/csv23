@@ -5,7 +5,9 @@ Changelog
 Version 0.3 (in development)
 ----------------------------
 
-
+Add ``autocompress`` option to ``read_csv()`` and write_csv()``
+(Python 3 only): automatically (de)compresses if  file is a path and ends with
+``'.bz2'``, ``'.gz'``, or ``'.xz'``.
 
 
 Version 0.2

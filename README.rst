@@ -96,6 +96,10 @@ rows without writing it to disk (note that the object is returned):
     >>> csv23.write_csv(hashlib.new('sha256'), [[1, None]], header=['spam', 'eggs']).hexdigest()
     'aed6871f9ca7c047eb55a569e8337af03fee508521b5ddfe7ad0ad1e1139980a'
 
+Both functions have an optional ``autocompress`` argument: Set it to ``True``
+to transparently compress (or decompress) if the file argument is a path that
+ends in one of ``'.bz2'``, ``'.gz'``, and ``'.xz'``.
+
 
 Installation
 ------------
