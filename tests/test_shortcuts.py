@@ -309,25 +309,27 @@ def test_roundtrip_csv_autocompress(tmp_path, filename, open_module,
 
     target = tmp_path / filename
 
+    filename = str(target) if sys.version_info < (3, 6) else target
+
     import importlib
 
     open_module = importlib.import_module(open_module)
 
-    with open_module.open(target, 'wb') as f:
+    with open_module.open(filename, 'wb') as f:
         f.write(raw)
 
     kwargs = {'encoding': encoding, 'autocompress': True}
 
-    assert read_csv(target, as_list=True, **kwargs) == rows
+    assert read_csv(filename, as_list=True, **kwargs) == rows
 
     target.unlink()
 
-    result = write_csv(target, rows, **kwargs)
+    result = write_csv(filename, rows, **kwargs)
 
     assert result.exists()
     assert result.samefile(target)
 
-    assert read_csv(target, as_list=True, **kwargs) == rows
+    assert read_csv(filename, as_list=True, **kwargs) == rows
 
 
 @pytest.csv23.py3only
@@ -338,5 +340,7 @@ def test_autocompress_warning(tmp_path):
     target = tmp_path / 'spam.csv.gz'
     target.touch()
 
+    filename = str(target) if sys.version_info < (3, 6) else target
+
     with pytest.warns(UserWarning, match=r'suffix'):
-        read_csv(target)
+        read_csv(filename)
