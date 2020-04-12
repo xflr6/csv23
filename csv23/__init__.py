@@ -19,22 +19,19 @@ from .dialects import unix_dialect
 from .extras import NamedTupleReader, NamedTupleWriter
 from .shortcuts import read_csv, write_csv
 
-__all__ = [
-    'open_csv',
-    'open_reader', 'open_writer',
-    'iterrows',
-    'reader', 'writer',
-    'DictReader', 'DictWriter',
-    'unix_dialect',
-    'NamedTupleReader', 'NamedTupleWriter',
-    'read_csv', 'write_csv'
-]
+__all__ = ['open_csv',
+           'open_reader', 'open_writer',
+           'iterrows',
+           'reader', 'writer',
+           'DictReader', 'DictWriter',
+           'unix_dialect',
+           'NamedTupleReader', 'NamedTupleWriter',
+           'read_csv', 'write_csv']
 
-__all__ += [
-    'QUOTE_MINIMAL', 'QUOTE_ALL', 'QUOTE_NONNUMERIC', 'QUOTE_NONE',
-    'Error', 'Dialect', 'excel', 'excel_tab', 'field_size_limit',
-    'register_dialect', 'get_dialect', 'list_dialects', 'unregister_dialect',
-]
+__all__ += ['QUOTE_MINIMAL', 'QUOTE_ALL', 'QUOTE_NONNUMERIC', 'QUOTE_NONE',
+            'Error', 'Dialect', 'excel', 'excel_tab', 'field_size_limit',
+            'register_dialect', 'get_dialect', 'list_dialects',
+            'unregister_dialect']
 
 __title__ = 'csv23'
 __version__ = '0.3.1.dev0'
