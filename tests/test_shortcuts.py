@@ -293,3 +293,50 @@ def test_write_csv_equivalence(tmp_path, rows, header, encoding, hash_name):
             == make_hash(r_none).hexdigest()
             == make_hash(r_write).hexdigest()
             == make_hash(r_filename).hexdigest())
+
+
+@pytest.csv23.py3only
+@pytest.mark.parametrize('filename, open_module, raw, encoding, rows', [
+    ('spam.csv.bz2', 'bz2', BYTES, ENCODING, ROWS),
+    ('spam.csv.gz', 'gzip', BYTES, ENCODING, ROWS),
+    ('spam.csv.xz', 'lzma', BYTES, ENCODING, ROWS),
+])
+@pytest.csv23.py3only
+def test_roundtrip_csv_autocompress(tmp_path, filename, open_module,
+                                    raw, encoding, rows):
+    if sys.version_info < (3, 6):
+        tmp_path = pathlib.Path(str(tmp_path))
+
+    target = tmp_path / filename
+
+    import importlib
+
+    open_module = importlib.import_module(open_module)
+
+    with open_module.open(target, 'wb') as f:
+        f.write(raw)
+
+    kwargs = {'encoding': encoding, 'autocompress': True}
+
+    assert read_csv(target, as_list=True, **kwargs) == rows
+
+    target.unlink()
+
+    result = write_csv(target, rows, **kwargs)
+
+    assert result.exists()
+    assert result.samefile(target)
+
+    assert read_csv(target, as_list=True, **kwargs) == rows
+
+
+@pytest.csv23.py3only
+def test_autocompress_warning(tmp_path):
+    if sys.version_info < (3, 6):
+        tmp_path = pathlib.Path(str(tmp_path))
+
+    target = tmp_path / 'spam.csv.gz'
+    target.touch()
+
+    with pytest.warns(UserWarning, match=r'suffix'):
+        read_csv(target)
