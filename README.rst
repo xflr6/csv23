@@ -1,9 +1,9 @@
 csv23
 =====
 
-|PyPI version| |License| |Supported Python| |Format| |Docs|
+|PyPI version| |License| |Supported Python| |Format|
 
-|Travis| |Codecov|
+|Travis| |Codecov| |Readthedocs-stable| |Readthedocs-latest|
 
 ``csv23`` provides the unicode-based API of the Python 3 ``csv`` module for
 Python 2 and 3. Code that should run under both versions of Python can use it
@@ -151,12 +151,16 @@ This package is distributed under the `MIT license`_.
 .. |Format| image:: https://img.shields.io/pypi/format/csv23.svg
     :target: https://pypi.org/project/csv23/
     :alt: Format
-.. |Docs| image:: https://readthedocs.org/projects/csv23/badge/?version=stable
-    :target: https://csv23.readthedocs.io/en/stable/
-    :alt: Readthedocs
+
 .. |Travis| image:: https://img.shields.io/travis/xflr6/csv23.svg
     :target: https://travis-ci.org/xflr6/csv23
     :alt: Travis
 .. |Codecov| image:: https://codecov.io/gh/xflr6/csv23/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/xflr6/csv23
     :alt: Codecov
+.. |Readthedocs-stable| image:: https://readthedocs.org/projects/csv23/badge/?version=stable
+    :target: https://csv23.readthedocs.io/en/stable/?badge=stable
+    :alt: Readthedocs stable
+.. |Readthedocs-latest| image:: https://readthedocs.org/projects/csv23/badge/?version=latest
+    :target: https://csv23.readthedocs.io/en/latest/?badge=latest
+    :alt: Readthedocs latest
