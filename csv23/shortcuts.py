@@ -206,7 +206,7 @@ else:
                 buf = f.buffer
                 for rows in iterslices(rows, 1000):
                     writer.writerows(rows)
-                    hashsum.update(buf.getbuffer())
+                    hashsum.update(bytes(buf.getbuffer()))
                     # NOTE: f.truncate(0) would prepend zero-bytes
                     f.seek(0)
                     f.truncate()
