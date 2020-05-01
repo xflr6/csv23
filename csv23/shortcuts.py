@@ -43,7 +43,9 @@ if PY2:
 
 
 else:
+    import operator
     import pathlib
+    import platform
 
     if sys.version_info < (3, 7):
         import contextlib
@@ -54,6 +56,11 @@ else:
 
     else:
         from contextlib import nullcontext
+
+    # workaround https://foss.heptapod.net/pypy/pypy/issues/3217
+    _get_update_bytes = (operator.methodcaller('getvalue')
+                         if platform.python_implementation() == 'PyPy' else
+                         operator.methodcaller('getbuffer'))
 
     import builtins, bz2, gzip, lzma
 
@@ -206,7 +213,7 @@ else:
                 buf = f.buffer
                 for rows in iterslices(rows, 1000):
                     writer.writerows(rows)
-                    hashsum.update(buf.getbuffer())
+                    hashsum.update(_get_update_bytes(buf))
                     # NOTE: f.truncate(0) would prepend zero-bytes
                     f.seek(0)
                     f.truncate()

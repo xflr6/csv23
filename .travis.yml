@@ -1,5 +1,6 @@
 version: ~> 1.0
 language: python
+dist: bionic
 cache: pip
 python:
   - "2.7"
@@ -7,6 +8,7 @@ python:
   - "3.6"
   - "3.7"
   - "3.8"
+  - "pypy3"
 install: pip install .[test] codecov
 script: ./run-tests.py
 before_cache: rm -f $HOME/.cache/pip/log/debug.log
