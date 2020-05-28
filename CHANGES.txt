@@ -2,10 +2,10 @@ Changelog
 =========
 
 
-Version 0.3.2 (in development)
-------------------------------
+Version 0.3.2
+-------------
 
-
+Fix failing test_write_csv_hash() on big-endian platforms.
 
 
 Version 0.3.1
