@@ -10,7 +10,7 @@ import pytest
 
 PY2 = (sys.version_info.major == 2)
 
-ENCODING = ['utf-8', 'utf-16', 'utf-8-sig', 'latin9']
+ENCODING = ['utf-8', 'utf-16-le', 'utf-8-sig', 'latin9']
 
 CLEAN = {'utf-8', 'latin9'}
 

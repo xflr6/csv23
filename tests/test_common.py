@@ -11,7 +11,7 @@ from csv23._common import is_8bit_clean, csv_args
     ('u8', True),
     ('u16', False),
     ('windows-1252', True),
-    ('utf-16', False),
+    ('utf-16-le', False),
     ('IBM437', True),
     ('cp500', False),
     ('UTF-16BE', False),

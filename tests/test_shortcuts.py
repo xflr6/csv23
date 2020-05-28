@@ -251,7 +251,8 @@ def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected
     (ROWS, HEADER, ENCODING, 'sha256', 'ddbbcd4f1b15f3834f5a9ee59a6ee7837'
                                        '7474df6d9b017216b89129ecc394608'),
     (ROWS, None, ENCODING, 'md5', '67bac4eb7cd16ea8eaf454eafa559d34'),
-    (ROWS, None, 'utf-16', 'sha1', 'b0e0578b8149619569a4f56a3e6d05fed7de788f'),
+    (ROWS, None, 'utf-16-le', 'sha1', '3f49d7d103251f7d4db79ca6eac67f239c'
+                                      '71327a'),
     (ROWS, None, None, 'sha256', (TypeError, r'need encoding')),
 ])
 def test_write_csv_hash(rows, header, encoding, hash_name, expected):
@@ -273,7 +274,7 @@ def test_write_csv_hash(rows, header, encoding, hash_name, expected):
 @pytest.csv23.py3only
 @pytest.mark.parametrize('rows, header, encoding, hash_name', [
     (ROWS, HEADER, ENCODING, 'sha256'),
-    (ROWS, HEADER, 'utf-16', 'sha1'),
+    (ROWS, HEADER, 'utf-16-le', 'sha1'),
 ])
 def test_write_csv_equivalence(tmp_path, rows, header, encoding, hash_name):
     if sys.version_info < (3, 6):
