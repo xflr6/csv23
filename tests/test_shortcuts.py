@@ -251,7 +251,10 @@ def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected
     (ROWS, HEADER, ENCODING, 'sha256', 'ddbbcd4f1b15f3834f5a9ee59a6ee7837'
                                        '7474df6d9b017216b89129ecc394608'),
     (ROWS, None, ENCODING, 'md5', '67bac4eb7cd16ea8eaf454eafa559d34'),
-    (ROWS, None, 'utf-16', 'sha1', 'b0e0578b8149619569a4f56a3e6d05fed7de788f'),
+    (ROWS, None, 'utf-16', 'sha1', {'little': 'b0e0578b8149619569a4f56a3e6d05fed7de788f',
+                                    'big': 'cdb41df63c3c5e87ce4c87cfa6058b2e81c40112'}[sys.byteorder]),
+    (ROWS, None, 'utf-16-le', 'sha1', '3f49d7d103251f7d4db79ca6eac67f239c71327a'),
+    (ROWS, None, 'utf-16-be', 'sha1', '69e6b3af0972e350bbc7f6dd9bb92f13d2e9fee0'),
     (ROWS, None, None, 'sha256', (TypeError, r'need encoding')),
 ])
 def test_write_csv_hash(rows, header, encoding, hash_name, expected):
