@@ -109,8 +109,7 @@ def test_read_csv_filename(tmp_path, raw, encoding, expected):
     assert read_csv(target, **kwargs) == expected
 
 
-@pytest.csv23.py3only
-@pytest.mark.skipif(sys.version_info < (3, 6), reason='unavailable in 3.5')
+@pytest.csv23.py3only  # unavailable in PY2
 @pytest.mark.parametrize('raw, encoding, expected', [
     (BYTES, ENCODING, ROWS),
     (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
@@ -170,8 +169,7 @@ def test_write_csv_write(rows, header, encoding, expected):
     assert result.getvalue() == expected
 
 
-@pytest.csv23.py3only
-@pytest.mark.skipif(sys.version_info < (3, 6), reason='unavailable in 3.5')
+@pytest.csv23.py3only  # unavailable in PY2
 @pytest.mark.parametrize('rows, header, encoding, expected', [
     (ROWS, None, ENCODING, BYTES),
     (ROWS, HEADER, ENCODING, H_BYTES + BYTES),

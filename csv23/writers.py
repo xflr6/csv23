@@ -1,7 +1,5 @@
 # writers.py - re/encoding csv.writer wrappers
 
-# TODO: consider Writer.writerow(<iterable>) (Python 3.5 compat)
-
 from __future__ import unicode_literals
 
 import io

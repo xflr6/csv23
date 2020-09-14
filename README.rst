@@ -104,7 +104,7 @@ ends in one of ``'.bz2'``, ``'.gz'``, and ``'.xz'``.
 Installation
 ------------
 
-This package runs under Python 2.7, and 3.5+, use pip_ to install:
+This package runs under Python 2.7, and 3.6+, use pip_ to install:
 
 .. code:: bash
 
