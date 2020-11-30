@@ -6,17 +6,17 @@ import csv
 
 from ._common import PY2
 
-__all__ = ['unix_dialect']
+__all__ = ['unix_dialect', 'AsciiDelimited']
+
+
+def register(name):
+    def decorate(cls):
+        csv.register_dialect(name, cls)
+        return cls
+    return decorate
 
 
 if PY2:
-    def register(name):
-        def decorate(cls):
-            csv.register_dialect(name, cls)
-            return cls
-        return decorate
-
-
     @register(b'unix')
     class unix_dialect(csv.Dialect):  # noqa: N801
         """Describe the usual properties of Unix-generated CSV files."""
@@ -31,3 +31,16 @@ if PY2:
 
 else:
     unix_dialect = csv.unix_dialect
+
+
+@register('ascii')
+class AsciiDelimited(csv.Dialect):
+    """https://en.wikipedia.org/wiki/Delimiter#ASCII_Delimited_Text"""
+
+    delimiter = b'\x1f'  # https://en.wikipedia.org/wiki/Unit_separator
+    quotechar = escapechar =  None
+    doublequote = False
+    skipinitialspace = False
+    lineterminator = b'\x1e'  # https://en.wikipedia.org/wiki/Record_separator
+    quoting = csv.QUOTE_NONE
+    strict = True

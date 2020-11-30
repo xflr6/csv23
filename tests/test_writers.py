@@ -20,6 +20,8 @@ QSLASH = {'quoting': csv.QUOTE_MINIMAL, 'escapechar': u'\\'}
 
 SLASH = {'quoting': csv.QUOTE_NONE, 'escapechar': u'\\'}
 
+ASCII = {'dialect': 'ascii'}
+
 ROW_FORMAT_LINE = [
     (['spam', 'spam spam', 'eggs, eggs'], EXCEL, 'spam,spam spam,"eggs, eggs"\r\n'),
     (['spam\n eggs', '"spam"', 'eggs "eggs" eggs'], EXCEL, '"spam\n eggs","""spam""","eggs ""eggs"" eggs"\r\n'),
@@ -28,6 +30,7 @@ ROW_FORMAT_LINE = [
     (['spam', 'e\U0001d11e\U0001d11es'], EXCEL, 'spam,e\U0001d11e\U0001d11es\r\n'),
     (['spam\\eggs'], QSLASH, '"spam\\\\eggs"\r\n'),
     (['spam\\eggs'], SLASH, 'spam\\\\eggs\r\n'),
+    (['spam', 'spam spam', 'eggs, eggs'], ASCII, 'spam\x1fspam spam\x1feggs, eggs\x1e'),
 ]
 
 
@@ -51,6 +54,18 @@ def test_open_writer(py2, filepath, encoding, row, fmtparams, expected, n=12):
 
     assert line == expected * n
     assert written == write_n
+
+
+@pytest.mark.parametrize('row, fmtparams, expected, match', [
+    (['spam', 'spam spam', 'eggs\x1f eggs'], ASCII,
+     csv.Error, r'need to escape'),
+    (['spam', 'spam spam', 'eggs\x1e eggs'], ASCII,
+     csv.Error, r'need to escape')])
+def test_open_writer_fail(filepath, encoding, row, fmtparams, expected, match):
+    filename = str(filepath)
+    with open_writer(filename, encoding=encoding, **fmtparams) as w:
+        with pytest.raises(expected, match=match):
+            w.writerow(row)
 
 
 @pytest.mark.parametrize('row, fmtparams, expected', ROW_FORMAT_LINE)

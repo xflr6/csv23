@@ -13,6 +13,8 @@ EXCEL = {}
 
 SLASH = {'quoting': csv.QUOTE_NONE, 'escapechar': u'\\'}
 
+ASCII = {'dialect': 'ascii'}
+
 LINE_FORMAT_ROW = [
     ('spam,"eggs",spam spam,"eggs eggs"\r\n', EXCEL, ['spam', 'eggs', 'spam spam', 'eggs eggs']),
     ('"spam, spam","eggs\n eggs"\r\n', EXCEL, ['spam, spam', 'eggs\n eggs']),
@@ -21,6 +23,9 @@ LINE_FORMAT_ROW = [
     ('sp\u00e5m,\u20acggs\r\n', EXCEL, ['sp\u00e5m', '\u20acggs']),
     ('spam,e\U0001d11e\U0001d11es\r\n', EXCEL, ['spam', 'e\U0001d11e\U0001d11es']),
     ('spam\r\n', SLASH, ['spam']),
+    pytest.param('spam\x1fspam spam\x1feggs, eggs\x1e', ASCII,
+                 ['spam', 'spam spam', 'eggs, eggs'],
+                 marks=pytest.mark.xfail(reason='FIXME')),
 ]
 
 
