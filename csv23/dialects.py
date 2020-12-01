@@ -37,10 +37,10 @@ else:
 class AsciiDelimited(csv.Dialect):
     """https://en.wikipedia.org/wiki/Delimiter#ASCII_Delimited_Text"""
 
-    delimiter = b'\x1f'  # https://en.wikipedia.org/wiki/Unit_separator
+    delimiter = '\x1f'  # https://en.wikipedia.org/wiki/Unit_separator
     quotechar = escapechar =  None
     doublequote = False
     skipinitialspace = False
-    lineterminator = b'\x1e'  # https://en.wikipedia.org/wiki/Record_separator
+    lineterminator = '\x1e'  # https://en.wikipedia.org/wiki/Record_separator
     quoting = csv.QUOTE_NONE
     strict = True
