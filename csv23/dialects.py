@@ -33,14 +33,14 @@ else:
     unix_dialect = csv.unix_dialect
 
 
-@register('ascii')
+@register(str('ascii'))
 class AsciiDelimited(csv.Dialect):
     """https://en.wikipedia.org/wiki/Delimiter#ASCII_Delimited_Text"""
 
-    delimiter = '\x1f'  # https://en.wikipedia.org/wiki/Unit_separator
+    delimiter = str('\x1f')  # https://en.wikipedia.org/wiki/Unit_separator
     quotechar = escapechar =  None
     doublequote = False
     skipinitialspace = False
-    lineterminator = '\x1e'  # https://en.wikipedia.org/wiki/Record_separator
+    lineterminator = str('\x1e')  # https://en.wikipedia.org/wiki/Record_separator
     quoting = csv.QUOTE_NONE
     strict = True
