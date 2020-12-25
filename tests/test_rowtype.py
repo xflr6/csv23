@@ -8,10 +8,8 @@ import pytest
 
 from csv23.openers import open_reader, open_writer
 
-PYTHONS = [
-    'Graham Chapman', 'John Cleese', 'Terry Gilliam',
-    'Eric Idle', 'Terry Jones', 'Michael Palin'
-]
+PYTHONS = ['Graham Chapman', 'John Cleese', 'Terry Gilliam',
+           'Eric Idle', 'Terry Jones', 'Michael Palin']
 
 FIELDNAMES = ['first_name', 'last_name']
 

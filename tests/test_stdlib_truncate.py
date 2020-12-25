@@ -10,8 +10,8 @@ https://bugs.python.org/issue26158
 
 from __future__ import unicode_literals
 
-import importlib
 import contextlib
+import importlib
 
 import pytest
 

@@ -2,11 +2,11 @@
 
 from __future__ import unicode_literals
 
-import io
 import csv
+import io
 
-from ._common import PY2, ENCODING, DIALECT
-from ._common import none_encoding, is_8bit_clean, csv_args
+from ._common import (PY2, ENCODING, DIALECT,
+                      none_encoding, is_8bit_clean, csv_args)
 from ._dispatch import register_writer
 from ._workarounds import has_issue12178
 
@@ -15,10 +15,8 @@ if PY2:
 else:
     from unittest import mock
 
-__all__ = [
-    'writer', 'DictWriter',
-    'UnicodeTextWriter', 'UnicodeBytesWriter'
-]
+__all__ = ['writer', 'DictWriter',
+           'UnicodeTextWriter', 'UnicodeBytesWriter']
 
 
 def writer(stream, dialect=DIALECT, encoding=False, **fmtparams):

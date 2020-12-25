@@ -4,15 +4,13 @@ from __future__ import unicode_literals
 
 import csv
 
-__all__ = [
-    'reader', 'DictReader',
-    'UnicodeTextReader', 'UnicodeBytesReader',
-]
-
-from ._common import PY2, ENCODING, DIALECT
-from ._common import none_encoding, is_8bit_clean, csv_args
+from ._common import (PY2, ENCODING, DIALECT,
+                      none_encoding, is_8bit_clean, csv_args)
 from ._dispatch import register_reader
 from ._workarounds import warn_if_issue31590
+
+__all__ = ['reader', 'DictReader',
+           'UnicodeTextReader', 'UnicodeBytesReader']
 
 
 def reader(stream, dialect=DIALECT, encoding=False, **fmtparams):

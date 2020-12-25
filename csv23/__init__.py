@@ -12,11 +12,12 @@ from csv import (QUOTE_MINIMAL, QUOTE_ALL, QUOTE_NONNUMERIC, QUOTE_NONE,
                  unregister_dialect)
 
 from ._common import ENCODING, DIALECT, ROWTYPE
+from .dialects import unix_dialect
+from .extras import NamedTupleReader, NamedTupleWriter
 from .openers import open_reader, open_writer
 from .readers import reader, DictReader
 from .writers import writer, DictWriter
-from .dialects import unix_dialect
-from .extras import NamedTupleReader, NamedTupleWriter
+
 from .shortcuts import read_csv, write_csv
 
 __all__ = ['open_csv',

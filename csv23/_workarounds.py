@@ -1,7 +1,7 @@
 # _workarounds.py
 
-import io
 import csv
+import io
 import warnings
 
 from ._common import PY2

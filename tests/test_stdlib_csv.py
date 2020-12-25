@@ -1,7 +1,7 @@
 # test_stdlib_csv.py - verify stdlib csv behaviour for workarounds
 
-import io
 import csv
+import io
 
 import pytest
 
@@ -25,14 +25,12 @@ FORMATS = [
     (csv.QUOTE_NONE, None, '\\', False),     # escapes: ,\r\n\\ issue31590
 ]
 
-VALUES = [
-    'spam, eggs',
-    'spam\r eggs',
-    'spam\n eggs',
-    'spam "spam" eggs',
-    '"spam spam eggs"',
-    'spam\\eggs',
-]
+VALUES = ['spam, eggs',
+          'spam\r eggs',
+          'spam\n eggs',
+          'spam "spam" eggs',
+          '"spam spam eggs"',
+          'spam\\eggs']
 
 
 @pytest.mark.parametrize(', '.join(FORMATS[0]), FORMATS[1:])

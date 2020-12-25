@@ -2,9 +2,9 @@
 
 from __future__ import unicode_literals
 
-import sys
-import locale
 import argparse
+import locale
+import sys
 
 import pytest
 

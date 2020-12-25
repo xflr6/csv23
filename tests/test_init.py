@@ -6,7 +6,9 @@ import pytest
 
 from csv23 import open_csv, iterrows
 
-LINE, ROW = 'Wonderful Spam,Lovely Spam\r\n', ['Wonderful Spam', 'Lovely Spam']
+LINE = 'Wonderful Spam,Lovely Spam\r\n'
+
+ROW = ['Wonderful Spam', 'Lovely Spam']
 
 
 def test_open_csv(filepath, row=ROW):

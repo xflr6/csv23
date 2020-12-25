@@ -8,8 +8,7 @@ import warnings
 
 from ._common import PY2
 
-from . import (DIALECT,
-               ENCODING,
+from . import (DIALECT, ENCODING,
                reader as csv23_reader,
                writer as csv23_writer)
 

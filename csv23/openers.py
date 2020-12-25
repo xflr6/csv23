@@ -4,12 +4,12 @@
 
 from __future__ import unicode_literals
 
-import io
-import functools
 import contextlib
+import functools
+import io
 
-from ._common import PY2, ENCODING, DIALECT, ROWTYPE
-from ._common import none_encoding, is_8bit_clean
+from ._common import (PY2, ENCODING, DIALECT, ROWTYPE,
+                      none_encoding, is_8bit_clean)
 from ._dispatch import get_reader, get_writer
 
 __all__ = ['open_reader', 'open_writer']
