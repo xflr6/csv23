@@ -16,6 +16,8 @@ setup(
         'Documentation': 'https://csv23.readthedocs.io',
         'Changelog': 'https://csv23.readthedocs.io/en/latest/changelog.html',
         'Issue Tracker': 'https://github.com/xflr6/csv23/issues',
+        'CI': 'https://travis-ci.org/xflr6/csv23',
+        'Coverage': 'https://codecov.io/gh/xflr6/csv23',
     },
     packages=find_packages(),
     platforms='any',
