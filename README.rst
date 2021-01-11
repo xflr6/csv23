@@ -20,7 +20,7 @@ Improvements
 
 bpo-12178_
   broken round-trip with ``escapechar`` if your data contains a literal escape
-  character
+  character (fixed in Python 3.10)
 
 bpo-31590_
   broken round-trip with ``escapechar`` and embedded newlines under Python 2

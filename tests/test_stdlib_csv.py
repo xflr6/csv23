@@ -2,6 +2,7 @@
 
 import csv
 import io
+import sys
 
 import pytest
 
@@ -64,7 +65,8 @@ def test_csv_roundtrip(py2, quoting, quotechar, escapechar, doublequote, value):
     if quoting != csv.QUOTE_NONE and escapechar is not None and escapechar in value:
         # writer fails to escape escapechar
         assert row != expected
-        pytest.xfail(reason='https://bugs.python.org/issue12178')
+        if sys.version_info < (3, 10):
+            pytest.xfail(reason='https://bugs.python.org/issue12178')
     elif py2 and quoting == csv.QUOTE_NONE and escapechar is not None and '\n' in value:
         # reader fails to recognize escaped newline
         assert row != expected
