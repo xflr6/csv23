@@ -3,7 +3,7 @@ csv23
 
 |PyPI version| |License| |Supported Python| |Format|
 
-|Travis| |Codecov| |Readthedocs-stable| |Readthedocs-latest|
+|Build| |Codecov| |Readthedocs-stable| |Readthedocs-latest|
 
 ``csv23`` provides the unicode-based API of the Python 3 ``csv`` module for
 Python 2 and 3. Code that should run under both versions of Python can use it
@@ -152,9 +152,9 @@ This package is distributed under the `MIT license`_.
     :target: https://pypi.org/project/csv23/
     :alt: Format
 
-.. |Travis| image:: https://img.shields.io/travis/xflr6/csv23.svg
-    :target: https://travis-ci.org/xflr6/csv23
-    :alt: Travis
+.. |Build| image:: https://github.com/xflr6/csv23/actions/workflows/build.yaml/badge.svg
+    :target: https://github.com/xflr6/csv23/actions/workflows/build.yaml?query=branch%3Amaster
+    :alt: Build
 .. |Codecov| image:: https://codecov.io/gh/xflr6/csv23/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/xflr6/csv23
     :alt: Codecov
