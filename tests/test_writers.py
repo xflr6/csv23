@@ -77,7 +77,7 @@ def test_writer(mocker, py2, filepath, inner_encoding,
     if encoding is False:
         if py2:
             expected_type = UnicodeTextWriter
-        elif (fmtparams.get('escapechar')
+        elif (sys.version_info < (3, 10) and fmtparams.get('escapechar')
               and fmtparams.get('quoting', csv.QUOTE_MINIMAL) != csv.QUOTE_NONE):
             expected_type = _UnicodeTextWriter
         else:
