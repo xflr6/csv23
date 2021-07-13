@@ -3,13 +3,14 @@
 from __future__ import unicode_literals
 
 import csv
-
 import pytest
 
 from csv23.openers import open_reader
 from csv23.readers import reader, UnicodeTextReader, UnicodeBytesReader
 
 EXCEL = {}
+
+QSLASH = {'quoting': csv.QUOTE_MINIMAL, 'escapechar': u'\\'}
 
 SLASH = {'quoting': csv.QUOTE_NONE, 'escapechar': u'\\'}
 
@@ -23,6 +24,8 @@ LINE_FORMAT_ROW = [
     ('sp\u00e5m,\u20acggs\r\n', EXCEL, ['sp\u00e5m', '\u20acggs']),
     ('spam,e\U0001d11e\U0001d11es\r\n', EXCEL, ['spam', 'e\U0001d11e\U0001d11es']),
     ('spam\r\n', SLASH, ['spam']),
+    ('"spam\\\\eggs"\r\n', QSLASH, ['spam\\eggs']),
+    ('spam\\\\eggs\r\n', QSLASH, ['spam\\eggs']),
     pytest.param('spam\x1fspam spam\x1feggs, eggs\x1e', ASCII,
                  ['spam', 'spam spam', 'eggs, eggs'],
                  marks=pytest.mark.xfail(reason='FIXME')),
