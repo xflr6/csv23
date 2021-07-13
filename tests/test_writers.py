@@ -30,7 +30,8 @@ ROW_FORMAT_LINE = [
     (['sp\u00e5m', '\u20acggs'], EXCEL, 'sp\u00e5m,\u20acggs\r\n'),
     (['spam', 'e\U0001d11e\U0001d11es'], EXCEL, 'spam,e\U0001d11e\U0001d11es\r\n'),
     (['spam\\eggs'], QSLASH, ('"spam\\\\eggs"\r\n' if sys.version_info < (3, 10)
-                              else 'spam\\\\eggs\r\n')),  # FIXME: https://github.com/xflr6/csv23/issues/6
+                              # https://github.com/xflr6/csv23/issues/6
+                              else 'spam\\\\eggs\r\n')),
     (['spam\\eggs'], SLASH, 'spam\\\\eggs\r\n'),
     (['spam', 'spam spam', 'eggs, eggs'], ASCII, 'spam\x1fspam spam\x1feggs, eggs\x1e'),
 ]
