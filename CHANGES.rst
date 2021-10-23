@@ -11,7 +11,7 @@ Drop Python 3.5 support and tag Python 3.9 and 3.10 support.
 Version 0.3.2
 -------------
 
-Fix failing test_write_csv_hash() on big-endian platforms.
+Fix failing ``test_write_csv_hash()`` on big-endian platforms.
 
 
 Version 0.3.1
@@ -31,8 +31,8 @@ Add ``autocompress`` option to ``read_csv()`` and write_csv()``
 Version 0.2
 -----------
 
-Add ``read_csv()`` and write_csv()`` functions for working with open (e.g.
-binary) streams (file-like objects). Available under Python 3 only.
+Add ``read_csv()`` and ``write_csv()`` functions for working with open
+(e.g. binary) streams (file-like objects). Available under Python 3 only.
 
 
 Version 0.1.6
@@ -81,7 +81,7 @@ Version 0.1.1
 
 Fix ``issue31590()`` check.
 
-Add documentation and CI links to README.txt.
+Add documentation and CI links to ``README.txt``.
 
 
 Version 0.1
