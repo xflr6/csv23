@@ -23,7 +23,7 @@ Add workaround for PyPy to ``write_csv()`` when used with a ``hashlib`` hash.
 Version 0.3
 -----------
 
-Add ``autocompress`` option to ``read_csv()`` and write_csv()``
+Add ``autocompress`` option to ``read_csv()`` and ``write_csv()``
 (Python 3 only): automatically (de)compresses if  file is a path and ends with
 ``'.bz2'``, ``'.gz'``, or ``'.xz'``.
 
