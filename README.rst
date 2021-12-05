@@ -1,7 +1,7 @@
 csv23
 =====
 
-|PyPI version| |License| |Supported Python| |Format|
+|PyPI version| |License| |Supported Python| |Wheel|
 
 |Build| |Codecov| |Readthedocs-stable| |Readthedocs-latest|
 
@@ -143,14 +143,13 @@ This package is distributed under the `MIT license`_.
     :target: https://pypi.org/project/csv23/
     :alt: Latest PyPI Version
 .. |License| image:: https://img.shields.io/pypi/l/csv23.svg
-    :target: https://pypi.org/project/csv23/
+    :target:  https://github.com/xflr6/csv23/blob/master/LICENSE.txt
     :alt: License
 .. |Supported Python| image:: https://img.shields.io/pypi/pyversions/csv23.svg
     :target: https://pypi.org/project/csv23/
     :alt: Supported Python Versions
-.. |Format| image:: https://img.shields.io/pypi/format/csv23.svg
-    :target: https://pypi.org/project/csv23/
-    :alt: Format
+.. |Wheel| image:: https://img.shields.io/pypi/csv23/graphviz.svg
+    :target: https://pypi.org/project/csv23/#files
 
 .. |Build| image:: https://github.com/xflr6/csv23/actions/workflows/build.yaml/badge.svg?branch=master
     :target: https://github.com/xflr6/csv23/actions/workflows/build.yaml?query=branch%3Amaster
