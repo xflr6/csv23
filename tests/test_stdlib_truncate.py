@@ -1,11 +1,10 @@
-# test_stdlib_truncate.py - verify stdlib binary io behaviour of truncate(0)
+"""Verify stdlib binary io behaviour of truncate(0).
 
-"""
-https://bugs.python.org/issue8840
-https://bugs.python.org/issue32228
-https://bugs.python.org/issue30250
-https://bugs.python.org/issue27261
-https://bugs.python.org/issue26158
+- https://bugs.python.org/issue8840
+- https://bugs.python.org/issue32228
+- https://bugs.python.org/issue30250
+- https://bugs.python.org/issue27261
+- https://bugs.python.org/issue26158
 """
 
 from __future__ import unicode_literals
@@ -16,10 +15,10 @@ import importlib
 import pytest
 
 
-@pytest.mark.parametrize('module, cls', [
-    pytest.param('cStringIO', 'StringIO', marks=pytest.csv23.py2only),
-    ('io', 'BytesIO'),
-])
+@pytest.mark.parametrize(
+    'module, cls',
+    [pytest.param('cStringIO', 'StringIO', marks=pytest.csv23.py2only),
+     ('io', 'BytesIO')])
 def test_truncate_zero(module, cls):
     module = importlib.import_module(module)
     cls = getattr(module, cls)

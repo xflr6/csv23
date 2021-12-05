@@ -1,5 +1,3 @@
-# _dispatch.py
-
 from __future__ import unicode_literals
 
 import functools

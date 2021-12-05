@@ -1,5 +1,3 @@
-# test_writers.py
-
 import contextlib
 import functools
 import hashlib
@@ -46,14 +44,14 @@ def test_write_csv_py2():
         write_csv('spam.csv', ROWS, header=None, encoding='utf-8')
 
 
-@pytest.mark.parametrize('src, encoding, expected', [
-    (BYTES, ENCODING, ROWS),
-    (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
-    (BYTES, None, (TypeError, r'need encoding')),
-    (STRING, None, ROWS),
-    (H_STRING + STRING, None, [HEADER] + ROWS),
-    (STRING, ENCODING, (TypeError, r'bytes-like object expected')),
-])
+@pytest.mark.parametrize(
+    'src, encoding, expected',
+    [(BYTES, ENCODING, ROWS),
+     (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
+     (BYTES, None, (TypeError, r'need encoding')),
+     (STRING, None, ROWS),
+     (H_STRING + STRING, None, [HEADER] + ROWS),
+     (STRING, ENCODING, (TypeError, r'bytes-like object expected'))])
 @pytest.csv23.py3only
 def test_read_csv_iobase(tmp_path, src, encoding, expected):
     if sys.version_info < (3, 6):
@@ -86,11 +84,11 @@ def test_read_csv_iobase(tmp_path, src, encoding, expected):
         assert read_csv(f, **kwargs) == expected
 
 
-@pytest.mark.parametrize('raw, encoding, expected', [
-    (BYTES, ENCODING, ROWS),
-    (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
-    (BYTES, None, (TypeError, r'need encoding')),
-])
+@pytest.mark.parametrize(
+    'raw, encoding, expected',
+    [(BYTES, ENCODING, ROWS),
+     (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
+     (BYTES, None, (TypeError, r'need encoding'))])
 @pytest.csv23.py3only
 def test_read_csv_filename(tmp_path, raw, encoding, expected):
     if sys.version_info < (3, 6):
@@ -110,11 +108,11 @@ def test_read_csv_filename(tmp_path, raw, encoding, expected):
 
 
 @pytest.csv23.py3only  # unavailable in PY2
-@pytest.mark.parametrize('raw, encoding, expected', [
-    (BYTES, ENCODING, ROWS),
-    (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
-    (BYTES, None, (TypeError, r'need encoding')),
-])
+@pytest.mark.parametrize(
+    'raw, encoding, expected',
+    [(BYTES, ENCODING, ROWS),
+     (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
+     (BYTES, None, (TypeError, r'need encoding'))])
 def test_read_csv_zipfile(tmp_path, raw, encoding, expected):
     if sys.version_info < (3, 6):
         tmp_path = pathlib.Path(str(tmp_path))
@@ -144,24 +142,24 @@ def test_read_csv_zipfile(tmp_path, raw, encoding, expected):
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('rows, header, encoding, expected', [
-    (ROWS, None, ENCODING, BYTES),
-    (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
-    (ROWS, None, None, STRING),
-    (ROWS, HEADER, None, H_STRING + STRING),
-])
+@pytest.mark.parametrize(
+    'rows, header, encoding, expected',
+    [(ROWS, None, ENCODING, BYTES),
+     (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
+     (ROWS, None, None, STRING),
+     (ROWS, HEADER, None, H_STRING + STRING)])
 def test_write_csv_none(rows, header, encoding, expected):
     result = write_csv(None, rows, header=header, encoding=encoding)
     assert result == expected
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('rows, header, encoding, expected', [
-    (ROWS, None, ENCODING, BYTES),
-    (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
-    (ROWS, None, None, STRING),
-    (ROWS, HEADER, None, H_STRING + STRING),
-])
+@pytest.mark.parametrize(
+    'rows, header, encoding, expected',
+    [(ROWS, None, ENCODING, BYTES),
+     (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
+     (ROWS, None, None, STRING),
+     (ROWS, HEADER, None, H_STRING + STRING)])
 def test_write_csv_write(rows, header, encoding, expected):
     buf = io.StringIO() if encoding is None else io.BytesIO()
     result = write_csv(buf, rows, header=header, encoding=encoding)
@@ -170,11 +168,11 @@ def test_write_csv_write(rows, header, encoding, expected):
 
 
 @pytest.csv23.py3only  # unavailable in PY2
-@pytest.mark.parametrize('rows, header, encoding, expected', [
-    (ROWS, None, ENCODING, BYTES),
-    (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
-    (ROWS, None, None, (TypeError, r'bytes-like object is required')),
-])
+@pytest.mark.parametrize(
+    'rows, header, encoding, expected',
+    [(ROWS, None, ENCODING, BYTES),
+     (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
+     (ROWS, None, None, (TypeError, r'bytes-like object is required'))])
 def test_write_csv_zipfile(tmp_path, rows, header, encoding, expected):
     if sys.version_info < (3, 6):
         tmp_path = pathlib.Path(str(tmp_path))
@@ -211,12 +209,12 @@ def chdir(path):
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('filename, rows, header, encoding, expected', [
-    ('spam.csv', ROWS, None, ENCODING, BYTES),
-    ('spam.csv', ROWS, HEADER, ENCODING, H_BYTES + BYTES),
-    (pathlib.Path('spam.csv'), ROWS, None, ENCODING, BYTES),
-    ('nonfilename', ROWS, None, None, (TypeError, r'need encoding')),
-])
+@pytest.mark.parametrize(
+    'filename, rows, header, encoding, expected',
+    [('spam.csv', ROWS, None, ENCODING, BYTES),
+     ('spam.csv', ROWS, HEADER, ENCODING, H_BYTES + BYTES),
+     (pathlib.Path('spam.csv'), ROWS, None, ENCODING, BYTES),
+     ('nonfilename', ROWS, None, None, (TypeError, r'need encoding'))])
 def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected):
     if sys.version_info < (3, 6):
         tmp_path = pathlib.Path(str(tmp_path))
@@ -243,18 +241,18 @@ def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('rows, header, encoding, hash_name, expected', [
-    (ROWS, None, ENCODING, 'sha256', 'c793b37cb2008e5591d127db8232085e'
-                                     '64944cae5315ca886f57988343f5b111'),
-    (ROWS, HEADER, ENCODING, 'sha256', 'ddbbcd4f1b15f3834f5a9ee59a6ee7837'
-                                       '7474df6d9b017216b89129ecc394608'),
-    (ROWS, None, ENCODING, 'md5', '67bac4eb7cd16ea8eaf454eafa559d34'),
-    (ROWS, None, 'utf-16', 'sha1', {'little': 'b0e0578b8149619569a4f56a3e6d05fed7de788f',
-                                    'big': 'cdb41df63c3c5e87ce4c87cfa6058b2e81c40112'}[sys.byteorder]),
-    (ROWS, None, 'utf-16-le', 'sha1', '3f49d7d103251f7d4db79ca6eac67f239c71327a'),
-    (ROWS, None, 'utf-16-be', 'sha1', '69e6b3af0972e350bbc7f6dd9bb92f13d2e9fee0'),
-    (ROWS, None, None, 'sha256', (TypeError, r'need encoding')),
-])
+@pytest.mark.parametrize(
+    'rows, header, encoding, hash_name, expected',
+    [(ROWS, None, ENCODING, 'sha256', 'c793b37cb2008e5591d127db8232085e'
+                                      '64944cae5315ca886f57988343f5b111'),
+     (ROWS, HEADER, ENCODING, 'sha256', 'ddbbcd4f1b15f3834f5a9ee59a6ee7837'
+                                        '7474df6d9b017216b89129ecc394608'),
+     (ROWS, None, ENCODING, 'md5', '67bac4eb7cd16ea8eaf454eafa559d34'),
+     (ROWS, None, 'utf-16', 'sha1', {'little': 'b0e0578b8149619569a4f56a3e6d05fed7de788f',
+                                     'big': 'cdb41df63c3c5e87ce4c87cfa6058b2e81c40112'}[sys.byteorder]),
+     (ROWS, None, 'utf-16-le', 'sha1', '3f49d7d103251f7d4db79ca6eac67f239c71327a'),
+     (ROWS, None, 'utf-16-be', 'sha1', '69e6b3af0972e350bbc7f6dd9bb92f13d2e9fee0'),
+     (ROWS, None, None, 'sha256', (TypeError, r'need encoding'))])
 def test_write_csv_hash(rows, header, encoding, hash_name, expected):
     kwargs = {'header': header, 'encoding': encoding}
     hashsum = hashlib.new(hash_name)
@@ -272,10 +270,10 @@ def test_write_csv_hash(rows, header, encoding, hash_name, expected):
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('rows, header, encoding, hash_name', [
-    (ROWS, HEADER, ENCODING, 'sha256'),
-    (ROWS, HEADER, 'utf-16', 'sha1'),
-])
+@pytest.mark.parametrize(
+    'rows, header, encoding, hash_name',
+    [(ROWS, HEADER, ENCODING, 'sha256'),
+     (ROWS, HEADER, 'utf-16', 'sha1')])
 def test_write_csv_equivalence(tmp_path, rows, header, encoding, hash_name):
     if sys.version_info < (3, 6):
         tmp_path = pathlib.Path(str(tmp_path))
@@ -297,11 +295,11 @@ def test_write_csv_equivalence(tmp_path, rows, header, encoding, hash_name):
 
 
 @pytest.csv23.py3only
-@pytest.mark.parametrize('filename, open_module, raw, encoding, rows', [
-    ('spam.csv.bz2', 'bz2', BYTES, ENCODING, ROWS),
-    ('spam.csv.gz', 'gzip', BYTES, ENCODING, ROWS),
-    ('spam.csv.xz', 'lzma', BYTES, ENCODING, ROWS),
-])
+@pytest.mark.parametrize(
+    'filename, open_module, raw, encoding, rows',
+    [('spam.csv.bz2', 'bz2', BYTES, ENCODING, ROWS),
+     ('spam.csv.gz', 'gzip', BYTES, ENCODING, ROWS),
+     ('spam.csv.xz', 'lzma', BYTES, ENCODING, ROWS)])
 @pytest.csv23.py3only
 def test_roundtrip_csv_autocompress(tmp_path, filename, open_module,
                                     raw, encoding, rows):

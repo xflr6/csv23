@@ -1,4 +1,4 @@
-# shortcuts.py - overloaded functions (Python 3 only)
+"""Overloaded functions (Python 3 only)."""
 
 import functools
 import io

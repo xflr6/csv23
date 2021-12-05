@@ -1,5 +1,3 @@
-# _workarounds.py
-
 import csv
 import io
 import warnings

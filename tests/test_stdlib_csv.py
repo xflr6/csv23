@@ -1,4 +1,4 @@
-# test_stdlib_csv.py - verify stdlib csv behaviour for workarounds
+"""Verify stdlib csv behaviour for workarounds."""
 
 import csv
 import io

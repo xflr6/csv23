@@ -1,4 +1,4 @@
-# writers.py - re/encoding csv.writer wrappers
+"""Re/encoding csv.writer wrappers."""
 
 from __future__ import unicode_literals
 

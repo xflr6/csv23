@@ -1,4 +1,4 @@
-# test_rowtype.py - test rowtype argument for openers
+"""Test rowtype argument for openers."""
 
 from __future__ import unicode_literals
 

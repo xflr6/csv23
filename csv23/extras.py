@@ -1,4 +1,4 @@
-# extras.py - namedtuple reader/writer
+"""collections.namedtuple reader/writer."""
 
 from __future__ import unicode_literals
 

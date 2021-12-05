@@ -1,5 +1,3 @@
-# test_extras.py
-
 from __future__ import unicode_literals
 
 import collections
@@ -33,14 +31,14 @@ def test_NamedTupleReader_empty():  # noqa: N802
         next(reader)
 
 
-@pytest.mark.parametrize('header, match', [
-    ('1spam,eggs\r\n', r'start with a number|valid identifiers'),  # noqa: N802
-    ('spam spam,eggs\r\n', r'alphanumeric|valid identifiers'),
-    ('spam.spam,eggs\r\n', r'alphanumeric|valid identifiers'),
-    ('spam-spam,eggs\r\n', r'alphanumeric|valid identifiers'),
-    ('class,eggs,\r\n', r'keyword'),
-    ('_spam,eggs\r\n', r'underscore'),
-])
+@pytest.mark.parametrize(
+    'header, match',
+    [('1spam,eggs\r\n', r'start with a number|valid identifiers'),  # noqa: N802
+     ('spam spam,eggs\r\n', r'alphanumeric|valid identifiers'),
+     ('spam.spam,eggs\r\n', r'alphanumeric|valid identifiers'),
+     ('spam-spam,eggs\r\n', r'alphanumeric|valid identifiers'),
+     ('class,eggs,\r\n', r'keyword'),
+     ('_spam,eggs\r\n', r'underscore')])
 def test_NamedTupleReader_invalid_fieldname(header, match):
     reader = NamedTupleReader([header, '1,2\r\n'])
     with pytest.raises(ValueError, match=match):
@@ -83,10 +81,10 @@ def test_NamedTupleReader_row_name(row_name='Spam'):  # noqa: N802
 Row = collections.namedtuple('Row', ['column_1', 'column_2'])
 
 
-@pytest.mark.parametrize('rows, lines', [
-    ([Row('spam', 'spam spam'), Row('eggs', 'eggs, eggs')],  # noqa: N802
-     ['column_1,column_2\r\n', 'spam,spam spam\r\n', 'eggs,"eggs, eggs"\r\n'])
-])
+@pytest.mark.parametrize(
+    'rows, lines',
+    [([Row('spam', 'spam spam'), Row('eggs', 'eggs, eggs')],  # noqa: N802
+      ['column_1,column_2\r\n', 'spam,spam spam\r\n', 'eggs,"eggs, eggs"\r\n'])])
 def test_NamedTupleWriter(mocker, rows, lines):
     mock_open = mocker.mock_open()
     with mock_open('spam.csv', 'w') as f:

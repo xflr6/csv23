@@ -1,4 +1,4 @@
-# test_dialect.py - test dialect argument for readers and writers
+"""Test dialect argument for readers and writers."""
 
 from __future__ import unicode_literals
 
@@ -9,33 +9,27 @@ import pytest
 from csv23.readers import UnicodeBytesReader
 from csv23.writers import UnicodeBytesWriter
 
-ATTRS = (
-    'delimiter', 'lineterminator',
-    'quoting', 'quotechar', 'doublequote',
-    'escapechar',
-    'skipinitialspace',
-    'strict',
-)
+ATTRS = ('delimiter', 'lineterminator',
+         'quoting', 'quotechar', 'doublequote',
+         'escapechar',
+         'skipinitialspace',
+         'strict')
 
-EXCEL = {
-    'delimiter': u',',
-    'quoting': csv.QUOTE_MINIMAL,
-    'quotechar': u'"',
-    'doublequote': True,
-    'escapechar': None,
-}
+EXCEL = {'delimiter': u',',
+         'quoting': csv.QUOTE_MINIMAL,
+         'quotechar': u'"',
+         'doublequote': True,
+         'escapechar': None}
 
 EXCEL_TAB = dict(EXCEL, delimiter=u'\t')
 
-ARGS_FORMAT_DIALECT = [
-    ([], {}, csv.excel),
-    ([None], {}, csv.excel),
-    (['excel'], {}, csv.excel),
-    ([], EXCEL, csv.excel),
-    (['excel-tab'], {}, csv.excel_tab),
-    ([csv.excel_tab], {}, csv.excel_tab),
-    ([], EXCEL_TAB, csv.excel_tab),
-]
+ARGS_FORMAT_DIALECT = [([], {}, csv.excel),
+                       ([None], {}, csv.excel),
+                       (['excel'], {}, csv.excel),
+                       ([], EXCEL, csv.excel),
+                       (['excel-tab'], {}, csv.excel_tab),
+                       ([csv.excel_tab], {}, csv.excel_tab),
+                       ([], EXCEL_TAB, csv.excel_tab)]
 
 
 @pytest.mark.parametrize('args, fmtparams, expected', ARGS_FORMAT_DIALECT)

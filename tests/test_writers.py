@@ -1,5 +1,3 @@
-# test_writers.py
-
 from __future__ import unicode_literals
 
 import csv
@@ -23,18 +21,24 @@ SLASH = {'quoting': csv.QUOTE_NONE, 'escapechar': u'\\'}
 
 ASCII = {'dialect': 'ascii'}
 
-ROW_FORMAT_LINE = [
-    (['spam', 'spam spam', 'eggs, eggs'], EXCEL, 'spam,spam spam,"eggs, eggs"\r\n'),
-    (['spam\n eggs', '"spam"', 'eggs "eggs" eggs'], EXCEL, '"spam\n eggs","""spam""","eggs ""eggs"" eggs"\r\n'),
-    (['sp\u00e4m', '\u00ebggs'], EXCEL, 'sp\u00e4m,\u00ebggs\r\n'),
-    (['sp\u00e5m', '\u20acggs'], EXCEL, 'sp\u00e5m,\u20acggs\r\n'),
-    (['spam', 'e\U0001d11e\U0001d11es'], EXCEL, 'spam,e\U0001d11e\U0001d11es\r\n'),
-    (['spam\\eggs'], QSLASH, ('"spam\\\\eggs"\r\n' if sys.version_info < (3, 10)
-                              # https://github.com/xflr6/csv23/issues/6
-                              else 'spam\\\\eggs\r\n')),
-    (['spam\\eggs'], SLASH, 'spam\\\\eggs\r\n'),
-    (['spam', 'spam spam', 'eggs, eggs'], ASCII, 'spam\x1fspam spam\x1feggs, eggs\x1e'),
-]
+ROW_FORMAT_LINE = [(['spam', 'spam spam', 'eggs, eggs'], EXCEL,
+                    'spam,spam spam,"eggs, eggs"\r\n'),
+                   (['spam\n eggs', '"spam"', 'eggs "eggs" eggs'], EXCEL,
+                    '"spam\n eggs","""spam""","eggs ""eggs"" eggs"\r\n'),
+                   (['sp\u00e4m', '\u00ebggs'], EXCEL,
+                    'sp\u00e4m,\u00ebggs\r\n'),
+                   (['sp\u00e5m', '\u20acggs'], EXCEL,
+                    'sp\u00e5m,\u20acggs\r\n'),
+                   (['spam', 'e\U0001d11e\U0001d11es'], EXCEL,
+                    'spam,e\U0001d11e\U0001d11es\r\n'),
+                   (['spam\\eggs'], QSLASH,
+                    ('"spam\\\\eggs"\r\n' if sys.version_info < (3, 10)
+                     # https://github.com/xflr6/csv23/issues/6
+                     else 'spam\\\\eggs\r\n')),
+                   (['spam\\eggs'], SLASH,
+                    'spam\\\\eggs\r\n'),
+                   (['spam', 'spam spam', 'eggs, eggs'], ASCII,
+                    'spam\x1fspam spam\x1feggs, eggs\x1e')]
 
 
 @pytest.mark.parametrize('row, fmtparams, expected', ROW_FORMAT_LINE)
@@ -59,11 +63,12 @@ def test_open_writer(py2, filepath, encoding, row, fmtparams, expected, n=12):
     assert written == write_n
 
 
-@pytest.mark.parametrize('row, fmtparams, expected, match', [
-    (['spam', 'spam spam', 'eggs\x1f eggs'], ASCII,
-     csv.Error, r'need to escape'),
-    (['spam', 'spam spam', 'eggs\x1e eggs'], ASCII,
-     csv.Error, r'need to escape')])
+@pytest.mark.parametrize(
+    'row, fmtparams, expected, match',
+    [(['spam', 'spam spam', 'eggs\x1f eggs'], ASCII,
+      csv.Error, r'need to escape'),
+     (['spam', 'spam spam', 'eggs\x1e eggs'], ASCII,
+      csv.Error, r'need to escape')])
 def test_open_writer_fail(filepath, encoding, row, fmtparams, expected, match):
     filename = str(filepath)
     with open_writer(filename, encoding=encoding, **fmtparams) as w:

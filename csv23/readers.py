@@ -1,4 +1,4 @@
-# readers.py - re/decoding csv.reader wrappers, convenience context manager
+"""Re/decoding csv.reader wrappers, convenience context manager."""
 
 from __future__ import unicode_literals
 

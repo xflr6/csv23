@@ -1,4 +1,4 @@
-# test_encoding.py - test endoding argument for openers, readers, and writers
+"""Test endoding argument for openers, readers, and writers."""
 
 from __future__ import unicode_literals
 
@@ -15,10 +15,10 @@ def stream(mocker):
     return mocker.sentinel.stream
 
 
-@pytest.mark.parametrize('func, cls_key, mode', [
-    (open_reader, ('reader', 'list', 'text'), 'r'),
-    (open_writer, ('writer', 'list', 'text'), 'w'),
-])
+@pytest.mark.parametrize(
+    'func, cls_key, mode',
+    [(open_reader, ('reader', 'list', 'text'), 'r'),
+     (open_writer, ('writer', 'list', 'text'), 'w')])
 def test_open_func_encoding_none(mocker, mock_open, stream,
                                  func, cls_key, mode, nonclean_none_encoding):
     mock_cls = mocker.create_autospec(csv23._dispatch.REGISTRY[cls_key])
@@ -30,10 +30,10 @@ def test_open_func_encoding_none(mocker, mock_open, stream,
                                       mode=mode, newline='')
 
 
-@pytest.mark.parametrize('func, cls_path', [
-    (reader, 'csv23.readers.UnicodeBytesReader'),
-    (writer, 'csv23.writers.UnicodeBytesWriter'),
-])
+@pytest.mark.parametrize(
+    'func, cls_path',
+    [(reader, 'csv23.readers.UnicodeBytesReader'),
+     (writer, 'csv23.writers.UnicodeBytesWriter')])
 def test_func_encoding_none(mocker, stream, func, cls_path, none_encoding):
     mock_cls = mocker.patch(cls_path, autospec=True)
     assert func(stream, encoding=None) is mock_cls.return_value

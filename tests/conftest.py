@@ -1,4 +1,4 @@
-# conftest.py - pytest configuration and shared fixtures
+"""pytest configuration and shared fixtures."""
 
 from __future__ import unicode_literals
 

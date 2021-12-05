@@ -1,4 +1,4 @@
-# openers.py - convenience context managers
+"""Convenience context managers."""
 
 # TODO: consider open_reader(rowtype='OrderedDict') (Python 3.6 compat)
 

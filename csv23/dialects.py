@@ -1,4 +1,4 @@
-# dialects.py - backport unix_dialect
+"""Backport unix_dialect."""
 
 from __future__ import unicode_literals
 
