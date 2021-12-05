@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='csv23',
-    version='0.3.3.dev0',
+    version='0.3.3',
     author='Sebastian Bank',
     author_email='sebastian.bank@uni-leipzig.de',
     description='Python 2/3 unicode CSV compatibility layer',

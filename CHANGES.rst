@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-Version 0.3.3 (in development)
-------------------------------
+Version 0.3.3
+-------------
 
 Drop Python 3.5 support and tag Python 3.9 and 3.10 support.
 
