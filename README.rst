@@ -148,7 +148,7 @@ This package is distributed under the `MIT license`_.
 .. |Supported Python| image:: https://img.shields.io/pypi/pyversions/csv23.svg
     :target: https://pypi.org/project/csv23/
     :alt: Supported Python Versions
-.. |Wheel| image:: https://img.shields.io/pypi/csv23/graphviz.svg
+.. |Wheel| image:: https://img.shields.io/pypi/wheel/csv23.svg
     :target: https://pypi.org/project/csv23/#files
 
 .. |Build| image:: https://github.com/xflr6/csv23/actions/workflows/build.yaml/badge.svg?branch=master
