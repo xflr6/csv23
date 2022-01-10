@@ -14,7 +14,7 @@ setup(
         'Documentation': 'https://csv23.readthedocs.io',
         'Changelog': 'https://csv23.readthedocs.io/en/latest/changelog.html',
         'Issue Tracker': 'https://github.com/xflr6/csv23/issues',
-        'CI': 'https://github.com/glottolog/treedb/actions',
+        'CI': 'https://github.com/glottolog/csv23/actions',
         'Coverage': 'https://codecov.io/gh/xflr6/csv23',
     },
     packages=find_packages(),
