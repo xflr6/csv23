@@ -45,16 +45,7 @@ else:
     import operator
     import pathlib
     import platform
-
-    if sys.version_info < (3, 7):
-        import contextlib
-
-        @contextlib.contextmanager
-        def nullcontext(enter_result=None):
-            yield enter_result
-
-    else:
-        from contextlib import nullcontext
+    from contextlib import nullcontext
 
     # workaround https://foss.heptapod.net/pypy/pypy/issues/3217
     _get_update_bytes = (operator.methodcaller('getvalue')
