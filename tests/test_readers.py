@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import csv
 import pytest
+import warnings
 
 from csv23.openers import open_reader
 from csv23.readers import reader, UnicodeTextReader, UnicodeBytesReader
@@ -60,12 +61,15 @@ def test_reader(py2, inner_encoding, line, fmtparams, expected, n=12):
             line = line.encode(encoding)
         except UnicodeEncodeError:
             pytest.skip('impossible combination of line and encoding')
-    with pytest.warns(None) as record:
-        r = reader([line] * n, encoding=encoding, **fmtparams)
+
     if py2 and fmtparams == SLASH:
+        with pytest.warns(UserWarning) as record:
+            r = reader([line] * n, encoding=encoding, **fmtparams)
         assert len(record) == 1 and 'issue31590' in record[0].message.args[0]
     else:
-        assert not record
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            r = reader([line] * n, encoding=encoding, **fmtparams)
     assert isinstance(r, expected_type)
     assert hasattr(r, 'next' if py2 else '__next__')
     assert iter(r) is r
