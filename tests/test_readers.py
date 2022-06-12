@@ -40,14 +40,16 @@ def test_open_reader(py2, filepath, encoding, line, fmtparams, expected, n=12):
 
     filepath.write_bytes(data)
 
-    with pytest.warns(None) as record:
-        with open_reader(str(filepath), encoding=encoding, **fmtparams) as r:
-            assert list(r) == [expected] * n
-
     if py2 and fmtparams == SLASH:
-        assert len(record) == 1 and 'issue31590' in record[0].message.args[0]
+        with pytest.warns(UserWarning) as record:
+            with open_reader(str(filepath), encoding=encoding, **fmtparams) as r:
+                assert list(r) == [expected] * n
+                assert len(record) == 1 and 'issue31590' in record[0].message.args[0]
     else:
-        assert not record
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            with open_reader(str(filepath), encoding=encoding, **fmtparams) as r:
+                assert list(r) == [expected] * n
 
 
 @pytest.mark.parametrize('line, fmtparams, expected', LINE_FORMAT_ROW)
