@@ -174,7 +174,7 @@ def test_write_csv_write(rows, header, encoding, expected):
      (ROWS, HEADER, ENCODING, H_BYTES + BYTES),
      (ROWS, None, None, (TypeError,
                          (r'bytes-like object is required'
-                          r'|does not support the buffer interface'))])
+                          r'|does not support the buffer interface')))])
 def test_write_csv_zipfile(tmp_path, rows, header, encoding, expected):
     if sys.version_info < (3, 6):
         tmp_path = pathlib.Path(str(tmp_path))
