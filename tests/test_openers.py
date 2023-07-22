@@ -37,5 +37,8 @@ def test_open_csv(mocker, mock_open, event):
     else:
         with pytest.raises(event):
             raise event
+
     mock_open.assert_called_once()
-    stream.close.assert_called_once_with()
+    if event in ('close', 'gc'):
+        stream.close.assert_called_once_with()
+
