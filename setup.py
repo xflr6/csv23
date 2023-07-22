@@ -19,7 +19,7 @@ setup(
     },
     packages=find_packages(),
     platforms='any',
-    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*',
+    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,!=3.7.*',
     install_requires=[
         'mock; python_version < "3"',
     ],
@@ -29,6 +29,7 @@ setup(
         'docs': ['sphinx>=5', 'sphinx-rtd-theme'],
     },
     long_description=io.open('README.rst', encoding='utf-8').read(),
+    long_description_content_type='text/x-rst',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -38,7 +39,6 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',

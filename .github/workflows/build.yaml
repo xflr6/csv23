@@ -21,15 +21,13 @@ jobs:
             os: ubuntu-latest
           - python-version: "3.8"
             os: ubuntu-latest
-          - python-version: "3.7"
-            os: ubuntu-latest
           - python-version: "2.7"
+            os: ubuntu-latest
+          - python-version: pypy-3.10
             os: ubuntu-latest
           - python-version: pypy-3.9
             os: ubuntu-latest
           - python-version: pypy-3.8
-            os: ubuntu-latest
-          - python-version: pypy-3.7
             os: ubuntu-latest
     steps:
       - name: Checkout repo
