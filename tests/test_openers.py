@@ -2,13 +2,22 @@ from __future__ import unicode_literals
 
 import csv
 import itertools
+import sys
 
 import pytest
 
 from csv23.openers import _open_csv
 
 
-@pytest.mark.parametrize('event', ['close', 'gc', RuntimeError])
+xfail_pypy = pytest.mark.xfail(sys.implementation.name == 'pypy',
+                               reason='missing .close() on gc under PyPy',
+                               raises=AssertionError)
+
+
+@pytest.mark.parametrize('event',
+                         ['close',
+                          pytest.param('gc', marks=[xfail_pypy]),
+                          RuntimeError])
 def test_open_csv(mocker, mock_open, event):
     stream = mock_open.return_value
     csv_func = mocker.create_autospec(csv.reader, return_value=itertools.count())
