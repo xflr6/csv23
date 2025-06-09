@@ -2,10 +2,12 @@ Changelog
 =========
 
 
-Version 0.3.5 (in development)
-------------------------------
+Version 0.4 (in development)
+----------------------------
 
 Switch to pyproject.toml.
+
+Drop Python 2 support.
 
 Drop Python 3.7 and 3.8 support and tag Python 3.11, 3.12, and 3.13 support.
 

@@ -12,6 +12,13 @@ newer unicode-based interface.
 
 It uses ``utf-8`` as default encoding everywhere.
 
+.. important::
+
+  Version ``0.3.4`` of this package is the **last version** that supported
+  **Python 2**.
+  Later (Python 3 only) versions are maintained for dependents relying on
+  additional features included in this library.
+
 
 Improvements
 ------------
@@ -104,7 +111,7 @@ ends in one of ``'.bz2'``, ``'.gz'``, and ``'.xz'``.
 Installation
 ------------
 
-This package runs under Python 2.7, and 3.9+, use pip_ to install:
+This package runs under Python 3.9+, use pip_ to install:
 
 .. code:: bash
 

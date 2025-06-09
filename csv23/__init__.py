@@ -35,7 +35,7 @@ __all__ += ['QUOTE_MINIMAL', 'QUOTE_ALL', 'QUOTE_NONNUMERIC', 'QUOTE_NONE',
             'unregister_dialect']
 
 __title__ = 'csv23'
-__version__ = '0.3.5.dev0'
+__version__ = '0.4.dev0'
 __author__ = 'Sebastian Bank <sebastian.bank@uni-leipzig.de>'
 __license__ = 'MIT, see LICENSE.txt'
 __copyright__ = 'Copyright (c) 2018-2022 Sebastian Bank'
