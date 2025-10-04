@@ -2,13 +2,13 @@
 
 """Run the tests with https://pytest.org."""
 
-from __future__ import print_function
-
-import os
+import pathlib
 import platform
 import sys
 
 import pytest
+
+SELF = pathlib.Path(__file__)
 
 ARGS = [#'--skip-exe',
         #'--only-exe',
@@ -19,14 +19,12 @@ ARGS = [#'--skip-exe',
         #'-W', 'error',
        ]
 
-if platform.system() == 'Windows':
-    if 'idlelib' in sys.modules:
-        ARGS += ['--capture=sys', '--color=no']
-    elif sys.version_info.major == 2 and 'win_unicode_console' in sys.modules:
-        ARGS.append('--capture=sys')
+if platform.system() == 'Windows' and 'idlelib' in sys.modules:
+    ARGS += ['--capture=sys', '--color=no']
 
-print('run', [os.path.basename(__file__)] + sys.argv[1:])
+
+print('run', [SELF.name] + sys.argv[1:])
 args = ARGS + sys.argv[1:]
 
-print('pytest.main({!r})'.format(args))
+print(f'pytest.main({args!r})')
 sys.exit(pytest.main(args))
