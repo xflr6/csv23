@@ -18,6 +18,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
 ]
 
 [project.urls]
@@ -69,7 +70,7 @@ branch = false
 [tool.tox]
 legacy_tox_ini = """
   [tox]
-  envlist = py{313,312,311,310,py3}
+  envlist = py{314,313,312,311,310,py3}
   skip_missing_interpreters = true
 
   [testenv]
