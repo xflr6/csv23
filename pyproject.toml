@@ -30,7 +30,7 @@ CI = "https://github.com/xflr6/csv23/actions"
 Coverage = "https://codecov.io/gh/xflr6/csv23"
 
 [project.optional-dependencies]
-dev = ["build", "wheel", "twine", "flake8", "Flake8-pyproject", "pep8-naming", "tox>=3"]
+dev = ["build", "wheel", "twine", "mypy", "flake8", "Flake8-pyproject", "pep8-naming", "tox>=3"]
 test = ["mock>=3", "pytest>=4.6", "pytest-mock>=2", "pytest-cov"]
 docs = ["sphinx", "sphinx-rtd-theme"]
 
@@ -43,6 +43,9 @@ platforms = ["any"]
 
 [tool.setuptools.dynamic]
 version = { attr = "csv23.__version__" }
+
+[tool.mypy]
+packages = ["csv23"]
 
 [tool.flake8]
 exclude = ["docs", ".tox"]

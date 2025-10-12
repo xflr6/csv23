@@ -80,7 +80,7 @@ class Writer(object):
         return self._writer.dialect
 
 
-def wrapped_writerow(method, escapechar, type_=unicode if PY2 else str):
+def wrapped_writerow(method, escapechar, type_=unicode if PY2 else str):  # type: ignore[name-defined]  # noqa: E501
     old, new = escapechar, escapechar * 2
 
     def writerow_func(row):
