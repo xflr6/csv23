@@ -46,6 +46,11 @@ version = { attr = "csv23.__version__" }
 
 [tool.mypy]
 packages = ["csv23"]
+# https://mypy.readthedocs.io/en/stable/existing_code.html#introduce-stricter-options
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
 
 [tool.flake8]
 exclude = ["docs", ".tox"]
