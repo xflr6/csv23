@@ -51,6 +51,8 @@ warn_unused_configs = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 strict_equality = true
+#check_untyped_defs = true
+disallow_subclassing_any = true
 
 [tool.flake8]
 exclude = ["docs", ".tox"]
