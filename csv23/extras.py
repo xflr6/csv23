@@ -3,8 +3,9 @@
 from __future__ import unicode_literals
 
 import collections
+import functools
 
-from ._common import PY2, DIALECT, lazyproperty
+from ._common import PY2, DIALECT
 from ._dispatch import register_reader, register_writer
 from . import readers
 from . import writers
@@ -71,7 +72,7 @@ class NamedTupleReader(object):
         next = __next__
         del __next__
 
-    @lazyproperty
+    @functools.cached_property
     def _make_row(self):
         assert self._row_cls is None
         try:
