@@ -41,35 +41,16 @@ version = { attr = "csv23.__version__" }
 
 [dependency-groups]
 dev = [  # $ pip install -e . --group dev
-  "build",
-  "tox",
-  "twine",
-  "wheel",
+  "build", "tox", "twine", "wheel",
   { include-group = "docs" },
   { include-group = "lint" },
   { include-group = "test" },
   { include-group = "typing" },
 ]
-docs = [
-  "sphinx",
-  "sphinx-rtd-theme",
-]
-lint = [
-  "flake8",
-  "Flake8-pyproject",
-  "pep8-naming",
-]
-
-test = [
-  "coverage",
-  "mock>=3",
-  "pytest>=4.6",
-  "pytest-cov",
-  "pytest-mock>=2",
-]
-typing = [
-  "mypy",
-]
+docs = ["sphinx", "sphinx-rtd-theme"]
+lint = ["flake8", "Flake8-pyproject", "pep8-naming"]
+test = ["coverage", "mock>=4", "pytest>=8", "pytest-cov", "pytest-mock>=3"]
+typing = ["mypy"]
 
 [tool.mypy]
 packages = ["csv23"]
@@ -82,18 +63,18 @@ strict_equality = true
 disallow_subclassing_any = true
 
 [tool.flake8]
-exclude = ["docs", ".tox"]
+exclude = [".tox", "build", "docs"]
 ignore = ["E126", "E128", "W503"]
 max-line-length = 120
 
 [tool.pytest.ini_options]
-minversion = "4.6"
+minversion = "8"
 testpaths = ["csv23", "tests"]
 addopts = [
   "--doctest-modules",
   "--doctest-glob='*.rst'", "--ignore=docs/conf.py",
   "--cov", "--cov-report=term", "--cov-report=html",
-  "--strict-markers",
+  "--strict-config", "--strict-markers",
 ]
 mock_use_standalone_module = true
 log_cli_level = "WARNING"
