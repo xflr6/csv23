@@ -119,8 +119,7 @@ def test_read_csv_zipfile(tmp_path, raw, encoding, expected):
 
     archive = tmp_path / 'spam.zip'
     filename = 'spam.csv'
-    with zipfile.ZipFile(archive, 'w') as z,\
-         z.open(filename, 'w') as f:
+    with zipfile.ZipFile(archive, 'w') as z, z.open(filename, 'w') as f:
         f.write(raw)
 
     assert archive.exists()
@@ -128,8 +127,7 @@ def test_read_csv_zipfile(tmp_path, raw, encoding, expected):
 
     kwargs = {'encoding': encoding, 'as_list': True}
 
-    with zipfile.ZipFile(archive) as z,\
-         z.open(filename) as f:
+    with zipfile.ZipFile(archive) as z, z.open(filename) as f:
         assert z.namelist() == [filename]
         z.read(filename) == raw
         if isinstance(expected, tuple):
@@ -183,8 +181,7 @@ def test_write_csv_zipfile(tmp_path, rows, header, encoding, expected):
 
     archive = tmp_path / 'spam.zip'
     filename = 'spam.csv'
-    with zipfile.ZipFile(archive, 'w') as z,\
-         z.open(filename, 'w') as f:
+    with zipfile.ZipFile(archive, 'w') as z, z.open(filename, 'w') as f:
         if encoding is None:
             with pytest.raises(expected[0], match=expected[1]):
                 write_csv(f, rows, **kwargs)

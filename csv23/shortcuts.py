@@ -3,7 +3,6 @@
 import functools
 import io
 import itertools
-import sys
 import warnings
 
 from ._common import PY2
@@ -52,9 +51,12 @@ else:
                          if platform.python_implementation() == 'PyPy' else
                          operator.methodcaller('getbuffer'))
 
-    import builtins, bz2, gzip, lzma
+    import builtins
+    import bz2
+    import gzip
+    import lzma
 
-    SUFFIX_OPEN_MODULE = {'.bz2':  bz2,
+    SUFFIX_OPEN_MODULE = {'.bz2': bz2,
                           '.gz': gzip,
                           '.xz': lzma}
 

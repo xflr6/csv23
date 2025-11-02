@@ -38,7 +38,7 @@ class AsciiDelimited(csv.Dialect):
     """https://en.wikipedia.org/wiki/Delimiter#ASCII_Delimited_Text"""
 
     delimiter = str('\x1f')  # https://en.wikipedia.org/wiki/Unit_separator
-    quotechar = escapechar =  None
+    quotechar = escapechar = None
     doublequote = False
     skipinitialspace = False
     lineterminator = str('\x1e')  # https://en.wikipedia.org/wiki/Record_separator

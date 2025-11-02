@@ -50,4 +50,3 @@ def test_open_csv(mocker, mock_open, event):
     mock_open.assert_called_once()
     if event in ('close', 'gc'):
         stream.close.assert_called_once_with()
-

@@ -91,5 +91,5 @@ def test_NamedTupleWriter(mocker, rows, lines):
         writer = NamedTupleWriter(f)
         assert writer.dialect.delimiter == ','
         writer.writerows(rows)
-    expected = [mocker.call.write(l) for l in lines] + [mocker.call.close()]
+    expected = [mocker.call.write(l) for l in lines] + [mocker.call.close()]  # noqa: E741
     assert f.method_calls == expected
