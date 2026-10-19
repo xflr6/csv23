@@ -9,7 +9,7 @@ Switch to pyproject.toml.
 
 Drop Python 2 support.
 
-Drop Python 3.7, 3.8, and 3.9 support and tag Python 3.11, 3.12, 3.13, and 3.14 support.
+Drop Python 3.7, 3.8, 3.9, and 3.10 support and tag Python 3.11, 3.12, 3.13, 3.14, and 3.15 support.
 
 
 Version 0.3.4
