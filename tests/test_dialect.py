@@ -1,7 +1,5 @@
 """Test dialect argument for readers and writers."""
 
-from __future__ import unicode_literals
-
 import csv
 
 import pytest

@@ -8,12 +8,7 @@ import zipfile
 
 import pytest
 
-if pytest.csv23.PY2:
-    import argparse
-    pathlib = argparse.Namespace(Path=lambda x: x)
-
-else:
-    import pathlib
+import pathlib
 
 from csv23.shortcuts import read_csv, write_csv
 
@@ -32,18 +27,6 @@ H_STRING = u'key,value\r\n'
 H_BYTES = b'key,value\r\n'
 
 
-@pytest.csv23.py2only
-def test_read_csv_py2():
-    with pytest.raises(NotImplementedError):
-        read_csv('spam.csv', encoding='utf-8')
-
-
-@pytest.csv23.py2only
-def test_write_csv_py2():
-    with pytest.raises(NotImplementedError):
-        write_csv('spam.csv', ROWS, header=None, encoding='utf-8')
-
-
 @pytest.mark.parametrize(
     'src, encoding, expected',
     [(BYTES, ENCODING, ROWS),
@@ -52,11 +35,7 @@ def test_write_csv_py2():
      (STRING, None, ROWS),
      (H_STRING + STRING, None, [HEADER] + ROWS),
      (STRING, ENCODING, (TypeError, r'bytes-like object expected'))])
-@pytest.csv23.py3only
 def test_read_csv_iobase(tmp_path, src, encoding, expected):
-    if sys.version_info < (3, 6):
-        tmp_path = pathlib.Path(str(tmp_path))
-
     buf = (io.BytesIO if isinstance(src, bytes) else io.StringIO)(src)
 
     kwargs = {'encoding': encoding, 'as_list': True}
@@ -89,11 +68,7 @@ def test_read_csv_iobase(tmp_path, src, encoding, expected):
     [(BYTES, ENCODING, ROWS),
      (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
      (BYTES, None, (TypeError, r'need encoding'))])
-@pytest.csv23.py3only
 def test_read_csv_filename(tmp_path, raw, encoding, expected):
-    if sys.version_info < (3, 6):
-        tmp_path = pathlib.Path(str(tmp_path))
-
     target = tmp_path / 'spam.csv'
     target.write_bytes(raw)
 
@@ -107,16 +82,12 @@ def test_read_csv_filename(tmp_path, raw, encoding, expected):
     assert read_csv(target, **kwargs) == expected
 
 
-@pytest.csv23.py3only  # unavailable in PY2
 @pytest.mark.parametrize(
     'raw, encoding, expected',
     [(BYTES, ENCODING, ROWS),
      (H_BYTES + BYTES, ENCODING, [HEADER] + ROWS),
      (BYTES, None, (TypeError, r'need encoding'))])
 def test_read_csv_zipfile(tmp_path, raw, encoding, expected):
-    if sys.version_info < (3, 6):
-        tmp_path = pathlib.Path(str(tmp_path))
-
     archive = tmp_path / 'spam.zip'
     filename = 'spam.csv'
     with zipfile.ZipFile(archive, 'w') as z, z.open(filename, 'w') as f:
@@ -139,7 +110,6 @@ def test_read_csv_zipfile(tmp_path, raw, encoding, expected):
         assert read_csv(f, **kwargs) == expected
 
 
-@pytest.csv23.py3only
 @pytest.mark.parametrize(
     'rows, header, encoding, expected',
     [(ROWS, None, ENCODING, BYTES),
@@ -151,7 +121,6 @@ def test_write_csv_none(rows, header, encoding, expected):
     assert result == expected
 
 
-@pytest.csv23.py3only
 @pytest.mark.parametrize(
     'rows, header, encoding, expected',
     [(ROWS, None, ENCODING, BYTES),
@@ -165,7 +134,6 @@ def test_write_csv_write(rows, header, encoding, expected):
     assert result.getvalue() == expected
 
 
-@pytest.csv23.py3only  # unavailable in PY2
 @pytest.mark.parametrize(
     'rows, header, encoding, expected',
     [(ROWS, None, ENCODING, BYTES),
@@ -174,9 +142,6 @@ def test_write_csv_write(rows, header, encoding, expected):
                          (r'bytes-like object is required'
                           r'|does not support the buffer interface')))])
 def test_write_csv_zipfile(tmp_path, rows, header, encoding, expected):
-    if sys.version_info < (3, 6):
-        tmp_path = pathlib.Path(str(tmp_path))
-
     kwargs = {'header': header, 'encoding': encoding}
 
     archive = tmp_path / 'spam.zip'
@@ -207,7 +172,6 @@ def chdir(path):
         os.chdir(old)
 
 
-@pytest.csv23.py3only
 @pytest.mark.parametrize(
     'filename, rows, header, encoding, expected',
     [('spam.csv', ROWS, None, ENCODING, BYTES),
@@ -215,9 +179,6 @@ def chdir(path):
      (pathlib.Path('spam.csv'), ROWS, None, ENCODING, BYTES),
      ('nonfilename', ROWS, None, None, (TypeError, r'need encoding'))])
 def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected):
-    if sys.version_info < (3, 6):
-        tmp_path = pathlib.Path(str(tmp_path))
-
     kwargs = {'header': header, 'encoding': encoding}
 
     if isinstance(expected, tuple):
@@ -239,7 +200,6 @@ def test_write_csv_filename(tmp_path, filename, rows, header, encoding, expected
     assert target.read_bytes() == expected
 
 
-@pytest.csv23.py3only
 @pytest.mark.parametrize(
     'rows, header, encoding, hash_name, expected',
     [(ROWS, None, ENCODING, 'sha256', 'c793b37cb2008e5591d127db8232085e'
@@ -268,15 +228,11 @@ def test_write_csv_hash(rows, header, encoding, hash_name, expected):
     assert result.hexdigest() == expected
 
 
-@pytest.csv23.py3only
 @pytest.mark.parametrize(
     'rows, header, encoding, hash_name',
     [(ROWS, HEADER, ENCODING, 'sha256'),
      (ROWS, HEADER, 'utf-16', 'sha1')])
 def test_write_csv_equivalence(tmp_path, rows, header, encoding, hash_name):
-    if sys.version_info < (3, 6):
-        tmp_path = pathlib.Path(str(tmp_path))
-
     make_hash = functools.partial(hashlib.new, hash_name)
 
     kwargs = {'header': header, 'encoding': encoding}
@@ -293,21 +249,16 @@ def test_write_csv_equivalence(tmp_path, rows, header, encoding, hash_name):
             == make_hash(r_filename).hexdigest())
 
 
-@pytest.csv23.py3only
 @pytest.mark.parametrize(
     'filename, open_module, raw, encoding, rows',
     [('spam.csv.bz2', 'bz2', BYTES, ENCODING, ROWS),
      ('spam.csv.gz', 'gzip', BYTES, ENCODING, ROWS),
      ('spam.csv.xz', 'lzma', BYTES, ENCODING, ROWS)])
-@pytest.csv23.py3only
 def test_roundtrip_csv_autocompress(tmp_path, filename, open_module,
                                     raw, encoding, rows):
-    if sys.version_info < (3, 6):
-        tmp_path = pathlib.Path(str(tmp_path))
-
     target = tmp_path / filename
 
-    filename = str(target) if sys.version_info < (3, 6) else target
+    filename = target
 
     import importlib
 
@@ -330,15 +281,10 @@ def test_roundtrip_csv_autocompress(tmp_path, filename, open_module,
     assert read_csv(filename, as_list=True, **kwargs) == rows
 
 
-@pytest.csv23.py3only
 def test_autocompress_warning(tmp_path):
-    if sys.version_info < (3, 6):
-        tmp_path = pathlib.Path(str(tmp_path))
-
     target = tmp_path / 'spam.csv.gz'
     target.touch()
 
-    filename = str(target) if sys.version_info < (3, 6) else target
-
+    filename = target
     with pytest.warns(UserWarning, match=r'suffix'):
         read_csv(filename)

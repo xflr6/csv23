@@ -1,7 +1,5 @@
 """Test endoding argument for openers, readers, and writers."""
 
-from __future__ import unicode_literals
-
 import pytest
 
 import csv23._dispatch

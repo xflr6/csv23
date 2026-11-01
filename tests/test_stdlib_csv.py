@@ -2,7 +2,6 @@
 
 import csv
 import io
-import sys
 
 import pytest
 
@@ -36,12 +35,12 @@ VALUES = ['spam, eggs',
 
 @pytest.mark.parametrize(', '.join(FORMATS[0]), FORMATS[1:])
 @pytest.mark.parametrize('value', VALUES)
-def test_csv_roundtrip(py2, quoting, quotechar, escapechar, doublequote, value):
+def test_csv_roundtrip(quoting, quotechar, escapechar, doublequote, value):
     csv_kwargs = {'quoting': quoting, 'quotechar': quotechar,
                   'escapechar': escapechar, 'doublequote': doublequote}
     row = expected = [value]
 
-    with io.BytesIO() if py2 else io.StringIO(newline='') as f:
+    with io.StringIO(newline='') as f:
         if quoting != csv.QUOTE_NONE and quotechar is None:
             with pytest.raises(TypeError, match=r'quotechar must be set'):
                 csv.writer(f, **csv_kwargs)
@@ -63,16 +62,6 @@ def test_csv_roundtrip(py2, quoting, quotechar, escapechar, doublequote, value):
         row = next(csv.reader(f, **csv_kwargs))
 
     if quoting != csv.QUOTE_NONE and escapechar is not None and escapechar in value:
-        # writer fails to escape escapechar
-        if sys.version_info < (3, 10):
-            assert row != expected
-            pytest.xfail(reason='https://bugs.python.org/issue12178')
-        else:
-            assert row == expected
-    elif py2 and quoting == csv.QUOTE_NONE and escapechar is not None and '\n' in value:
-        # reader fails to recognize escaped newline
-        assert row != expected
-        pytest.xfail(reason='https://bugs.python.org/issue31590')
-        # see also https://bugs.python.org/issue15927
+        assert row == expected
     else:
         assert row == expected

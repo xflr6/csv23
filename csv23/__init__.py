@@ -1,6 +1,4 @@
-# csv23 - python 2 uniocde csv compat adapted from stdlib recipe
-
-"""Python 2/3 unicode CSV compatibility layer and convenience functions."""
+"""Python 3 convenience functions."""
 
 # TODO: add csv.Sniffer
 

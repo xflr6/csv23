@@ -1,7 +1,5 @@
 """Test rowtype argument for openers."""
 
-from __future__ import unicode_literals
-
 import csv
 
 import pytest

@@ -1,10 +1,4 @@
-"""Backport unix_dialect."""
-
-from __future__ import unicode_literals
-
 import csv
-
-from ._common import PY2
 
 __all__ = ['unix_dialect', 'AsciiDelimited']
 
@@ -16,21 +10,7 @@ def register(name):
     return decorate
 
 
-if PY2:
-    @register(b'unix')
-    class unix_dialect(csv.Dialect):  # noqa: N801
-        """Describe the usual properties of Unix-generated CSV files."""
-
-        delimiter = b','
-        quotechar = b'"'
-        doublequote = True
-        skipinitialspace = False
-        lineterminator = b'\n'
-        quoting = csv.QUOTE_ALL
-
-
-else:
-    unix_dialect = csv.unix_dialect
+unix_dialect = csv.unix_dialect
 
 
 @register(str('ascii'))

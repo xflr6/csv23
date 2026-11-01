@@ -7,18 +7,13 @@
 - https://bugs.python.org/issue26158
 """
 
-from __future__ import unicode_literals
-
 import contextlib
 import importlib
 
 import pytest
 
 
-@pytest.mark.parametrize(
-    'module, cls',
-    [pytest.param('cStringIO', 'StringIO', marks=pytest.csv23.py2only),
-     ('io', 'BytesIO')])
+@pytest.mark.parametrize('module, cls', [('io', 'BytesIO')])
 def test_truncate_zero(module, cls):
     module = importlib.import_module(module)
     cls = getattr(module, cls)

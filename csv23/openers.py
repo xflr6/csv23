@@ -2,14 +2,10 @@
 
 # TODO: consider open_reader(rowtype='OrderedDict') (Python 3.6 compat)
 
-from __future__ import unicode_literals
-
 import contextlib
-import functools
 import io
 
-from ._common import (PY2, ENCODING, DIALECT, ROWTYPE,
-                      none_encoding, is_8bit_clean)
+from ._common import ENCODING, DIALECT, ROWTYPE, none_encoding
 from ._dispatch import get_reader, get_writer
 
 __all__ = ['open_reader', 'open_writer']
@@ -48,13 +44,8 @@ def open_reader(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, *
     """
     if encoding is None:
         encoding = none_encoding()
-    if PY2 and is_8bit_clean(encoding):  # avoid recoding
-        open_kwargs = {'mode': 'rb'}
-        reader_func = get_reader(rowtype, 'bytes')
-        reader_func = functools.partial(reader_func, encoding=encoding)
-    else:
-        open_kwargs = {'mode': 'r', 'encoding': encoding, 'newline': ''}
-        reader_func = get_reader(rowtype, 'text')
+    open_kwargs = {'mode': 'r', 'encoding': encoding, 'newline': ''}
+    reader_func = get_reader(rowtype, 'text')
     return _open_csv(filename, open_kwargs, reader_func, dialect, fmtparams)
 
 
@@ -91,13 +82,8 @@ def open_writer(filename, encoding=ENCODING, dialect=DIALECT, rowtype=ROWTYPE, *
     """
     if encoding is None:
         encoding = none_encoding()
-    if PY2 and is_8bit_clean(encoding):  # avoid recoding
-        open_kwargs = {'mode': 'wb'}
-        writer_func = get_writer(rowtype, 'bytes')
-        writer_func = functools.partial(writer_func, encoding=encoding)
-    else:
-        open_kwargs = {'mode': 'w', 'encoding': encoding, 'newline': ''}
-        writer_func = get_writer(rowtype, 'text')
+    open_kwargs = {'mode': 'w', 'encoding': encoding, 'newline': ''}
+    writer_func = get_writer(rowtype, 'text')
     if rowtype == 'dict' and 'fieldnames' not in fmtparams:
         raise TypeError("open_writer(rowtype='dict') requires a 'fieldnames' "
                         "keyword argument to be passed to csv.DictWriter")

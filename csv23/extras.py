@@ -1,11 +1,9 @@
 """collections.namedtuple reader/writer."""
 
-from __future__ import unicode_literals
-
 import collections
 import functools
 
-from ._common import PY2, DIALECT
+from ._common import DIALECT
 from ._dispatch import register_reader, register_writer
 from . import readers
 from . import writers
@@ -67,10 +65,6 @@ class NamedTupleReader(object):
         Usually you should call this as next(reader)."""
         make_row = self._make_row
         return make_row(next(self._reader))
-
-    if PY2:
-        next = __next__
-        del __next__
 
     @functools.cached_property
     def _make_row(self):

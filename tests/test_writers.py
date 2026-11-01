@@ -1,17 +1,10 @@
-from __future__ import unicode_literals
-
 import csv
 import io
-import sys
 
 import pytest
 
-from csv23._common import is_8bit_clean
 from csv23.openers import open_writer
-from csv23.writers import writer, UnicodeTextWriter, UnicodeBytesWriter
-
-if not pytest.csv23.PY2:
-    from csv23.writers import _UnicodeTextWriter
+from csv23.writers import writer, UnicodeBytesWriter
 
 EXCEL = {}
 
@@ -32,9 +25,7 @@ ROW_FORMAT_LINE = [(['spam', 'spam spam', 'eggs, eggs'], EXCEL,
                    (['spam', 'e\U0001d11e\U0001d11es'], EXCEL,
                     'spam,e\U0001d11e\U0001d11es\r\n'),
                    (['spam\\eggs'], QSLASH,
-                    ('"spam\\\\eggs"\r\n' if sys.version_info < (3, 10)
-                     # https://github.com/xflr6/csv23/issues/6
-                     else 'spam\\\\eggs\r\n')),
+                    'spam\\\\eggs\r\n'),
                    (['spam\\eggs'], SLASH,
                     'spam\\\\eggs\r\n'),
                    (['spam', 'spam spam', 'eggs, eggs'], ASCII,
@@ -42,13 +33,13 @@ ROW_FORMAT_LINE = [(['spam', 'spam spam', 'eggs, eggs'], EXCEL,
 
 
 @pytest.mark.parametrize('row, fmtparams, expected', ROW_FORMAT_LINE)
-def test_open_writer(py2, filepath, encoding, row, fmtparams, expected, n=12):
+def test_open_writer(filepath, encoding, row, fmtparams, expected, n=12):
     try:
         expected.encode(encoding)
     except UnicodeEncodeError:
         pytest.skip('impossible combination of row and encoding')
 
-    write_n = len(expected.encode(encoding) if py2 and is_8bit_clean(encoding) else expected)
+    write_n = len(expected)
 
     filename = str(filepath)
 
@@ -77,17 +68,11 @@ def test_open_writer_fail(filepath, encoding, row, fmtparams, expected, match):
 
 
 @pytest.mark.parametrize('row, fmtparams, expected', ROW_FORMAT_LINE)
-def test_writer(mocker, py2, filepath, inner_encoding,
+def test_writer(mocker, filepath, inner_encoding,
                 row, fmtparams, expected, n=12):
     encoding = inner_encoding
     if encoding is False:
-        if py2:
-            expected_type = UnicodeTextWriter
-        elif (sys.version_info < (3, 10) and fmtparams.get('escapechar')
-              and fmtparams.get('quoting', csv.QUOTE_MINIMAL) != csv.QUOTE_NONE):
-            expected_type = _UnicodeTextWriter
-        else:
-            expected_type = type(csv.writer(mocker.mock_open()()))
+        expected_type = type(csv.writer(mocker.mock_open()()))
         write_n = len(expected)
         file_encoding = 'utf-8'
         open_kwargs = {'mode': 'w', 'encoding': file_encoding, 'newline': ''}

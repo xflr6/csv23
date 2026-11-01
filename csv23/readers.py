@@ -1,13 +1,9 @@
 """Re/decoding csv.reader wrappers, convenience context manager."""
 
-from __future__ import unicode_literals
-
 import csv
 
-from ._common import (PY2, ENCODING, DIALECT,
-                      none_encoding, is_8bit_clean, csv_args)
+from ._common import ENCODING, DIALECT, none_encoding, is_8bit_clean
 from ._dispatch import register_reader
-from ._workarounds import warn_if_issue31590
 
 __all__ = ['reader', 'DictReader',
            'UnicodeTextReader', 'UnicodeBytesReader']
@@ -56,8 +52,7 @@ class DictReader(csv.DictReader):
 
     def __init__(self, f, fieldnames=None, restkey=None, restval=None,
                  dialect=DIALECT, encoding=False, **kwds):
-        # NOTE: csv.DictReader is an old-style class on PY2
-        csv.DictReader.__init__(self, [], fieldnames, restkey, restval)
+        super().__init__([], fieldnames, restkey, restval)
         self.reader = reader(f, dialect, encoding, **kwds)
 
 
@@ -66,7 +61,6 @@ class Reader(object):
 
     def __init__(self, stream, dialect=DIALECT, **kwargs):
         self._reader = csv.reader(stream, dialect, **kwargs)
-        warn_if_issue31590(self._reader)
 
     def __iter__(self):
         return self
@@ -83,47 +77,18 @@ class Reader(object):
 class UnicodeReader(Reader):
     """CSV reader yielding lists of :func:`py:unicode` strings (PY3: :class:`py3:str`)."""
 
-    if PY2:
-        def __init__(self, stream, dialect=DIALECT, **kwargs):
-            kwargs = csv_args(kwargs)
-            super(UnicodeReader, self).__init__(stream, dialect, **kwargs)
-
-        def next(self):
-            return map(self._decode, self._reader.next())
-
-    else:
-        def __next__(self):
-            return next(self._reader)
+    def __next__(self):
+        return next(self._reader)
 
 
-if PY2:
-    @register_reader('list', 'text')
-    class UnicodeTextReader(UnicodeReader):
-        """Unicode CSV reader for iterables of text (``unicode``) lines."""
-
-        def __init__(self, stream, dialect=DIALECT, **kwargs):
-            bytes_stream = (line.encode('utf-8') for line in stream)
-            super(UnicodeTextReader, self).__init__(bytes_stream, dialect, **kwargs)
-            self._decode = lambda s: unicode(s, 'utf-8')
+#: Unicode CSV reader for iterables of text (``str``) lines.
+UnicodeTextReader = csv.reader
+register_reader('list', 'text')(UnicodeTextReader)
 
 
-    @register_reader('list', 'bytes')
-    class UnicodeBytesReader(UnicodeReader):
-        """Unicode CSV reader for iterables of 8-bit clean encoded (``str``) lines."""
-
-        def __init__(self, stream, dialect=DIALECT, encoding=ENCODING, **kwargs):
-            super(UnicodeBytesReader, self).__init__(stream, dialect, **kwargs)
-            self._decode = lambda s: unicode(s, encoding)
-
-else:
-    #: Unicode CSV reader for iterables of text (``str``) lines.
-    UnicodeTextReader = csv.reader
-    register_reader('list', 'text')(UnicodeTextReader)
-
-
-    @register_reader('list', 'bytes')
-    class UnicodeBytesReader(UnicodeReader):
-        """Unicode CSV reader for iterables of 8-bit clean encoded (``bytes``) lines."""
-        def __init__(self, stream, dialect=DIALECT, encoding=ENCODING, **kwargs):
-            text_stream = (str(line, encoding) for line in stream)
-            super(UnicodeBytesReader, self).__init__(text_stream, dialect, **kwargs)
+@register_reader('list', 'bytes')
+class UnicodeBytesReader(UnicodeReader):
+    """Unicode CSV reader for iterables of 8-bit clean encoded (``bytes``) lines."""
+    def __init__(self, stream, dialect=DIALECT, encoding=ENCODING, **kwargs):
+        text_stream = (str(line, encoding) for line in stream)
+        super(UnicodeBytesReader, self).__init__(text_stream, dialect, **kwargs)
