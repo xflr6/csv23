@@ -5,7 +5,7 @@ import pytest
 from csv23.extras import NamedTupleReader, NamedTupleWriter
 
 
-def test_NamedTupleReader():  # noqa: N802
+def test_named_tuple_reader():  # noqa: N802
     reader = NamedTupleReader(['spam,eggs\r\n', '1,2\r\n'])
     assert reader.dialect.delimiter == ','
     assert reader.line_num == 0
@@ -23,7 +23,7 @@ def test_NamedTupleReader():  # noqa: N802
         assert not list(reader)
 
 
-def test_NamedTupleReader_empty():  # noqa: N802
+def test_named_tuple_reader_empty():  # noqa: N802
     reader = NamedTupleReader([])
     with pytest.raises(RuntimeError, match='missing header'):
         next(reader)
@@ -37,13 +37,13 @@ def test_NamedTupleReader_empty():  # noqa: N802
      ('spam-spam,eggs\r\n', r'alphanumeric|valid identifiers'),
      ('class,eggs,\r\n', r'keyword'),
      ('_spam,eggs\r\n', r'underscore')])
-def test_NamedTupleReader_invalid_fieldname(header, match):
+def test_named_tuple_reader_invalid_fieldname(header, match):
     reader = NamedTupleReader([header, '1,2\r\n'])
     with pytest.raises(ValueError, match=match):
         next(reader)
 
 
-def test_NamedTupleReader_rename():  # noqa: N802
+def test_named_tuple_reader_rename():  # noqa: N802
     lines = ['def,spam.eggs,spam\r\n', '1,2,3\r\n']
     reader = NamedTupleReader(lines, rename=True)
     row, = list(reader)
@@ -54,7 +54,7 @@ def test_NamedTupleReader_rename():  # noqa: N802
     assert reader.row_cls._fields == ('_0', '_1', 'spam')
 
 
-def test_NamedTupleReader_rename_callable():  # noqa: N802
+def test_named_tuple_reader_rename_callable():  # noqa: N802
     lines = ['spam.eggs,spam\r\n', '1,2\r\n']
     reader = NamedTupleReader(lines, rename=lambda x: x.replace('.', '_'))
     row, = list(reader)
@@ -65,7 +65,7 @@ def test_NamedTupleReader_rename_callable():  # noqa: N802
     assert reader.row_cls._fields == ('spam_eggs', 'spam')
 
 
-def test_NamedTupleReader_row_name(row_name='Spam'):  # noqa: N802
+def test_named_tuple_reader_row_name(row_name='Spam'):  # noqa: N802
     lines = ['spam,eggs\r\n', '1,2\r\n']
     reader = NamedTupleReader(lines, row_name=row_name)
     row, = list(reader)
@@ -83,7 +83,7 @@ Row = collections.namedtuple('Row', ['column_1', 'column_2'])
     'rows, lines',
     [([Row('spam', 'spam spam'), Row('eggs', 'eggs, eggs')],  # noqa: N802
       ['column_1,column_2\r\n', 'spam,spam spam\r\n', 'eggs,"eggs, eggs"\r\n'])])
-def test_NamedTupleWriter(mocker, rows, lines):
+def test_named_tuple_writer(mocker, rows, lines):
     mock_open = mocker.mock_open()
     with mock_open('spam.csv', 'w') as f:
         writer = NamedTupleWriter(f)
