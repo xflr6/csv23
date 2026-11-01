@@ -1,8 +1,16 @@
 """Overloaded functions."""
 
+import builtins
+import bz2
+from contextlib import nullcontext
 import functools
+import gzip
 import io
 import itertools
+import lzma
+import operator
+import pathlib
+import platform
 import warnings
 
 from . import (DIALECT, ENCODING,
@@ -10,6 +18,10 @@ from . import (DIALECT, ENCODING,
                writer as csv23_writer)
 
 __all__ = ['read_csv', 'write_csv']
+
+SUFFIX_OPEN_MODULE = {'.bz2': bz2,
+                      '.gz': gzip,
+                      '.xz': lzma}
 
 
 def iterslices(iterable, size):
@@ -25,24 +37,10 @@ def iterrows(f, dialect=DIALECT):
             yield row
 
 
-import operator
-import pathlib
-import platform
-from contextlib import nullcontext
-
 # workaround https://foss.heptapod.net/pypy/pypy/issues/3217
 _get_update_bytes = (operator.methodcaller('getvalue')
                      if platform.python_implementation() == 'PyPy' else
                      operator.methodcaller('getbuffer'))
-
-import builtins
-import bz2
-import gzip
-import lzma
-
-SUFFIX_OPEN_MODULE = {'.bz2': bz2,
-                      '.gz': gzip,
-                      '.xz': lzma}
 
 
 def _get_open_module(filepath, autocompress=False):
