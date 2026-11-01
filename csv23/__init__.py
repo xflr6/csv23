@@ -5,12 +5,12 @@
 from __future__ import unicode_literals
 
 from csv import (QUOTE_MINIMAL, QUOTE_ALL, QUOTE_NONNUMERIC, QUOTE_NONE,
-                 Error, Dialect, excel, excel_tab, field_size_limit,
+                 Error, Dialect, excel, excel_tab, unix_dialect,
+                 field_size_limit,
                  register_dialect, get_dialect, list_dialects,
                  unregister_dialect)
 
 from ._common import ENCODING, DIALECT, ROWTYPE
-from .dialects import unix_dialect
 from .extras import NamedTupleReader, NamedTupleWriter
 from .openers import open_reader, open_writer
 from .readers import reader, DictReader
@@ -23,12 +23,12 @@ __all__ = ['open_csv',
            'iterrows',
            'reader', 'writer',
            'DictReader', 'DictWriter',
-           'unix_dialect',
            'NamedTupleReader', 'NamedTupleWriter',
            'read_csv', 'write_csv']
 
 __all__ += ['QUOTE_MINIMAL', 'QUOTE_ALL', 'QUOTE_NONNUMERIC', 'QUOTE_NONE',
-            'Error', 'Dialect', 'excel', 'excel_tab', 'field_size_limit',
+            'Error', 'Dialect', 'excel', 'excel_tab', 'unix_dialect',
+            'field_size_limit',
             'register_dialect', 'get_dialect', 'list_dialects',
             'unregister_dialect']
 

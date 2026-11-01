@@ -1,6 +1,6 @@
 import csv
 
-__all__ = ['unix_dialect', 'AsciiDelimited']
+__all__ = ['AsciiDelimited']
 
 
 def register(name):
@@ -8,9 +8,6 @@ def register(name):
         csv.register_dialect(name, cls)
         return cls
     return decorate
-
-
-unix_dialect = csv.unix_dialect
 
 
 @register(str('ascii'))
